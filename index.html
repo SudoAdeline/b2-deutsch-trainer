@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 Deutsch Trainer - Makhos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --teal: #00a89d;
+  --teal-dark: #008a80;
+  --teal-light: #e0f7f5;
+  --navy: #1a2332;
+  --navy-light: #2d3a4a;
+  --gold: #f0c040;
+  --gold-light: #fef9e7;
+  --coral: #ff6b6b;
+  --green: #51cf66;
+  --purple: #845ef7;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1a2332;
+  --text-light: #6b7b8d;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.14);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== HEADER / NAV ===== */
+.top-bar {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: white;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+.top-bar h1 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.top-bar h1 span { color: var(--teal); }
+
+.streak-badge {
+  background: linear-gradient(135deg, var(--gold), #e6a817);
+  color: var(--navy);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.countdown-bar {
+  background: var(--teal);
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ===== NAVIGATION TABS ===== */
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  background: white;
+  border-bottom: 2px solid #e8ecf0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-tab {
+  flex: 1;
+  min-width: 100px;
+  padding: 14px 12px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.nav-tab:hover { color: var(--teal); background: var(--teal-light); }
+.nav-tab.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  background: var(--teal-light);
+}
+
+.nav-tab .tab-icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+
+/* ===== SECTIONS ===== */
+.section { display: none; padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+.section.active { display: block; }
+
+/* ===== DASHBOARD ===== */
+.welcome-hero {
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 50%, var(--navy) 100%);
+  color: white;
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-hero::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+
+.welcome-hero h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+.welcome-hero p { opacity: 0.9; font-size: 1rem; line-height: 1.5; }
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.progress-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.progress-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+.progress-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.progress-card .label { font-size: 0.8rem; color: var(--text-light); font-weight: 500; }
+.progress-card .value { font-size: 1.8rem; font-weight: 800; color: var(--teal); }
+
+.progress-ring {
+  width: 60px; height: 60px;
+  margin: 0 auto 8px;
+  position: relative;
+}
+
+.progress-ring svg { transform: rotate(-90deg); }
+
+.progress-ring .bg { stroke: #e8ecf0; }
+.progress-ring .fill { stroke: var(--teal); transition: stroke-dashoffset 1s ease; }
+
+.exam-overview {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+}
+
+.exam-overview h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exam-module {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f2f5;
+  gap: 12px;
+}
+
+.exam-module:last-child { border-bottom: none; }
+
+.exam-module .mod-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.exam-module .mod-info { flex: 1; }
+.exam-module .mod-info h4 { font-size: 0.95rem; font-weight: 700; }
+.exam-module .mod-info p { font-size: 0.78rem; color: var(--text-light); }
+.exam-module .mod-time { font-size: 0.8rem; font-weight: 600; color: var(--teal); white-space: nowrap; }
+
+.daily-tip {
+  background: linear-gradient(135deg, var(--gold-light), #fff8e1);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.daily-tip h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.daily-tip p { font-size: 0.85rem; color: var(--navy-light); line-height: 1.5; }
+
+/* ===== CARDS / EXERCISE STYLES ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.card h3 .badge {
+  font-size: 0.7rem;
+  background: var(--teal-light);
+  color: var(--teal);
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.sub-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.sub-section:last-child { border-bottom: none; padding-bottom: 0; }
+
+.sub-section h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: var(--teal-dark);
+}
+
+/* Quiz styles */
+.quiz-question {
+  background: #f8f9fb;
+  border-radius: var(--radius-sm);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-question p { font-weight: 600; margin-bottom: 0.8rem; font-size: 0.95rem; }
+.quiz-question .q-num { color: var(--teal); }
+
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border: 2px solid #e8ecf0;
+  border-radius: var(--radius-sm);
+  background: white;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.15s;
+  font-family: inherit;
+  color: var(--text);
+}
+
+.quiz-option:hover { border-color: var(--teal); background: var(--teal-light); }
+.quiz-option.correct { border-color: var(--green); background: #e6fcf0; color: #2b8a3e; }
+.quiz-option.incorrect { border-color: var(--coral); background: #fff0f0; color: #c92a2a; }
+.quiz-option.disabled { pointer-events: none; opacity: 0.7; }
+
+.quiz-feedback {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: none;
+}
+
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: #e6fcf0; color: #2b8a3e; border-left: 4px solid var(--green); }
+.quiz-feedback.incorrect-fb { background: #fff0f0; color: #c92a2a; border-left: 4px solid var(--coral); }
+
+/* Flashcard */
+.flashcard-container { perspective: 1000px; margin-bottom: 1rem; }
+
+.flashcard {
+  width: 100%;
+  min-height: 200px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.flashcard.flipped { transform: rotateY(180deg); }
+
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  min-height: 200px;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+  color: white;
+}
+
+.flashcard-front .word { font-size: 1.8rem; font-weight: 800; }
+.flashcard-front .article { font-size: 1rem; opacity: 0.8; margin-bottom: 4px; }
+.flashcard-front .hint { font-size: 0.8rem; opacity: 0.6; margin-top: 12px; }
+
+.flashcard-back {
+  background: var(--card);
+  border: 2px solid var(--teal);
+  transform: rotateY(180deg);
+}
+
+.flashcard-back .translation { font-size: 1.2rem; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+.flashcard-back .example { font-size: 0.9rem; color: var(--text-light); font-style: italic; }
+
+.flashcard-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.fc-btn {
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.fc-btn.know { background: var(--green); color: white; }
+.fc-btn.dont-know { background: var(--coral); color: white; }
+.fc-btn.next { background: var(--teal); color: white; }
+.fc-btn:hover { transform: scale(1.05); }
+
+/* Conjugation table */
+.conj-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+}
+
+.conj-table th {
+  background: var(--teal);
+  color: white;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.conj-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.conj-table tr:nth-child(even) td { background: #f8f9fb; }
+
+.conj-input {
+  border: 2px solid #e8ecf0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  width: 140px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.conj-input:focus { outline: none; border-color: var(--teal); }
+.conj-input.correct { border-color: var(--green); background: #e6fcf0; }
+.conj-input.incorrect { border-color: var(--coral); background: #fff0f0; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-primary { background: var(--teal); color: white; }
+.btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+.btn-outline { background: transparent; border: 2px solid var(--teal); color: var(--teal); }
+.btn-outline:hover { background: var(--teal-light); }
+.btn-gold { background: linear-gradient(135deg, var(--gold), #e6a817); color: var(--navy); }
+
+/* Redemittel */
+.redemittel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.redemittel-item {
+  background: #f8f9fb;
+  border-left: 4px solid var(--teal);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.redemittel-item .de { font-weight: 600; }
+.redemittel-item .en { color: var(--text-light); font-size: 0.82rem; margin-top: 2px; }
+
+/* Speaking prompt */
+.speaking-prompt {
+  background: linear-gradient(135deg, var(--purple), #6741d9);
+  color: white;
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.speaking-prompt h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.speaking-prompt p { opacity: 0.9; font-size: 0.95rem; line-height: 1.5; }
+
+.speaking-timer {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 1rem 0;
+}
+
+.timer-btn {
+  padding: 12px 32px;
+  border-radius: 30px;
+  border: 2px solid white;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.timer-btn:hover { background: rgba(255,255,255,0.3); }
+
+/* Film & Music Section */
+.media-card {
+  display: flex;
+  gap: 1rem;
+  background: #f8f9fb;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.media-card:hover { transform: translateX(4px); }
+
+.media-card .media-emoji { font-size: 2.5rem; flex-shrink: 0; }
+.media-card .media-info h4 { font-size: 0.95rem; font-weight: 700; }
+.media-card .media-info p { font-size: 0.82rem; color: var(--text-light); line-height: 1.4; margin-top: 4px; }
+.media-card .media-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  background: var(--teal-light);
+  color: var(--teal);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* Connector exercise */
+.connector-exercise {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.connector-chip {
+  padding: 6px 14px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.connector-chip:hover { background: var(--teal); color: white; }
+.connector-chip.selected { background: var(--teal); color: white; border-color: var(--teal-dark); }
+
+/* Fill-in sentence */
+.fill-sentence {
+  font-size: 0.95rem;
+  line-height: 2;
+  margin-bottom: 1rem;
+}
+
+.fill-blank {
+  display: inline-block;
+  border-bottom: 2px dashed var(--teal);
+  min-width: 100px;
+  padding: 2px 8px;
+  margin: 0 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  transition: border-color 0.2s;
+}
+
+.fill-blank:focus { outline: none; border-bottom-color: var(--navy); border-bottom-style: solid; }
+.fill-blank.correct { border-bottom-color: var(--green); border-bottom-style: solid; color: #2b8a3e; }
+.fill-blank.incorrect { border-bottom-color: var(--coral); border-bottom-style: solid; color: #c92a2a; }
+
+/* Score display */
+.score-display {
+  text-align: center;
+  padding: 2rem;
+}
+
+.score-circle {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.score-circle .score-num { font-size: 2.5rem; font-weight: 900; line-height: 1; }
+.score-circle .score-label { font-size: 0.7rem; opacity: 0.8; }
+
+/* Checklist */
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checklist-item .check {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.7rem;
+  margin-top: 2px;
+}
+
+.checklist-item .check.done { background: var(--green); border-color: var(--green); color: white; }
+
+/* Writing area */
+.writing-area {
+  width: 100%;
+  min-height: 200px;
+  border: 2px solid #e8ecf0;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.writing-area:focus { outline: none; border-color: var(--teal); }
+
+.word-count {
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .section { padding: 1rem; }
+  .welcome-hero { padding: 1.5rem 1.2rem; }
+  .welcome-hero h2 { font-size: 1.4rem; }
+  .progress-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-tab { font-size: 0.72rem; padding: 10px 8px; }
+  .nav-tab .tab-icon { font-size: 1rem; }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section.active { animation: fadeIn 0.3s ease; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.pulse { animation: pulse 2s infinite; }
+
+/* Confetti effect */
+.confetti {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <h1>B2 <span>Deutsch</span> Trainer</h1>
+  <div class="streak-badge" id="streakBadge">
+    <span>&#128293;</span> <span id="streakCount">0</span> Tage
+  </div>
+</div>
+
+<!-- Countdown -->
+<div class="countdown-bar" id="countdownBar"></div>
+
+<!-- Navigation -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showSection('dashboard')">
+    <span class="tab-icon">&#127968;</span> Start
+  </div>
+  <div class="nav-tab" onclick="showSection('vocab')">
+    <span class="tab-icon">&#128218;</span> Wortschatz
+  </div>
+  <div class="nav-tab" onclick="showSection('grammar')">
+    <span class="tab-icon">&#9997;&#65039;</span> Grammatik
+  </div>
+  <div class="nav-tab" onclick="showSection('lesen')">
+    <span class="tab-icon">&#128214;</span> Lesen
+  </div>
+  <div class="nav-tab" onclick="showSection('schreiben')">
+    <span class="tab-icon">&#9999;&#65039;</span> Schreiben
+  </div>
+  <div class="nav-tab" onclick="showSection('sprechen')">
+    <span class="tab-icon">&#127908;</span> Sprechen
+  </div>
+  <div class="nav-tab" onclick="showSection('media')">
+    <span class="tab-icon">&#127916;</span> Film & Musik
+  </div>
+</div>
+
+<!-- ======================== DASHBOARD ======================== -->
+<div class="section active" id="sec-dashboard">
+
+  <div class="welcome-hero">
+    <h2>Hallo! Bereit fur dein B2? &#128170;</h2>
+    <p>Du hast noch <strong id="daysLeft"></strong> Tage bis zur Prufung.<br>
+    Jeden Tag ein bisschen — und du schaffst das!</p>
+  </div>
+
+  <div class="daily-tip">
+    <h4>&#128161; Tipp des Tages</h4>
+    <p id="dailyTip"></p>
+  </div>
+
+  <div class="progress-grid">
+    <div class="progress-card" onclick="showSection('vocab')">
+      <div class="icon">&#128218;</div>
+      <div class="value" id="vocabScore">0</div>
+      <div class="label">Worter gelernt</div>
+    </div>
+    <div class="progress-card" onclick="showSection('grammar')">
+      <div class="icon">&#9997;&#65039;</div>
+      <div class="value" id="grammarScore">0</div>
+      <div class="label">Grammatik-Punkte</div>
+    </div>
+    <div class="progress-card" onclick="showSection('sprechen')">
+      <div class="icon">&#127908;</div>
+      <div class="value" id="speakingMin">0</div>
+      <div class="label">Sprechen (Min.)</div>
+    </div>
+    <div class="progress-card" onclick="showSection('lesen')">
+      <div class="icon">&#128214;</div>
+      <div class="value" id="lesenScore">0</div>
+      <div class="label">Lesen-Punkte</div>
+    </div>
+  </div>
+
+  <!-- Exam Structure Overview -->
+  <div class="exam-overview">
+    <h3>&#128203; Prufungsstruktur — Goethe B2</h3>
+
+    <div class="exam-module">
+      <div class="mod-icon" style="background:#e0f7f5;">&#128214;</div>
+      <div class="mod-info">
+        <h4>Lesen (5 Teile)</h4>
+        <p>Meinungen zuordnen, Lucken fullen, Multiple Choice, Standpunkte, Regeln verstehen</p>
+      </div>
+      <div class="mod-time">65 Min.</div>
+    </div>
+
+    <div class="exam-module">
+      <div class="mod-icon" style="background:#fef3e2;">&#127911;</div>
+      <div class="mod-info">
+        <h4>Horen (4 Teile)</h4>
+        <p>Alltagsgesprache, Radio-Interview, Diskussion, Vortrage</p>
+      </div>
+      <div class="mod-time">40 Min.</div>
+    </div>
+
+    <div class="exam-module">
+      <div class="mod-icon" style="background:#f0e6ff;">&#9999;&#65039;</div>
+      <div class="mod-info">
+        <h4>Schreiben (2 Teile)</h4>
+        <p>Forumsbeitrag (150+ Worter) + formelle Nachricht (100+ Worter)</p>
+      </div>
+      <div class="mod-time">75 Min.</div>
+    </div>
+
+    <div class="exam-module">
+      <div class="mod-icon" style="background:#ffe0e0;">&#127908;</div>
+      <div class="mod-info">
+        <h4>Sprechen (2 Teile)</h4>
+        <p>Vortrag halten (4 Min.) + Diskussion pro/kontra (5 Min.)</p>
+      </div>
+      <div class="mod-time">15 Min. + 15 Vorb.</div>
+    </div>
+
+    <div style="margin-top:1rem; padding:12px; background:#f8f9fb; border-radius:var(--radius-sm); font-size:0.85rem;">
+      <strong>Bestehensgrenze:</strong> 60/100 Punkte pro Modul (= 60%). Jedes Modul einzeln bestanden. &#127942;
+    </div>
+  </div>
+
+  <!-- Study Plan -->
+  <div class="card">
+    <h3>&#128197; Dein 6-Wochen-Plan</h3>
+    <div id="studyPlan"></div>
+  </div>
+</div>
+
+<!-- ======================== WORTSCHATZ ======================== -->
+<div class="section" id="sec-vocab">
+  <div class="card">
+    <h3>&#128218; Vokabel-Karteikarten <span class="badge" id="fcProgress">0 / 0</span></h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">Klicke auf die Karte zum Umdrehen. Bewerte dich selbst ehrlich!</p>
+
+    <div class="flashcard-container">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-face flashcard-front">
+          <div class="article" id="fcArticle"></div>
+          <div class="word" id="fcWord"></div>
+          <div class="hint">Klicken zum Umdrehen &#8635;</div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="translation" id="fcTranslation"></div>
+          <div class="example" id="fcExample"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard-controls">
+      <button class="fc-btn dont-know" onclick="rateCard(false)">&#10060; Nochmal</button>
+      <button class="fc-btn know" onclick="rateCard(true)">&#9989; Gewusst!</button>
+    </div>
+
+    <div style="text-align:center; margin-top:1rem;">
+      <select id="vocabCategory" onchange="loadVocabCategory()" style="padding:8px 16px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        <option value="b2_essential">B2 Kernwortschatz</option>
+        <option value="arbeit">Arbeit & Beruf</option>
+        <option value="bildung">Bildung & Studium</option>
+        <option value="umwelt">Umwelt & Natur</option>
+        <option value="gesellschaft">Gesellschaft & Politik</option>
+        <option value="gesundheit">Gesundheit</option>
+        <option value="technologie">Technologie</option>
+        <option value="konnektoren">Konnektoren & Redemittel</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Vocabulary by Topic -->
+  <div class="card">
+    <h3>&#127793; Themen-Wortschatz fur Sprechen</h3>
+    <div id="topicVocab"></div>
+  </div>
+</div>
+
+<!-- ======================== GRAMMATIK ======================== -->
+<div class="section" id="sec-grammar">
+
+  <div class="card">
+    <h3>&#9997;&#65039; Konjunktiv II <span class="badge">Dein Schwachpunkt!</span></h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      Konjunktiv II druckt irreale Wunsche, hofliche Bitten und hypothetische Situationen aus.
+    </p>
+
+    <div class="sub-section">
+      <h4>&#128209; Regelubersicht</h4>
+      <table class="conj-table">
+        <tr><th>Pronomen</th><th>sein</th><th>haben</th><th>konnen</th><th>werden</th></tr>
+        <tr><td>ich</td><td>ware</td><td>hatte</td><td>konnte</td><td>wurde</td></tr>
+        <tr><td>du</td><td>war(e)st</td><td>hattest</td><td>konntest</td><td>wurdest</td></tr>
+        <tr><td>er/sie/es</td><td>ware</td><td>hatte</td><td>konnte</td><td>wurde</td></tr>
+        <tr><td>wir</td><td>waren</td><td>hatten</td><td>konnten</td><td>wurden</td></tr>
+        <tr><td>ihr</td><td>war(e)t</td><td>hattet</td><td>konntet</td><td>wurdet</td></tr>
+        <tr><td>sie/Sie</td><td>waren</td><td>hatten</td><td>konnten</td><td>wurden</td></tr>
+      </table>
+    </div>
+
+    <div class="sub-section">
+      <h4>&#127919; Ubung: Erganze den Konjunktiv II</h4>
+      <div id="konjQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#9997;&#65039; Passiv</h3>
+    <div class="sub-section">
+      <h4>&#128209; Bildung: werden + Partizip II</h4>
+      <table class="conj-table">
+        <tr><th>Tempus</th><th>Beispiel</th></tr>
+        <tr><td>Prasens</td><td>Das Buch <strong>wird gelesen</strong>.</td></tr>
+        <tr><td>Prateritum</td><td>Das Buch <strong>wurde gelesen</strong>.</td></tr>
+        <tr><td>Perfekt</td><td>Das Buch <strong>ist gelesen worden</strong>.</td></tr>
+        <tr><td>mit Modalverb</td><td>Das Buch <strong>muss gelesen werden</strong>.</td></tr>
+      </table>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; Ubung: Aktiv → Passiv</h4>
+      <div id="passivQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#9997;&#65039; Konnektoren & Satzbau</h3>
+    <div class="sub-section">
+      <h4>Zweiteilige Konnektoren</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">zwar ... aber</span><br><span class="en">= indeed ... but (concession)</span></div>
+        <div class="redemittel-item"><span class="de">einerseits ... andererseits</span><br><span class="en">= on one hand ... on the other</span></div>
+        <div class="redemittel-item"><span class="de">sowohl ... als auch</span><br><span class="en">= both ... and</span></div>
+        <div class="redemittel-item"><span class="de">weder ... noch</span><br><span class="en">= neither ... nor</span></div>
+        <div class="redemittel-item"><span class="de">nicht nur ... sondern auch</span><br><span class="en">= not only ... but also</span></div>
+        <div class="redemittel-item"><span class="de">je ... desto/umso</span><br><span class="en">= the more ... the more</span></div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; Ubung: Setze den passenden Konnektor ein</h4>
+      <div id="konnektorQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#9997;&#65039; Indirekte Rede (Konjunktiv I)</h3>
+    <div class="sub-section">
+      <h4>&#128209; Bildung</h4>
+      <table class="conj-table">
+        <tr><th>Pronomen</th><th>sein</th><th>haben</th><th>kommen</th></tr>
+        <tr><td>ich</td><td>sei</td><td>habe</td><td>komme</td></tr>
+        <tr><td>er/sie/es</td><td>sei</td><td>habe</td><td>komme</td></tr>
+        <tr><td>sie/Sie</td><td>seien</td><td>haben</td><td>kommen</td></tr>
+      </table>
+      <p style="font-size:0.85rem; color:var(--text-light); margin-top:8px;">
+        <strong>Tipp:</strong> Wenn Konj. I = Indikativ, nimm Konj. II! z.B. "sie haben" → "sie hatten"
+      </p>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; Ubung: Direkte → Indirekte Rede</h4>
+      <div id="indirekteQuiz"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== LESEN ======================== -->
+<div class="section" id="sec-lesen">
+  <div class="card">
+    <h3>&#128214; Lesen — Prufungstraining</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      5 Teile, 65 Minuten, 30 Fragen. Du brauchst mindestens 60% (= 18/30 richtig).
+    </p>
+
+    <div class="sub-section">
+      <h4>Teil 1: Meinungen zuordnen (18 Min. | 9 Punkte)</h4>
+      <p style="font-size:0.85rem; margin-bottom:1rem;">Du liest 4 Texte aus einem Forum. 9 Aussagen musst du den Personen zuordnen.</p>
+      <div id="lesenTeil1"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Teil 2: Luckentext (12 Min. | 6 Punkte)</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      Ein Artikel mit 6 Lucken. 8 Satze stehen zur Auswahl — 2 passen nicht.<br>
+      <strong>Strategie:</strong> Achte auf Konnektoren, Pronomen und logische Verknupfungen!
+    </p>
+    <div id="lesenTeil2"></div>
+  </div>
+
+  <div class="card">
+    <h3>&#128161; Lese-Strategien</h3>
+    <div class="redemittel-grid">
+      <div class="redemittel-item">
+        <span class="de">&#128270; Schlusselworter markieren</span><br>
+        <span class="en">Lies zuerst die Aussagen/Fragen, markiere Schlusselworter, dann suche im Text.</span>
+      </div>
+      <div class="redemittel-item">
+        <span class="de">&#128260; Paraphrasen erkennen</span><br>
+        <span class="en">Die Aussagen verwenden ANDERE Worter als der Text. Gleiche Worter = oft Falle!</span>
+      </div>
+      <div class="redemittel-item">
+        <span class="de">&#9200; Zeitmanagement</span><br>
+        <span class="en">Teil 1: 18 Min. | Teil 2: 12 Min. | Teil 3: 12 Min. | Teil 4: 12 Min. | Teil 5: 6 Min.</span>
+      </div>
+      <div class="redemittel-item">
+        <span class="de">&#127919; Schwierigste Teile zuletzt</span><br>
+        <span class="en">Teil 2 und 4 sind am schwierigsten. Beginne mit Teil 3 oder 5 fur schnelle Punkte.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== SCHREIBEN ======================== -->
+<div class="section" id="sec-schreiben">
+  <div class="card">
+    <h3>&#9999;&#65039; Schreiben — Teil 1: Forumsbeitrag</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      50 Min. | min. 150 Worter | Meinung begrunden, Vor-/Nachteile nennen
+    </p>
+
+    <div class="speaking-prompt" style="background: linear-gradient(135deg, #2d3a4a, #1a2332);">
+      <h3>&#128172; Thema:</h3>
+      <p id="schreibenPrompt">Sollte man soziale Medien fur Jugendliche unter 16 verbieten?</p>
+      <button class="timer-btn" style="margin-top:12px;" onclick="newSchreibenPrompt()">&#128260; Neues Thema</button>
+    </div>
+
+    <div class="sub-section">
+      <h4>&#128221; Dein Forumsbeitrag:</h4>
+      <textarea class="writing-area" id="schreibenArea1" placeholder="Schreibe deinen Forumsbeitrag hier... (min. 150 Worter)
+
+Struktur:
+1. Einleitung — Thema vorstellen
+2. Hauptteil — Argumente + Beispiele
+3. Schluss — Fazit / eigene Meinung"></textarea>
+      <div class="word-count"><span id="wordCount1">0</span> / 150 Worter</div>
+    </div>
+
+    <div class="sub-section">
+      <h4>&#128161; Bewertungskriterien (checke dich selbst!)</h4>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Alle 4 Inhaltspunkte angesprochen?</span></div>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Einleitung + Hauptteil + Schluss?</span></div>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Konnektoren benutzt? (obwohl, dennoch, einerseits...)</span></div>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Abwechslungsreicher Wortschatz? (nicht immer "gut/schlecht")</span></div>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Konjunktiv II / Passiv verwendet?</span></div>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Mindestens 150 Worter?</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#9999;&#65039; Schreiben — Teil 2: Formelle Nachricht</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      25 Min. | min. 100 Worter | Sie-Form, formeller Ton
+    </p>
+
+    <div class="speaking-prompt" style="background: linear-gradient(135deg, #845ef7, #6741d9);">
+      <h3>&#128231; Aufgabe:</h3>
+      <p id="schreibenPrompt2">Sie haben einen Online-Kurs gebucht, aber die Qualitat entspricht nicht der Beschreibung. Schreiben Sie eine Beschwerde an den Anbieter.</p>
+      <button class="timer-btn" style="margin-top:12px;" onclick="newSchreibenPrompt2()">&#128260; Neue Aufgabe</button>
+    </div>
+
+    <div class="sub-section">
+      <h4>&#128221; Deine formelle Nachricht:</h4>
+      <textarea class="writing-area" id="schreibenArea2" placeholder="Sehr geehrte Damen und Herren,
+
+...
+
+Mit freundlichen Grussen
+[Dein Name]"></textarea>
+      <div class="word-count"><span id="wordCount2">0</span> / 100 Worter</div>
+    </div>
+
+    <div class="sub-section">
+      <h4>Nutzliche Redemittel fur formelle Nachrichten</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">Anrede:</span> Sehr geehrte Frau/Herr ... / Sehr geehrte Damen und Herren,</div>
+        <div class="redemittel-item"><span class="de">Bezug:</span> ich schreibe Ihnen bezuglich ... / in Bezug auf Ihre Anzeige ...</div>
+        <div class="redemittel-item"><span class="de">Beschwerde:</span> Leider muss ich Ihnen mitteilen, dass ... / Ich bin mit ... nicht zufrieden.</div>
+        <div class="redemittel-item"><span class="de">Bitte:</span> Ich ware Ihnen dankbar, wenn Sie ... konnten.</div>
+        <div class="redemittel-item"><span class="de">Schluss:</span> Fur Ruckfragen stehe ich Ihnen gerne zur Verfugung. / Ich freue mich auf Ihre Ruckmeldung.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== SPRECHEN ======================== -->
+<div class="section" id="sec-sprechen">
+  <div class="card">
+    <h3>&#127908; Sprechen — Teil 1: Vortrag (4 Min.)</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      Du wahlst 1 von 2 Themen. Halte einen strukturierten Vortrag mit Einleitung, Hauptteil, Schluss.
+    </p>
+
+    <div class="speaking-prompt" id="sprechenPrompt">
+      <h3>&#127908; Dein Thema:</h3>
+      <p id="sprechenTopic">Haustiere</p>
+      <div style="margin-top:12px; font-size:0.85rem; text-align:left; opacity:0.9;">
+        <p>&#8226; Beschreiben Sie mehrere Arten.</p>
+        <p>&#8226; Nennen Sie Vor- und Nachteile und bewerten Sie diese.</p>
+        <p>&#8226; Beschreiben Sie eine Moglichkeit genauer.</p>
+      </div>
+      <div class="speaking-timer" id="speakingTimer">4:00</div>
+      <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">&#9654; Start</button>
+      <button class="timer-btn" style="margin-left:8px;" onclick="newSprechenTopic()">&#128260; Neues Thema</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127908; Sprechen — Teil 2: Diskussion (5 Min.)</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      Debattiere pro und kontra mit deinem Partner. Reagiere auf Argumente!
+    </p>
+
+    <div class="speaking-prompt" style="background: linear-gradient(135deg, #e67700, #d63200);">
+      <h3>&#128172; Diskussionsthema:</h3>
+      <p id="diskussionTopic">Sollten Universitaten Anwesenheitspflicht einfuhren?</p>
+      <button class="timer-btn" style="margin-top:12px;" onclick="newDiskussionTopic()">&#128260; Neues Thema</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128161; Redemittel-Sammlung fur Sprechen</h3>
+
+    <div class="sub-section">
+      <h4>Einleitung</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">"In meinem Vortrag mochte ich das Thema [...] beleuchten."</span></div>
+        <div class="redemittel-item"><span class="de">"Zunachst werde ich [...] erlautern, dann auf [...] eingehen und abschliessend [...]."</span></div>
+        <div class="redemittel-item"><span class="de">"Ich habe mich fur dieses Thema entschieden, weil ..."</span></div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <h4>Hauptteil — Argumente</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">"Es gibt verschiedene Moglichkeiten / Aspekte ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Ein Vorteil / Nachteil fur ... ist ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Ich bin der Ansicht / Uberzeugung, dass ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Aus meiner Sicht ..." / "Meiner Meinung nach ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Ein gutes Beispiel dafur ist ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Einerseits ... andererseits ..."</span></div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <h4>Schluss</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">"Zusammenfassend lasst sich sagen, dass ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Ich wurde [...] empfehlen, weil ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Abschliessend mochte ich betonen, dass ..."</span></div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <h4>Diskussion — Reagieren</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">"Das sehe ich genauso." / "Dem stimme ich zu."</span></div>
+        <div class="redemittel-item"><span class="de">"Da bin ich anderer Meinung, weil ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Grundsatzlich hast du Recht, aber man sollte auch bedenken, dass ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Das sehe ich etwas anders." / "Ein wichtiges Gegenargument ware ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Was denkst du daruber?" / "Hast du selbst Erfahrungen damit gemacht?"</span></div>
+        <div class="redemittel-item"><span class="de">"Konnen wir uns darauf einigen, dass ...?"</span></div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <h4>Nachfragen</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">"Entschuldigung, konnten Sie das bitte noch einmal wiederholen?"</span></div>
+        <div class="redemittel-item"><span class="de">"Ich bin nicht sicher, ob ich Sie richtig verstanden habe."</span></div>
+        <div class="redemittel-item"><span class="de">"Mich wurde interessieren, was du uber [...] denkst."</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127775; Bewertungskriterien Sprechen</h3>
+    <table class="conj-table">
+      <tr><th>Kriterium</th><th>Was zahlt</th></tr>
+      <tr><td><strong>Aufgabe</strong></td><td>Alle Inhaltspunkte behandelt? Alternativen + Vor-/Nachteile?</td></tr>
+      <tr><td><strong>Flussigkeit</strong></td><td>Naturliches Tempo, kein Ablesen, wenig Pausen</td></tr>
+      <tr><td><strong>Interaktion</strong></td><td>Auf Partner reagieren, Fragen stellen, Gesprach managen</td></tr>
+      <tr><td><strong>Wortschatz</strong></td><td>Abwechslungsreich, B2-Niveau, keine Wiederholungen</td></tr>
+      <tr><td><strong>Grammatik</strong></td><td>Konjunktiv II, Passiv, komplexe Satze zeigen B2-Kompetenz</td></tr>
+      <tr><td><strong>Aussprache</strong></td><td>Deutlich und naturlich, Satzmelodie beachten</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== FILM & MUSIK ======================== -->
+<div class="section" id="sec-media">
+  <div class="card">
+    <h3>&#127916; Deutsche Filme fur B2</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      Schau auf Deutsch mit deutschen Untertiteln! Notiere neue Worter und Redewendungen.
+    </p>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127916;</div>
+      <div class="media-info">
+        <h4>Das Leben der Anderen (2006)</h4>
+        <p>Ein Stasi-Agent uberwacht einen Schriftsteller in der DDR. Oscar-Gewinner! Perfekt fur Themen wie Uberwachung, Freiheit, Politik.</p>
+        <span class="media-tag">Drama</span> <span class="media-tag">B2+ Wortschatz</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127916;</div>
+      <div class="media-info">
+        <h4>Good Bye, Lenin! (2003)</h4>
+        <p>Komodie uber den Mauerfall. Ein Sohn versucht, seiner Mutter die Wiedervereinigung zu verheimlichen. Alltagsdeutsch + Geschichte.</p>
+        <span class="media-tag">Komodie</span> <span class="media-tag">Geschichte</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127916;</div>
+      <div class="media-info">
+        <h4>Toni Erdmann (2016)</h4>
+        <p>Ein Vater versucht, seine karrierefixierte Tochter zum Lachen zu bringen. Komplexes Alltagsdeutsch und Business-Sprache.</p>
+        <span class="media-tag">Tragikomodie</span> <span class="media-tag">Arbeitswelt</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127916;</div>
+      <div class="media-info">
+        <h4>Der Vorleser (2008)</h4>
+        <p>Verfilmung des Romans von Bernhard Schlink. Schuld, Liebe und die Nachwirkungen des Holocaust.</p>
+        <span class="media-tag">Drama</span> <span class="media-tag">Literatur</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#128250;</div>
+      <div class="media-info">
+        <h4>Dark (Netflix-Serie)</h4>
+        <p>Sci-Fi-Thriller uber Zeitreisen in einer Kleinstadt. Komplexe Dialoge auf B2/C1-Niveau. Spannend!</p>
+        <span class="media-tag">Sci-Fi</span> <span class="media-tag">Serie</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#128250;</div>
+      <div class="media-info">
+        <h4>Babylon Berlin (ARD-Serie)</h4>
+        <p>Krimi im Berlin der 1920er Jahre. Reiche Sprache, historischer Kontext. Perfekt fur Horen + Lesen.</p>
+        <span class="media-tag">Krimi</span> <span class="media-tag">Serie</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#128250;</div>
+      <div class="media-info">
+        <h4>How to Sell Drugs Online (Fast)</h4>
+        <p>Jugendliche bauen einen Online-Drogenhandel auf. Moderne Jugendsprache und Umgangssprache.</p>
+        <span class="media-tag">Komodie</span> <span class="media-tag">Jugendsprache</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127925; Deutsche Musik fur B2</h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
+      Lies die Texte mit! Musik hilft beim Merken von Satzbau und Aussprache.
+    </p>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127925;</div>
+      <div class="media-info">
+        <h4>AnnenMayKantereit</h4>
+        <p>Indie-Pop auf Deutsch. Klare Aussprache, poetische Texte. Starte mit "Pocahontas" und "Barfuss am Klavier".</p>
+        <span class="media-tag">Indie-Pop</span> <span class="media-tag">Klare Texte</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127925;</div>
+      <div class="media-info">
+        <h4>Mark Forster</h4>
+        <p>Mainstream-Pop. Einfache bis mittlere Sprache. "Au Revoir", "Chore", "Ubermorgen".</p>
+        <span class="media-tag">Pop</span> <span class="media-tag">Eingangig</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127925;</div>
+      <div class="media-info">
+        <h4>Kraftklub</h4>
+        <p>Alternative Rock. Schnellere Texte, gesellschaftskritisch. "Ich will nicht nach Berlin" — Umgangssprache.</p>
+        <span class="media-tag">Rock</span> <span class="media-tag">Gesellschaft</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127925;</div>
+      <div class="media-info">
+        <h4>Clueso</h4>
+        <p>Singer-Songwriter. Nachdenkliche Texte uber Beziehungen und Leben. "Gewinner", "Chicago".</p>
+        <span class="media-tag">Singer-Songwriter</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127925;</div>
+      <div class="media-info">
+        <h4>Die Arzte / Die Toten Hosen</h4>
+        <p>Klassiker des deutschen Punk-Rock. Einfache, witzige Texte. "Schrei nach Liebe", "Tage wie diese".</p>
+        <span class="media-tag">Punk-Rock</span> <span class="media-tag">Klassiker</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127925;</div>
+      <div class="media-info">
+        <h4>Namika</h4>
+        <p>Pop mit Hip-Hop-Einfluss. "Lieblingsmensch", "Je ne parle pas francais". Catchy und gut verstandlich.</p>
+        <span class="media-tag">Pop/HipHop</span>
+      </div>
+    </div>
+
+    <div class="media-card">
+      <div class="media-emoji">&#127911;</div>
+      <div class="media-info">
+        <h4>Podcasts: Easy German / Slow German</h4>
+        <p>Kostenlose Podcasts, speziell fur Deutschlerner. Perfekt fur Horen uben im Alltag!</p>
+        <span class="media-tag">Podcast</span> <span class="media-tag">Horen</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128250; YouTube-Kanale zum Lernen</h3>
+    <div class="media-card">
+      <div class="media-emoji">&#128187;</div>
+      <div class="media-info">
+        <h4>Easy German</h4>
+        <p>Strasseninterviews mit echten Deutschen. Untertitel auf Deutsch und Englisch. Perfekt fur Horen!</p>
+        <span class="media-tag">YouTube</span>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-emoji">&#128187;</div>
+      <div class="media-info">
+        <h4>Deutsch mit Marija</h4>
+        <p>B2/C1 Grammatik-Erklarungen, Prufungstipps, Ubungen. Ideal fur Prufungsvorbereitung!</p>
+        <span class="media-tag">YouTube</span> <span class="media-tag">Prufung</span>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-emoji">&#128187;</div>
+      <div class="media-info">
+        <h4>Kurzgesagt — In a Nutshell (DE)</h4>
+        <p>Wissenschaftsvideos auf Deutsch. Komplexer Wortschatz, klare Aussprache. B2-C1 Niveau.</p>
+        <span class="media-tag">YouTube</span> <span class="media-tag">Wissenschaft</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height:80px;"></div>
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+
+const vocabData = {
+  b2_essential: [
+    {word:"die Auswirkung", article:"die", ex:"Der Klimawandel hat starke Auswirkungen auf die Umwelt.", translation:"impact, effect"},
+    {word:"die Auseinandersetzung", article:"die", ex:"Es gab eine heftige Auseinandersetzung uber das neue Gesetz.", translation:"dispute, confrontation"},
+    {word:"beeinflussen", article:"", ex:"Soziale Medien beeinflussen unsere Meinung.", translation:"to influence"},
+    {word:"berucksichtigen", article:"", ex:"Man muss alle Faktoren berucksichtigen.", translation:"to consider, take into account"},
+    {word:"die Voraussetzung", article:"die", ex:"Gute Sprachkenntnisse sind eine Voraussetzung fur den Job.", translation:"prerequisite, requirement"},
+    {word:"uberzeugen", article:"", ex:"Seine Argumente haben mich uberzeugt.", translation:"to convince"},
+    {word:"die Herausforderung", article:"die", ex:"Die Digitalisierung ist eine grosse Herausforderung.", translation:"challenge"},
+    {word:"die Nachhaltigkeit", article:"die", ex:"Nachhaltigkeit ist ein wichtiges Thema unserer Zeit.", translation:"sustainability"},
+    {word:"sich auseinandersetzen mit", article:"", ex:"Wir mussen uns mit dem Problem auseinandersetzen.", translation:"to deal/engage with"},
+    {word:"behaupten", article:"", ex:"Er behauptet, er habe Recht.", translation:"to claim, assert"},
+    {word:"die Erkenntnis", article:"die", ex:"Die Forschung hat neue Erkenntnisse gebracht.", translation:"insight, finding"},
+    {word:"grundsatzlich", article:"", ex:"Grundsatzlich bin ich dafur, aber es gibt Einschrankungen.", translation:"fundamentally, in principle"},
+    {word:"allerdings", article:"", ex:"Das Angebot ist gut, allerdings zu teuer.", translation:"however, though"},
+    {word:"die Entwicklung", article:"die", ex:"Die technologische Entwicklung geht immer schneller.", translation:"development"},
+    {word:"beschaftigen", article:"", ex:"Das Thema beschaftigt mich schon lange.", translation:"to occupy, concern"},
+    {word:"vernachlassigen", article:"", ex:"Man darf die Gesundheit nicht vernachlassigen.", translation:"to neglect"},
+    {word:"die Eigenschaft", article:"die", ex:"Teamfahigkeit ist eine wichtige Eigenschaft.", translation:"quality, characteristic"},
+    {word:"beitragen zu", article:"", ex:"Jeder kann zum Umweltschutz beitragen.", translation:"to contribute to"},
+    {word:"erheblich", article:"", ex:"Die Kosten sind erheblich gestiegen.", translation:"considerable, significant"},
+    {word:"die Maßnahme", article:"die", ex:"Die Regierung hat neue Maßnahmen beschlossen.", translation:"measure, action"},
+  ],
+  arbeit: [
+    {word:"das Vorstellungsgesprach", article:"das", ex:"Mein Vorstellungsgesprach ist nachste Woche.", translation:"job interview"},
+    {word:"die Fortbildung", article:"die", ex:"Mein Chef unterstutzt meine Fortbildung.", translation:"further training"},
+    {word:"die Kundigungsfrist", article:"die", ex:"Die Kundigungsfrist betragt drei Monate.", translation:"notice period"},
+    {word:"das Betriebsklima", article:"das", ex:"Ein gutes Betriebsklima ist mir wichtiger als das Gehalt.", translation:"work atmosphere"},
+    {word:"die Uberstunden (Pl.)", article:"die", ex:"Ich mache ungern Uberstunden.", translation:"overtime"},
+    {word:"der Fachkraftemangel", article:"der", ex:"In Deutschland gibt es einen starken Fachkraftemangel.", translation:"skilled labor shortage"},
+    {word:"die Gleitzeit", article:"die", ex:"Bei uns gibt es Gleitzeit — ich kann um 7 oder 9 anfangen.", translation:"flextime"},
+    {word:"sich bewerben um", article:"", ex:"Ich bewerbe mich um eine Stelle als Ingenieur.", translation:"to apply for"},
+  ],
+  bildung: [
+    {word:"die Vorlesung", article:"die", ex:"Die Vorlesung beginnt um 9 Uhr.", translation:"lecture"},
+    {word:"das Stipendium", article:"das", ex:"Sie hat ein Stipendium fur ihr Studium bekommen.", translation:"scholarship"},
+    {word:"die Studiengebuhren (Pl.)", article:"die", ex:"In vielen Bundeslandern gibt es keine Studiengebuhren.", translation:"tuition fees"},
+    {word:"die Hausarbeit", article:"die", ex:"Ich muss bis Ende des Semesters eine Hausarbeit schreiben.", translation:"term paper"},
+    {word:"die Klausur", article:"die", ex:"Nachste Woche schreibe ich zwei Klausuren.", translation:"exam, test"},
+    {word:"das Auslandssemester", article:"das", ex:"Mein Auslandssemester in Spanien war toll.", translation:"semester abroad"},
+    {word:"die Fachrichtung", article:"die", ex:"Welche Fachrichtung studierst du?", translation:"field of study"},
+    {word:"der Abschluss", article:"der", ex:"Nach dem Abschluss suche ich eine Stelle.", translation:"degree, graduation"},
+  ],
+  umwelt: [
+    {word:"der Klimawandel", article:"der", ex:"Der Klimawandel bedroht viele Tierarten.", translation:"climate change"},
+    {word:"erneuerbare Energien", article:"", ex:"Wir brauchen mehr erneuerbare Energien.", translation:"renewable energy"},
+    {word:"die Abgase (Pl.)", article:"die", ex:"Abgase aus Industrie und Verkehr verschmutzen die Luft.", translation:"exhaust fumes"},
+    {word:"der Ausstoß", article:"der", ex:"Wir mussen den CO2-Ausstoß reduzieren.", translation:"emission, output"},
+    {word:"die Mülltrennung", article:"die", ex:"In Deutschland ist Mulltrennung sehr wichtig.", translation:"waste separation"},
+    {word:"das Artensterben", article:"das", ex:"Das Artensterben ist eine Folge der Umweltzerstorung.", translation:"species extinction"},
+    {word:"nachhaltig", article:"", ex:"Wir sollten nachhaltiger leben.", translation:"sustainable"},
+    {word:"der Verbrauch", article:"der", ex:"Wir mussen unseren Energieverbrauch senken.", translation:"consumption"},
+  ],
+  gesellschaft: [
+    {word:"die Gleichberechtigung", article:"die", ex:"Gleichberechtigung zwischen Mann und Frau ist wichtig.", translation:"equal rights"},
+    {word:"die Integration", article:"die", ex:"Die Integration von Migranten ist eine gesellschaftliche Aufgabe.", translation:"integration"},
+    {word:"der Datenschutz", article:"der", ex:"Datenschutz wird in Europa sehr ernst genommen.", translation:"data protection"},
+    {word:"die Digitalisierung", article:"die", ex:"Die Digitalisierung verandert unsere Arbeitswelt.", translation:"digitalization"},
+    {word:"das Ehrenamt", article:"das", ex:"Viele Menschen engagieren sich im Ehrenamt.", translation:"volunteer work"},
+    {word:"die Meinungsfreiheit", article:"die", ex:"Meinungsfreiheit ist ein Grundrecht.", translation:"freedom of speech"},
+    {word:"die Wahlbeteiligung", article:"die", ex:"Die Wahlbeteiligung sinkt leider.", translation:"voter turnout"},
+    {word:"das Vorurteil", article:"das", ex:"Vorurteile fuhren zu Diskriminierung.", translation:"prejudice"},
+  ],
+  gesundheit: [
+    {word:"die Ernahrung", article:"die", ex:"Eine gesunde Ernahrung ist wichtig.", translation:"nutrition, diet"},
+    {word:"die Vorsorge", article:"die", ex:"Regelmassige Vorsorge kann Krankheiten verhindern.", translation:"prevention, check-up"},
+    {word:"die Nebenwirkung", article:"die", ex:"Dieses Medikament hat keine Nebenwirkungen.", translation:"side effect"},
+    {word:"der Bewegungsmangel", article:"der", ex:"Bewegungsmangel ist ein grosses Gesundheitsproblem.", translation:"lack of exercise"},
+    {word:"die Krankenkasse", article:"die", ex:"In Deutschland muss jeder eine Krankenkasse haben.", translation:"health insurance"},
+    {word:"der Stress", article:"der", ex:"Zu viel Stress macht krank.", translation:"stress"},
+    {word:"die Therapie", article:"die", ex:"Er macht eine Therapie gegen seine Ruckenschmerzen.", translation:"therapy"},
+    {word:"die Impfung", article:"die", ex:"Die Impfung schutzt vor schweren Krankheiten.", translation:"vaccination"},
+  ],
+  technologie: [
+    {word:"die kunstliche Intelligenz", article:"die", ex:"Kunstliche Intelligenz verandert die Arbeitswelt.", translation:"artificial intelligence"},
+    {word:"die Cybersicherheit", article:"die", ex:"Cybersicherheit wird immer wichtiger.", translation:"cybersecurity"},
+    {word:"die Vernetzung", article:"die", ex:"Die Vernetzung von Geraten nimmt standig zu.", translation:"networking, connectivity"},
+    {word:"die Automatisierung", article:"die", ex:"Automatisierung bedroht viele Arbeitsplatze.", translation:"automation"},
+    {word:"der Algorithmus", article:"der", ex:"Algorithmen bestimmen, was wir online sehen.", translation:"algorithm"},
+    {word:"das soziale Netzwerk", article:"das", ex:"Soziale Netzwerke haben Vor- und Nachteile.", translation:"social network"},
+    {word:"die Bildschirmzeit", article:"die", ex:"Zu viel Bildschirmzeit ist ungesund.", translation:"screen time"},
+    {word:"die Benutzeroberflache", article:"die", ex:"Die App hat eine benutzerfreundliche Benutzeroberflache.", translation:"user interface"},
+  ],
+  konnektoren: [
+    {word:"obwohl / obgleich", article:"", ex:"Obwohl es regnete, ging er spazieren.", translation:"although (+ verb-final)"},
+    {word:"trotzdem / dennoch", article:"", ex:"Es regnete. Trotzdem ging er spazieren.", translation:"nevertheless (main clause)"},
+    {word:"infolgedessen", article:"", ex:"Die Preise stiegen. Infolgedessen kauften weniger Leute.", translation:"consequently"},
+    {word:"indem", article:"", ex:"Man kann Energie sparen, indem man weniger Auto fahrt.", translation:"by (doing sth)"},
+    {word:"wahrend", article:"", ex:"Wahrend ich lerne, hort mein Bruder Musik.", translation:"while / whereas"},
+    {word:"sofern", article:"", ex:"Sofern das Wetter gut ist, gehen wir wandern.", translation:"provided that"},
+    {word:"anstatt ... zu", article:"", ex:"Anstatt zu lernen, hat er ferngesehen.", translation:"instead of"},
+    {word:"um ... zu", article:"", ex:"Ich lerne Deutsch, um in Deutschland zu studieren.", translation:"in order to"},
+  ]
+};
+
+const konjunktivQuestions = [
+  {q:"Wenn ich mehr Zeit _____ (haben), wurde ich jeden Tag lesen.", a:"hatte", hint:"haben → hatte"},
+  {q:"Es ware schon, wenn du auch _____ (kommen).", a:"kamest", alt:["kommen wurdest","kamst","kämest"], hint:"kommen → kamest/kämest"},
+  {q:"Wenn er reich _____ (sein), wurde er eine Weltreise machen.", a:"ware", alt:["wäre"], hint:"sein → ware/wäre"},
+  {q:"Ich _____ (konnen) mir vorstellen, im Ausland zu leben.", a:"konnte", alt:["könnte"], hint:"konnen → konnte/könnte"},
+  {q:"Wenn wir fruher _____ (anfangen), waren wir jetzt fertig.", a:"angefangen hatten", alt:["angefangen hätten"], hint:"Plusquamperfekt Konj. II"},
+  {q:"Er tat so, als ob er nichts _____ (wissen).", a:"wusste", alt:["wüsste"], hint:"wissen → wusste/wüsste"},
+];
+
+const passivQuestions = [
+  {q:"Man baut hier ein neues Haus.", a:"Hier wird ein neues Haus gebaut.", hint:"Prasens Passiv: wird + Partizip II"},
+  {q:"Die Firma stellte viele Mitarbeiter ein.", a:"Viele Mitarbeiter wurden von der Firma eingestellt.", hint:"Prateritum Passiv: wurde + Partizip II"},
+  {q:"Man muss das Problem sofort losen.", a:"Das Problem muss sofort gelost werden.", hint:"Modalverb + Passiv: Modalverb + Partizip II + werden"},
+];
+
+const konnektorQuestions = [
+  {q:"_____ es stark regnete, fand das Konzert statt.", a:"Obwohl", options:["Obwohl","Weil","Damit","Indem"]},
+  {q:"_____ mehr man ubt, _____ besser wird man.", a:"Je...desto", options:["Je...desto","Sowohl...als auch","Entweder...oder","Weder...noch"]},
+  {q:"Er spricht _____ Deutsch _____ Englisch fliessend.", a:"sowohl...als auch", options:["sowohl...als auch","entweder...oder","zwar...aber","weder...noch"]},
+  {q:"Die Idee ist _____ gut, _____ sie lasst sich schwer umsetzen.", a:"zwar...aber", options:["zwar...aber","sowohl...als auch","nicht nur...sondern auch","weder...noch"]},
+  {q:"Man kann Energie sparen, _____ man weniger Auto fahrt.", a:"indem", options:["indem","damit","obwohl","wahrend"]},
+];
+
+const indirekteRedeQuestions = [
+  {q:'Er sagte: "Ich habe keine Zeit."', a:"Er sagte, er habe keine Zeit.", hint:"haben → habe (Konj. I)"},
+  {q:'Sie meinte: "Das Wetter wird morgen besser."', a:"Sie meinte, das Wetter werde morgen besser.", hint:"werden → werde (Konj. I)"},
+  {q:'Der Minister sagte: "Wir mussen die Steuern senken."', a:"Der Minister sagte, sie mussten die Steuern senken.", hint:"mussen → mussten (Konj. II, da Konj. I = Indikativ)"},
+];
+
+const lesenTeil1Data = {
+  topic: "Sport und Fitness",
+  question: "Sie lesen in einem Forum, wie Menschen uber Sport denken.",
+  persons: [
+    {name:"Caroline", text:"Ich bin Marathonlauferin. Sport sollte Spass machen, nicht uberfordern. Man braucht keinen teuren Coach."},
+    {name:"Jan", text:"Als IT-Unternehmer brauche ich Bewegung gegen Stress. Ich trainiere allein im Fitnessstudio, wann es mir passt."},
+    {name:"Malte", text:"Fruher war ich ein Sportmuffel. Jetzt habe ich einen Trainer, der mein Programm individuell gestaltet. Ich will ein paar Kilo abnehmen."},
+    {name:"Pia", text:"Teure Sportausrustung ist unnotig. In unserer Firma spielen wir Volleyball. Teamgeist ist das Beste am Sport!"},
+  ],
+  statements: [
+    {text:"Wer hat durch Sport sein Alltagsverhalten geandert?", answer:"Malte"},
+    {text:"Fur wen spielt der Spass beim Sport eine Rolle?", answer:"Caroline"},
+    {text:"Fur wen spielt die Ausrustung keine Rolle?", answer:"Pia"},
+    {text:"Wer halt Sport fur einen guten Ausgleich zum Alltag?", answer:"Jan"},
+    {text:"Wer hat ein sportliches Ziel vor Augen?", answer:"Malte"},
+  ]
+};
+
+const sprechenTopics = [
+  {topic:"Haustiere", points:["Beschreiben Sie mehrere Arten.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Moglichkeit genauer."]},
+  {topic:"Werbung", points:["Beschreiben Sie mehrere Formen.","Beschreiben Sie eine Form genauer.","Nennen Sie Vor- und Nachteile."]},
+  {topic:"Der Weg zum Arbeitsplatz", points:["Beschreiben Sie mehrere Moglichkeiten.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Moglichkeit genauer."]},
+  {topic:"Urlaubsziele", points:["Beschreiben Sie verschiedene Arten.","Nennen Sie Vor- und Nachteile.","Gehen Sie auf eine Art genauer ein."]},
+  {topic:"Fit und gesund am Arbeitsplatz", points:["Beschreiben Sie mehrere Massnahmen.","Bewerten Sie Vor- und Nachteile.","Beschreiben Sie eine genauer."]},
+  {topic:"Fremdsprachen lernen", points:["Beschreiben Sie mehrere Methoden.","Nennen Sie Vor- und Nachteile.","Welche Methode bevorzugen Sie?"]},
+  {topic:"Wohnformen", points:["Beschreiben Sie verschiedene Wohnformen.","Nennen Sie Vor- und Nachteile.","Welche Wohnform bevorzugen Sie?"]},
+  {topic:"Ehrenamt", points:["Beschreiben Sie verschiedene Formen.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Form genauer."]},
+  {topic:"Medienkonsum", points:["Beschreiben Sie verschiedene Medien.","Nennen Sie Vor- und Nachteile.","Welches Medium bevorzugen Sie?"]},
+  {topic:"Ernahrungstrends", points:["Beschreiben Sie verschiedene Trends.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie einen Trend genauer."]},
+];
+
+const diskussionTopics = [
+  "Sollten Universitaten Anwesenheitspflicht einfuhren?",
+  "Sollte man Homeoffice zur Pflicht machen?",
+  "Sollten Schuler ihre Lehrer bewerten durfen?",
+  "Brauchen wir ein Tempolimit auf Autobahnen?",
+  "Sollte man soziale Medien fur unter 16-Jahrige verbieten?",
+  "Sollte das Wahlalter auf 16 gesenkt werden?",
+  "Ist ein Auslandssemester fur alle Studierenden sinnvoll?",
+  "Sollte man Plastikverpackungen komplett verbieten?",
+  "Brauchen wir eine 4-Tage-Arbeitswoche?",
+  "Sollte offentlicher Nahverkehr kostenlos sein?",
+];
+
+const schreibenPrompts = [
+  "Sollte man soziale Medien fur Jugendliche unter 16 verbieten?",
+  "Brauchen wir ein bedingungsloses Grundeinkommen?",
+  "Homeoffice: Zukunft der Arbeit oder Isolation?",
+  "Sollte Sport in der Schule ein Hauptfach werden?",
+  "Sind Elektroautos wirklich besser fur die Umwelt?",
+  "Sollte man die Studiengebuhren wieder einfuhren?",
+  "Digitalisierung: Chance oder Risiko fur die Gesellschaft?",
+  "Sollte man das Handyverbot an Schulen einfuhren?",
+];
+
+const schreibenPrompts2 = [
+  "Sie haben einen Online-Kurs gebucht, aber die Qualitat entspricht nicht der Beschreibung. Schreiben Sie eine Beschwerde an den Anbieter.",
+  "In Ihrer Abteilung gibt es immer viele Meetings. Schreiben Sie eine E-Mail an Ihre Vorgesetzte, Frau Dr. Martens.",
+  "Sie mochten an einer Fortbildung teilnehmen. Schreiben Sie eine Anfrage an den Veranstalter.",
+  "Ihr Nachbar macht regelmasssig nachts Larm. Schreiben Sie an die Hausverwaltung.",
+  "Sie mochten Ihren Vertrag im Fitnessstudio kundigen. Schreiben Sie an den Betreiber.",
+];
+
+const dailyTips = [
+  "Beim Lesen Teil 1: Gleiche Worter in Aussage und Text = oft FALLE! Suche nach Paraphrasen.",
+  "Konjunktiv II beeindruckt die Prufer! Baue Satze wie 'Es ware sinnvoll, wenn...' in deinen Vortrag ein.",
+  "Nimm deinen Vortrag mit dem Handy auf und hor ihn dir selbst an. So merkst du Fehler sofort!",
+  "Lerne jeden Tag 5 neue Konnektoren mit Beispielsatzen. Sie machen deine Texte sofort besser!",
+  "Beim Schreiben: Verwende NIE 'gut/schlecht'. Sag stattdessen: vorteilhaft, problematisch, bedeutsam, fragwurdig.",
+  "Sprechen Teil 2: Stelle deinem Partner Fragen! Interaktion bringt die meisten Punkte.",
+  "Heute ist Film-Tag! Schau einen deutschen Film mit deutschen Untertiteln. Notiere 10 neue Worter.",
+  "Schreibe einen Forumsbeitrag zu einem B2-Thema. Timer: 50 Minuten, mindestens 150 Worter!",
+  "Passiv uben: Schreibe 5 Satze im Aktiv und wandle sie ins Passiv um.",
+  "Redemittel auswendig lernen! 'Zusammenfassend lasst sich sagen...' klingt sofort B2.",
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let currentFC = 0;
+let currentCategory = 'b2_essential';
+let fcKnown = 0;
+let timerRunning = false;
+let timerInterval = null;
+let timerSeconds = 240;
+let stats = JSON.parse(localStorage.getItem('b2stats') || '{"vocab":0,"grammar":0,"speaking":0,"lesen":0,"streak":0,"lastDate":""}');
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  updateCountdown();
+  updateStreak();
+  loadDailyTip();
+  loadVocabCategory();
+  loadGrammarExercises();
+  loadLesenExercises();
+  loadStudyPlan();
+  updateStats();
+  setupWordCounters();
+
+  // Set initial speaking topics
+  setRandomTopic();
+}
+
+function updateCountdown() {
+  const examDate = new Date('2026-05-30');
+  const today = new Date();
+  const diff = Math.ceil((examDate - today) / (1000*60*60*24));
+  document.getElementById('daysLeft').textContent = diff;
+  document.getElementById('countdownBar').textContent = `&#128198; ${diff} Tage bis zur B2-Prufung (30. Mai 2026)`;
+  document.getElementById('countdownBar').innerHTML = `&#128198; ${diff} Tage bis zur B2-Prufung (30. Mai 2026)`;
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (stats.lastDate !== today) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+    if (stats.lastDate === yesterday.toDateString()) {
+      stats.streak++;
+    } else if (stats.lastDate !== '') {
+      stats.streak = 1;
+    } else {
+      stats.streak = 1;
+    }
+    stats.lastDate = today;
+    saveStats();
+  }
+  document.getElementById('streakCount').textContent = stats.streak;
+}
+
+function loadDailyTip() {
+  const day = new Date().getDate() % dailyTips.length;
+  document.getElementById('dailyTip').textContent = dailyTips[day];
+}
+
+function loadStudyPlan() {
+  const weeks = [
+    {title:"Woche 1-2: Grundlagen", tasks:["Wortschatz: 20 Worter pro Tag aus deiner Wortliste","Grammatik: Konjunktiv II + Passiv wiederholen","Lesen Teil 1 + 2 uben (Ubungsbuch S. 6-24)","Taglich 1 deutsche Podcast-Folge horen"]},
+    {title:"Woche 3: Intensivtraining", tasks:["Wortschatz: Themenworter (Arbeit, Umwelt, Gesellschaft)","Grammatik: Konnektoren + indirekte Rede","Schreiben Teil 1 uben: 2 Forumsbeitrage pro Woche","Lesen Teil 3 + 4 uben"]},
+    {title:"Woche 4: Sprechen-Fokus", tasks:["Taglich 1 Vortrag (4 Min.) aufnehmen und anhoren","Redemittel auswendig lernen und anwenden","Schreiben Teil 2 uben: 2 formelle Nachrichten","Lesen Teil 5 uben, alle Teile wiederholen"]},
+    {title:"Woche 5: Simulation", tasks:["Kompletten Lesetest simulieren (65 Min.)","Kompletten Schreibtest simulieren (75 Min.)","Sprechen mit Partner oder allein vor Spiegel uben","Schwache Bereiche gezielt wiederholen"]},
+    {title:"Woche 6: Feinschliff", tasks:["Alle Redemittel nochmal durchgehen","Letzte Simulation aller Prufungsteile","Keine neuen Worter — nur wiederholen!","Entspannen, fruh schlafen, Prufung schaffen! &#128170;"]},
+  ];
+
+  let html = '';
+  weeks.forEach((w,i) => {
+    html += `<div class="sub-section">
+      <h4>${i < 4 ? '&#128214;' : '&#127942;'} ${w.title}</h4>
+      <div style="display:flex;flex-direction:column;gap:4px;">`;
+    w.tasks.forEach(t => {
+      html += `<div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div><span>${t}</span></div>`;
+    });
+    html += `</div></div>`;
+  });
+  document.getElementById('studyPlan').innerHTML = html;
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelectorAll('.nav-tab')[['dashboard','vocab','grammar','lesen','schreiben','sprechen','media'].indexOf(name)].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+//  FLASHCARDS
+// ============================================================
+function loadVocabCategory() {
+  currentCategory = document.getElementById('vocabCategory').value;
+  currentFC = 0;
+  fcKnown = 0;
+  showFlashcard();
+  loadTopicVocab();
+}
+
+function showFlashcard() {
+  const cards = vocabData[currentCategory];
+  if (!cards || cards.length === 0) return;
+  const card = cards[currentFC % cards.length];
+  document.getElementById('fcArticle').textContent = card.article || '';
+  document.getElementById('fcWord').textContent = card.word;
+  document.getElementById('fcTranslation').textContent = card.translation;
+  document.getElementById('fcExample').textContent = card.ex;
+  document.getElementById('fcProgress').textContent = `${currentFC + 1} / ${cards.length}`;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function rateCard(known) {
+  if (known) {
+    fcKnown++;
+    stats.vocab++;
+    saveStats();
+    updateStats();
+  }
+  currentFC++;
+  const cards = vocabData[currentCategory];
+  if (currentFC >= cards.length) {
+    alert(`Runde fertig! ${fcKnown}/${cards.length} gewusst! 🎉`);
+    currentFC = 0;
+    fcKnown = 0;
+  }
+  showFlashcard();
+}
+
+function loadTopicVocab() {
+  const topics = {
+    "Meinung ausdrucken": ["Ich bin der Ansicht, dass...","Meiner Meinung nach...","Ich bin uberzeugt davon, dass...","Es ist heutzutage undenkbar, ... zu ...","Fur mich zahlt ... mehr als ...","Ich lege grossen Wert darauf, ... zu ..."],
+    "Vorteile/Nachteile": ["Ein Vorteil / Nachteil ist...","Dafur / Dagegen spricht...","Es gibt viele Beispiele. So etwa ...","Fur ... spricht ...","Gegen ... spricht ..."],
+    "Vergleichen": ["Im Vergleich zu...","Im Gegensatz zu...","Wahrend ... ist ... hingegen...","Anders als ...","Verglichen mit ..."],
+  };
+
+  let html = '';
+  for (const [cat, phrases] of Object.entries(topics)) {
+    html += `<div class="sub-section"><h4>${cat}</h4><div class="redemittel-grid">`;
+    phrases.forEach(p => {
+      html += `<div class="redemittel-item"><span class="de">${p}</span></div>`;
+    });
+    html += `</div></div>`;
+  }
+  document.getElementById('topicVocab').innerHTML = html;
+}
+
+// ============================================================
+//  GRAMMAR EXERCISES
+// ============================================================
+function loadGrammarExercises() {
+  // Konjunktiv II
+  let html = '';
+  konjunktivQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question">
+      <p><span class="q-num">${i+1}.</span> ${q.q.replace('_____', `<input class="conj-input" id="konj${i}" placeholder="...">`)}</p>
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:0.8rem;" onclick="checkKonj(${i})">Prufen</button>
+      <div class="quiz-feedback" id="konjFb${i}"></div>
+    </div>`;
+  });
+  document.getElementById('konjQuiz').innerHTML = html;
+
+  // Passiv
+  html = '';
+  passivQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question">
+      <p><span class="q-num">${i+1}.</span> Aktiv: "${q.q}"</p>
+      <p style="font-size:0.85rem;color:var(--text-light);">Passiv:</p>
+      <input class="conj-input" id="passiv${i}" style="width:100%;margin-bottom:8px;" placeholder="Schreibe den Satz im Passiv...">
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:0.8rem;" onclick="checkPassiv(${i})">Prufen</button>
+      <div class="quiz-feedback" id="passivFb${i}"></div>
+    </div>`;
+  });
+  document.getElementById('passivQuiz').innerHTML = html;
+
+  // Konnektoren
+  html = '';
+  konnektorQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question">
+      <p><span class="q-num">${i+1}.</span> ${q.q}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkKonnektor(${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="konnFb${i}"></div></div>`;
+  });
+  document.getElementById('konnektorQuiz').innerHTML = html;
+
+  // Indirekte Rede
+  html = '';
+  indirekteRedeQuestions.forEach((q, i) => {
+    html += `<div class="quiz-question">
+      <p><span class="q-num">${i+1}.</span> ${q.q}</p>
+      <input class="conj-input" id="indirekt${i}" style="width:100%;margin-bottom:8px;" placeholder="Indirekte Rede...">
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:0.8rem;" onclick="checkIndirekt(${i})">Prufen</button>
+      <div class="quiz-feedback" id="indirektFb${i}"></div>
+    </div>`;
+  });
+  document.getElementById('indirekteQuiz').innerHTML = html;
+}
+
+function checkKonj(i) {
+  const input = document.getElementById('konj'+i).value.trim().toLowerCase();
+  const q = konjunktivQuestions[i];
+  const correct = input === q.a.toLowerCase() || (q.alt && q.alt.some(a => a.toLowerCase() === input));
+  const fb = document.getElementById('konjFb'+i);
+  if (correct) {
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = `Richtig! ✓ ${q.hint}`;
+    document.getElementById('konj'+i).classList.add('correct');
+    stats.grammar++;
+    saveStats();
+    updateStats();
+  } else {
+    fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Nicht ganz. Die Antwort ist: "${q.a}" — ${q.hint}`;
+    document.getElementById('konj'+i).classList.add('incorrect');
+  }
+}
+
+function checkPassiv(i) {
+  const input = document.getElementById('passiv'+i).value.trim();
+  const fb = document.getElementById('passivFb'+i);
+  fb.className = 'quiz-feedback show correct-fb';
+  fb.innerHTML = `<strong>Musterlosung:</strong> "${passivQuestions[i].a}"<br><em>${passivQuestions[i].hint}</em><br>Vergleiche mit deiner Antwort!`;
+  stats.grammar++;
+  saveStats();
+  updateStats();
+}
+
+function checkKonnektor(i, opt, btn) {
+  const q = konnektorQuestions[i];
+  const fb = document.getElementById('konnFb'+i);
+  const isCorrect = q.a.toLowerCase().includes(opt.toLowerCase());
+
+  btn.parentElement.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = `Richtig! ✓`;
+    stats.grammar++;
+    saveStats();
+    updateStats();
+  } else {
+    btn.classList.add('incorrect');
+    fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Die richtige Antwort ist: "${q.a}"`;
+  }
+}
+
+function checkIndirekt(i) {
+  const fb = document.getElementById('indirektFb'+i);
+  fb.className = 'quiz-feedback show correct-fb';
+  fb.innerHTML = `<strong>Musterlosung:</strong> "${indirekteRedeQuestions[i].a}"<br><em>${indirekteRedeQuestions[i].hint}</em>`;
+  stats.grammar++;
+  saveStats();
+  updateStats();
+}
+
+// ============================================================
+//  LESEN
+// ============================================================
+function loadLesenExercises() {
+  const d = lesenTeil1Data;
+  let html = `<div style="margin-bottom:1rem;"><strong>${d.question}</strong></div>`;
+
+  d.persons.forEach(p => {
+    html += `<div style="background:#f8f9fb;padding:12px;border-radius:var(--radius-sm);margin-bottom:8px;">
+      <strong>${p.name}:</strong> ${p.text}</div>`;
+  });
+
+  html += `<div style="margin-top:1rem;">`;
+  d.statements.forEach((s, i) => {
+    html += `<div class="quiz-question">
+      <p><span class="q-num">${i+1}.</span> ${s.text}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    d.persons.forEach(p => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkLesen(${i},'${p.name}',this)">${p.name}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="lesenFb${i}"></div></div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById('lesenTeil1').innerHTML = html;
+}
+
+function checkLesen(i, answer, btn) {
+  const correct = lesenTeil1Data.statements[i].answer;
+  const fb = document.getElementById('lesenFb'+i);
+  btn.parentElement.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+
+  if (answer === correct) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = `Richtig! ✓ ${correct} ist die Antwort.`;
+    stats.lesen++;
+    saveStats();
+    updateStats();
+  } else {
+    btn.classList.add('incorrect');
+    fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Leider falsch. Die richtige Antwort ist: ${correct}`;
+  }
+}
+
+// ============================================================
+//  SPRECHEN
+// ============================================================
+function setRandomTopic() {
+  const t = sprechenTopics[Math.floor(Math.random()*sprechenTopics.length)];
+  document.getElementById('sprechenTopic').textContent = t.topic;
+  const prompt = document.getElementById('sprechenPrompt');
+  const points = prompt.querySelectorAll('p:not(:first-child)');
+  // Rebuild points
+  let ptsHtml = `<h3>&#127908; Dein Thema:</h3><p id="sprechenTopic">${t.topic}</p><div style="margin-top:12px;font-size:0.85rem;text-align:left;opacity:0.9;">`;
+  t.points.forEach(p => ptsHtml += `<p>&#8226; ${p}</p>`);
+  ptsHtml += `</div><div class="speaking-timer" id="speakingTimer">4:00</div>
+    <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">&#9654; Start</button>
+    <button class="timer-btn" style="margin-left:8px;" onclick="newSprechenTopic()">&#128260; Neues Thema</button>`;
+  prompt.innerHTML = ptsHtml;
+  timerSeconds = 240;
+  timerRunning = false;
+}
+
+function newSprechenTopic() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerRunning = false;
+  setRandomTopic();
+}
+
+function newDiskussionTopic() {
+  const t = diskussionTopics[Math.floor(Math.random()*diskussionTopics.length)];
+  document.getElementById('diskussionTopic').textContent = t;
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerBtn').innerHTML = '&#9654; Weiter';
+  } else {
+    timerRunning = true;
+    document.getElementById('timerBtn').innerHTML = '&#9208; Pause';
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('speakingTimer').textContent = '0:00';
+        document.getElementById('timerBtn').innerHTML = '&#9654; Nochmal';
+        timerSeconds = 240;
+        stats.speaking += 4;
+        saveStats();
+        updateStats();
+        alert('Zeit ist um! Gut gemacht! 🎉');
+        return;
+      }
+      const m = Math.floor(timerSeconds / 60);
+      const s = timerSeconds % 60;
+      document.getElementById('speakingTimer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    }, 1000);
+  }
+}
+
+// ============================================================
+//  SCHREIBEN
+// ============================================================
+function newSchreibenPrompt() {
+  const p = schreibenPrompts[Math.floor(Math.random()*schreibenPrompts.length)];
+  document.getElementById('schreibenPrompt').textContent = p;
+}
+
+function newSchreibenPrompt2() {
+  const p = schreibenPrompts2[Math.floor(Math.random()*schreibenPrompts2.length)];
+  document.getElementById('schreibenPrompt2').textContent = p;
+}
+
+function setupWordCounters() {
+  document.getElementById('schreibenArea1').addEventListener('input', function() {
+    const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    document.getElementById('wordCount1').textContent = words;
+    document.getElementById('wordCount1').style.color = words >= 150 ? 'var(--green)' : 'var(--text-light)';
+  });
+  document.getElementById('schreibenArea2').addEventListener('input', function() {
+    const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    document.getElementById('wordCount2').textContent = words;
+    document.getElementById('wordCount2').style.color = words >= 100 ? 'var(--green)' : 'var(--text-light)';
+  });
+}
+
+// ============================================================
+//  UTILS
+// ============================================================
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  el.innerHTML = el.classList.contains('done') ? '&#10003;' : '';
+}
+
+function saveStats() {
+  localStorage.setItem('b2stats', JSON.stringify(stats));
+}
+
+function updateStats() {
+  document.getElementById('vocabScore').textContent = stats.vocab;
+  document.getElementById('grammarScore').textContent = stats.grammar;
+  document.getElementById('speakingMin').textContent = stats.speaking;
+  document.getElementById('lesenScore').textContent = stats.lesen;
+}
+
+// Initialize
+init();
+</script>
+</body>
+</html>
