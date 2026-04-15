@@ -385,6 +385,8 @@ body {
 .fc-btn.next { background: var(--teal); color: white; }
 .fc-btn:hover { transform: scale(1.05); }
 
+.fc-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
 /* Conjugation table */
 .conj-table {
   width: 100%;
@@ -829,7 +831,18 @@ body {
       <button class="fc-btn know" onclick="rateCard(true)">&#9989; Gewusst!</button>
     </div>
 
-    <div style="text-align:center; margin-top:1rem;">
+    <!-- Unknown words count + filter toggle -->
+    <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:1rem; flex-wrap:wrap;">
+      <div id="unknownCount" style="font-size:0.85rem; color:var(--coral); font-weight:600;"></div>
+      <button class="btn btn-outline" id="filterUnknownBtn" onclick="toggleUnknownFilter()" style="padding:8px 16px; font-size:0.82rem;">
+        &#128308; Nur unbekannte Worter
+      </button>
+      <button class="btn" id="clearUnknownBtn" onclick="clearUnknownWords()" style="padding:8px 16px; font-size:0.82rem; background:#f0f2f5; color:var(--text-light); display:none;">
+        &#128465; Liste zurucksetzen
+      </button>
+    </div>
+
+    <div style="text-align:center; margin-top:0.8rem;">
       <select id="vocabCategory" onchange="loadVocabCategory()" style="padding:8px 16px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
         <option value="b2_essential">B2 Kernwortschatz</option>
         <option value="arbeit">Arbeit & Beruf</option>
@@ -1543,6 +1556,9 @@ const dailyTips = [
 let currentFC = 0;
 let currentCategory = 'b2_essential';
 let fcKnown = 0;
+let showOnlyUnknown = false;
+let activeDeck = []; // the current working deck (all or filtered)
+let unknownWords = JSON.parse(localStorage.getItem('b2unknown') || '{}'); // { "category:word": true }
 let timerRunning = false;
 let timerInterval = null;
 let timerSeconds = 240;
@@ -1634,23 +1650,79 @@ function showSection(name) {
 // ============================================================
 //  FLASHCARDS
 // ============================================================
+function getUnknownKey(card) {
+  return currentCategory + ':' + card.word;
+}
+
+function buildDeck() {
+  const allCards = vocabData[currentCategory] || [];
+  if (showOnlyUnknown) {
+    activeDeck = allCards.filter(c => unknownWords[getUnknownKey(c)]);
+  } else {
+    activeDeck = [...allCards];
+  }
+}
+
+function updateUnknownUI() {
+  const allCards = vocabData[currentCategory] || [];
+  const unknownCount = allCards.filter(c => unknownWords[getUnknownKey(c)]).length;
+  const countEl = document.getElementById('unknownCount');
+  const clearBtn = document.getElementById('clearUnknownBtn');
+  const filterBtn = document.getElementById('filterUnknownBtn');
+
+  if (unknownCount > 0) {
+    countEl.textContent = `${unknownCount} Wort${unknownCount !== 1 ? 'er' : ''} zu wiederholen`;
+    clearBtn.style.display = 'inline-flex';
+  } else {
+    countEl.textContent = '';
+    clearBtn.style.display = 'none';
+    if (showOnlyUnknown) {
+      toggleUnknownFilter(); // auto-switch back if nothing left
+      return;
+    }
+  }
+
+  if (showOnlyUnknown) {
+    filterBtn.innerHTML = '&#9989; Alle Worter zeigen';
+    filterBtn.style.background = 'var(--coral)';
+    filterBtn.style.color = 'white';
+    filterBtn.style.borderColor = 'var(--coral)';
+  } else {
+    filterBtn.innerHTML = '&#128308; Nur unbekannte Worter' + (unknownCount > 0 ? ` (${unknownCount})` : '');
+    filterBtn.style.background = 'transparent';
+    filterBtn.style.color = 'var(--teal)';
+    filterBtn.style.borderColor = 'var(--teal)';
+  }
+}
+
 function loadVocabCategory() {
   currentCategory = document.getElementById('vocabCategory').value;
   currentFC = 0;
   fcKnown = 0;
+  showOnlyUnknown = false;
+  buildDeck();
+  updateUnknownUI();
   showFlashcard();
   loadTopicVocab();
 }
 
 function showFlashcard() {
-  const cards = vocabData[currentCategory];
-  if (!cards || cards.length === 0) return;
-  const card = cards[currentFC % cards.length];
+  if (!activeDeck || activeDeck.length === 0) {
+    document.getElementById('fcArticle').textContent = '';
+    document.getElementById('fcWord').textContent = showOnlyUnknown ? 'Alles gewusst!' : 'Keine Karten';
+    document.getElementById('fcTranslation').textContent = showOnlyUnknown ? 'Wechsle zuruck zu allen Wortern oder wahle eine andere Kategorie.' : '';
+    document.getElementById('fcExample').textContent = '';
+    document.getElementById('fcProgress').textContent = '0 / 0';
+    document.getElementById('flashcard').classList.remove('flipped');
+    return;
+  }
+  const card = activeDeck[currentFC % activeDeck.length];
+  const isUnknown = unknownWords[getUnknownKey(card)];
   document.getElementById('fcArticle').textContent = card.article || '';
   document.getElementById('fcWord').textContent = card.word;
   document.getElementById('fcTranslation').textContent = card.translation;
   document.getElementById('fcExample').textContent = card.ex;
-  document.getElementById('fcProgress').textContent = `${currentFC + 1} / ${cards.length}`;
+  document.getElementById('fcProgress').textContent = `${currentFC + 1} / ${activeDeck.length}` + (isUnknown ? ' ⚠️' : '');
   document.getElementById('flashcard').classList.remove('flipped');
 }
 
@@ -1659,20 +1731,74 @@ function flipCard() {
 }
 
 function rateCard(known) {
+  if (activeDeck.length === 0) return;
+  const card = activeDeck[currentFC % activeDeck.length];
+  const key = getUnknownKey(card);
+
   if (known) {
     fcKnown++;
     stats.vocab++;
+    // Remove from unknown list if it was there
+    if (unknownWords[key]) {
+      delete unknownWords[key];
+      saveUnknown();
+    }
     saveStats();
     updateStats();
+  } else {
+    // Mark as unknown
+    unknownWords[key] = true;
+    saveUnknown();
   }
+
   currentFC++;
-  const cards = vocabData[currentCategory];
-  if (currentFC >= cards.length) {
-    alert(`Runde fertig! ${fcKnown}/${cards.length} gewusst! 🎉`);
+
+  // Rebuild deck if filtering (card may have been removed)
+  if (showOnlyUnknown) {
+    buildDeck();
+    if (activeDeck.length === 0) {
+      updateUnknownUI();
+      showFlashcard();
+      return;
+    }
+    if (currentFC >= activeDeck.length) currentFC = 0;
+  }
+
+  if (currentFC >= activeDeck.length) {
+    const total = activeDeck.length;
+    alert(`Runde fertig! ${fcKnown}/${total} gewusst! 🎉`);
     currentFC = 0;
     fcKnown = 0;
+    if (!showOnlyUnknown) buildDeck(); // refresh for re-queued unknowns
   }
+
+  updateUnknownUI();
   showFlashcard();
+}
+
+function toggleUnknownFilter() {
+  showOnlyUnknown = !showOnlyUnknown;
+  currentFC = 0;
+  fcKnown = 0;
+  buildDeck();
+  updateUnknownUI();
+  showFlashcard();
+}
+
+function clearUnknownWords() {
+  const allCards = vocabData[currentCategory] || [];
+  allCards.forEach(c => delete unknownWords[getUnknownKey(c)]);
+  saveUnknown();
+  if (showOnlyUnknown) showOnlyUnknown = false;
+  currentFC = 0;
+  fcKnown = 0;
+  buildDeck();
+  updateUnknownUI();
+  showFlashcard();
+}
+
+function saveUnknown() {
+  localStorage.setItem('b2unknown', JSON.stringify(unknownWords));
 }
 
 function loadTopicVocab() {
