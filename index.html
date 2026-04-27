@@ -712,6 +712,18 @@ body {
   <div class="nav-tab" onclick="showSection('sprechen')">
     <span class="tab-icon">&#127908;</span> Sprechen
   </div>
+  <div class="nav-tab" onclick="showSection('verben')">
+    <span class="tab-icon">&#128300;</span> Verben
+  </div>
+  <div class="nav-tab" onclick="showSection('satzbau')">
+    <span class="tab-icon">&#128295;</span> Satzbau
+  </div>
+  <div class="nav-tab" onclick="showSection('adjektive')">
+    <span class="tab-icon">&#127912;</span> Adjektive
+  </div>
+  <div class="nav-tab" onclick="showSection('mehr')">
+    <span class="tab-icon">&#128218;</span> Mehr
+  </div>
   <div class="nav-tab" onclick="showSection('media')">
     <span class="tab-icon">&#127916;</span> Film & Musik
   </div>
@@ -721,8 +733,8 @@ body {
 <div class="section active" id="sec-dashboard">
 
   <div class="welcome-hero">
-    <h2>Hallo! Bereit fur dein B2? &#128170;</h2>
-    <p>Du hast noch <strong id="daysLeft"></strong> Tage bis zur Prufung.<br>
+    <h2>Hallo! Bereit für dein B2? &#128170;</h2>
+    <p>Du hast noch <strong id="daysLeft"></strong> Tage bis zur Prüfung.<br>
     Jeden Tag ein bisschen — und du schaffst das!</p>
   </div>
 
@@ -735,7 +747,7 @@ body {
     <div class="progress-card" onclick="showSection('vocab')">
       <div class="icon">&#128218;</div>
       <div class="value" id="vocabScore">0</div>
-      <div class="label">Worter gelernt</div>
+      <div class="label">Wörter gelernt</div>
     </div>
     <div class="progress-card" onclick="showSection('grammar')">
       <div class="icon">&#9997;&#65039;</div>
@@ -756,13 +768,13 @@ body {
 
   <!-- Exam Structure Overview -->
   <div class="exam-overview">
-    <h3>&#128203; Prufungsstruktur — Goethe B2</h3>
+    <h3>&#128203; Prüfungsstruktur — Goethe B2</h3>
 
     <div class="exam-module">
       <div class="mod-icon" style="background:#e0f7f5;">&#128214;</div>
       <div class="mod-info">
         <h4>Lesen (5 Teile)</h4>
-        <p>Meinungen zuordnen, Lucken fullen, Multiple Choice, Standpunkte, Regeln verstehen</p>
+        <p>Meinungen zuordnen, Lücken fullen, Multiple Choice, Standpunkte, Regeln verstehen</p>
       </div>
       <div class="mod-time">65 Min.</div>
     </div>
@@ -780,7 +792,7 @@ body {
       <div class="mod-icon" style="background:#f0e6ff;">&#9999;&#65039;</div>
       <div class="mod-info">
         <h4>Schreiben (2 Teile)</h4>
-        <p>Forumsbeitrag (150+ Worter) + formelle Nachricht (100+ Worter)</p>
+        <p>Forumsbeitrag (150+ Wörter) + formelle Nachricht (100+ Wörter)</p>
       </div>
       <div class="mod-time">75 Min.</div>
     </div>
@@ -835,10 +847,10 @@ body {
     <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:1rem; flex-wrap:wrap;">
       <div id="unknownCount" style="font-size:0.85rem; color:var(--coral); font-weight:600;"></div>
       <button class="btn btn-outline" id="filterUnknownBtn" onclick="toggleUnknownFilter()" style="padding:8px 16px; font-size:0.82rem;">
-        &#128308; Nur unbekannte Worter
+        &#128308; Nur unbekannte Wörter
       </button>
       <button class="btn" id="clearUnknownBtn" onclick="clearUnknownWords()" style="padding:8px 16px; font-size:0.82rem; background:#f0f2f5; color:var(--text-light); display:none;">
-        &#128465; Liste zurucksetzen
+        &#128465; Liste zurücksetzen
       </button>
     </div>
 
@@ -852,13 +864,35 @@ body {
         <option value="gesundheit">Gesundheit</option>
         <option value="technologie">Technologie</option>
         <option value="konnektoren">Konnektoren & Redemittel</option>
+        <option value="custom">Eigene W&ouml;rter</option>
       </select>
+    </div>
+
+    <!-- ADD CUSTOM WORD -->
+    <div style="margin-top:1rem; border-top:2px solid #e8ecf0; padding-top:1rem;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.8rem;">
+        <h4 style="font-size:0.95rem;">Eigenes Wort hinzuf&uuml;gen</h4>
+        <span id="customWordCount" style="font-size:0.8rem; color:var(--text-light);"></span>
+      </div>
+      <div id="addWordForm" style="display:flex; flex-direction:column; gap:8px;">
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="newWordArticle" placeholder="Artikel (der/die/das)" style="padding:8px 12px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem; width:140px;">
+          <input type="text" id="newWordWord" placeholder="Deutsches Wort *" style="flex:1; padding:8px 12px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        </div>
+        <input type="text" id="newWordTranslation" placeholder="English translation *" style="padding:8px 12px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        <input type="text" id="newWordExample" placeholder="Beispielsatz (optional)" style="padding:8px 12px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        <div style="display:flex; gap:8px;">
+          <button class="btn" onclick="addCustomWord()" style="flex:1; padding:10px;">+ Hinzuf&uuml;gen</button>
+          <button class="btn btn-outline" onclick="clearCustomWords()" style="padding:10px; font-size:0.82rem;">Alle l&ouml;schen</button>
+        </div>
+        <div id="addWordFeedback" style="font-size:0.82rem; min-height:1.2em;"></div>
+      </div>
     </div>
   </div>
 
   <!-- Vocabulary by Topic -->
   <div class="card">
-    <h3>&#127793; Themen-Wortschatz fur Sprechen</h3>
+    <h3>&#127793; Themen-Wortschatz für Sprechen</h3>
     <div id="topicVocab"></div>
   </div>
 </div>
@@ -875,7 +909,7 @@ body {
     <div class="sub-section">
       <h4>&#128209; Regelubersicht</h4>
       <table class="conj-table">
-        <tr><th>Pronomen</th><th>sein</th><th>haben</th><th>konnen</th><th>werden</th></tr>
+        <tr><th>Pronomen</th><th>sein</th><th>haben</th><th>können</th><th>werden</th></tr>
         <tr><td>ich</td><td>ware</td><td>hatte</td><td>konnte</td><td>wurde</td></tr>
         <tr><td>du</td><td>war(e)st</td><td>hattest</td><td>konntest</td><td>wurdest</td></tr>
         <tr><td>er/sie/es</td><td>ware</td><td>hatte</td><td>konnte</td><td>wurde</td></tr>
@@ -886,7 +920,7 @@ body {
     </div>
 
     <div class="sub-section">
-      <h4>&#127919; Ubung: Erganze den Konjunktiv II</h4>
+      <h4>&#127919; Übung: Erganze den Konjunktiv II</h4>
       <div id="konjQuiz"></div>
     </div>
   </div>
@@ -898,13 +932,13 @@ body {
       <table class="conj-table">
         <tr><th>Tempus</th><th>Beispiel</th></tr>
         <tr><td>Prasens</td><td>Das Buch <strong>wird gelesen</strong>.</td></tr>
-        <tr><td>Prateritum</td><td>Das Buch <strong>wurde gelesen</strong>.</td></tr>
+        <tr><td>Präteritum</td><td>Das Buch <strong>wurde gelesen</strong>.</td></tr>
         <tr><td>Perfekt</td><td>Das Buch <strong>ist gelesen worden</strong>.</td></tr>
         <tr><td>mit Modalverb</td><td>Das Buch <strong>muss gelesen werden</strong>.</td></tr>
       </table>
     </div>
     <div class="sub-section">
-      <h4>&#127919; Ubung: Aktiv → Passiv</h4>
+      <h4>&#127919; Übung: Aktiv → Passiv</h4>
       <div id="passivQuiz"></div>
     </div>
   </div>
@@ -923,7 +957,7 @@ body {
       </div>
     </div>
     <div class="sub-section">
-      <h4>&#127919; Ubung: Setze den passenden Konnektor ein</h4>
+      <h4>&#127919; Übung: Setze den passenden Konnektor ein</h4>
       <div id="konnektorQuiz"></div>
     </div>
   </div>
@@ -939,11 +973,11 @@ body {
         <tr><td>sie/Sie</td><td>seien</td><td>haben</td><td>kommen</td></tr>
       </table>
       <p style="font-size:0.85rem; color:var(--text-light); margin-top:8px;">
-        <strong>Tipp:</strong> Wenn Konj. I = Indikativ, nimm Konj. II! z.B. "sie haben" → "sie hatten"
+        <strong>Tipp:</strong> Wenn Konj. I = Indikativ, nimm Konj. II! z.B. "sie haben" → "sie hätten"
       </p>
     </div>
     <div class="sub-section">
-      <h4>&#127919; Ubung: Direkte → Indirekte Rede</h4>
+      <h4>&#127919; Übung: Direkte → Indirekte Rede</h4>
       <div id="indirekteQuiz"></div>
     </div>
   </div>
@@ -952,7 +986,7 @@ body {
 <!-- ======================== LESEN ======================== -->
 <div class="section" id="sec-lesen">
   <div class="card">
-    <h3>&#128214; Lesen — Prufungstraining</h3>
+    <h3>&#128214; Lesen — Prüfungstraining</h3>
     <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
       5 Teile, 65 Minuten, 30 Fragen. Du brauchst mindestens 60% (= 18/30 richtig).
     </p>
@@ -965,10 +999,10 @@ body {
   </div>
 
   <div class="card">
-    <h3>Teil 2: Luckentext (12 Min. | 6 Punkte)</h3>
+    <h3>Teil 2: Lückentext (12 Min. | 6 Punkte)</h3>
     <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
-      Ein Artikel mit 6 Lucken. 8 Satze stehen zur Auswahl — 2 passen nicht.<br>
-      <strong>Strategie:</strong> Achte auf Konnektoren, Pronomen und logische Verknupfungen!
+      Ein Artikel mit 6 Lücken. 8 Satze stehen zur Auswahl — 2 passen nicht.<br>
+      <strong>Strategie:</strong> Achte auf Konnektoren, Pronomen und logische Verknüpfungen!
     </p>
     <div id="lesenTeil2"></div>
   </div>
@@ -977,12 +1011,12 @@ body {
     <h3>&#128161; Lese-Strategien</h3>
     <div class="redemittel-grid">
       <div class="redemittel-item">
-        <span class="de">&#128270; Schlusselworter markieren</span><br>
-        <span class="en">Lies zuerst die Aussagen/Fragen, markiere Schlusselworter, dann suche im Text.</span>
+        <span class="de">&#128270; Schlüsselwörter markieren</span><br>
+        <span class="en">Lies zuerst die Aussagen/Fragen, markiere Schlüsselwörter, dann suche im Text.</span>
       </div>
       <div class="redemittel-item">
         <span class="de">&#128260; Paraphrasen erkennen</span><br>
-        <span class="en">Die Aussagen verwenden ANDERE Worter als der Text. Gleiche Worter = oft Falle!</span>
+        <span class="en">Die Aussagen verwenden ANDERE Wörter als der Text. Gleiche Wörter = oft Falle!</span>
       </div>
       <div class="redemittel-item">
         <span class="de">&#9200; Zeitmanagement</span><br>
@@ -990,7 +1024,7 @@ body {
       </div>
       <div class="redemittel-item">
         <span class="de">&#127919; Schwierigste Teile zuletzt</span><br>
-        <span class="en">Teil 2 und 4 sind am schwierigsten. Beginne mit Teil 3 oder 5 fur schnelle Punkte.</span>
+        <span class="en">Teil 2 und 4 sind am schwierigsten. Beginne mit Teil 3 oder 5 für schnelle Punkte.</span>
       </div>
     </div>
   </div>
@@ -1001,24 +1035,24 @@ body {
   <div class="card">
     <h3>&#9999;&#65039; Schreiben — Teil 1: Forumsbeitrag</h3>
     <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
-      50 Min. | min. 150 Worter | Meinung begrunden, Vor-/Nachteile nennen
+      50 Min. | min. 150 Wörter | Meinung begründen, Vor-/Nachteile nennen
     </p>
 
     <div class="speaking-prompt" style="background: linear-gradient(135deg, #2d3a4a, #1a2332);">
       <h3>&#128172; Thema:</h3>
-      <p id="schreibenPrompt">Sollte man soziale Medien fur Jugendliche unter 16 verbieten?</p>
+      <p id="schreibenPrompt">Sollte man soziale Medien für Jugendliche unter 16 verbieten?</p>
       <button class="timer-btn" style="margin-top:12px;" onclick="newSchreibenPrompt()">&#128260; Neues Thema</button>
     </div>
 
     <div class="sub-section">
       <h4>&#128221; Dein Forumsbeitrag:</h4>
-      <textarea class="writing-area" id="schreibenArea1" placeholder="Schreibe deinen Forumsbeitrag hier... (min. 150 Worter)
+      <textarea class="writing-area" id="schreibenArea1" placeholder="Schreibe deinen Forumsbeitrag hier... (min. 150 Wörter)
 
 Struktur:
 1. Einleitung — Thema vorstellen
 2. Hauptteil — Argumente + Beispiele
 3. Schluss — Fazit / eigene Meinung"></textarea>
-      <div class="word-count"><span id="wordCount1">0</span> / 150 Worter</div>
+      <div class="word-count"><span id="wordCount1">0</span> / 150 Wörter</div>
     </div>
 
     <div class="sub-section">
@@ -1028,14 +1062,14 @@ Struktur:
       <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Konnektoren benutzt? (obwohl, dennoch, einerseits...)</span></div>
       <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Abwechslungsreicher Wortschatz? (nicht immer "gut/schlecht")</span></div>
       <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Konjunktiv II / Passiv verwendet?</span></div>
-      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Mindestens 150 Worter?</span></div>
+      <div class="checklist-item"><div class="check" onclick="toggleCheck(this)"></div> <span>Mindestens 150 Wörter?</span></div>
     </div>
   </div>
 
   <div class="card">
     <h3>&#9999;&#65039; Schreiben — Teil 2: Formelle Nachricht</h3>
     <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
-      25 Min. | min. 100 Worter | Sie-Form, formeller Ton
+      25 Min. | min. 100 Wörter | Sie-Form, formeller Ton
     </p>
 
     <div class="speaking-prompt" style="background: linear-gradient(135deg, #845ef7, #6741d9);">
@@ -1052,17 +1086,17 @@ Struktur:
 
 Mit freundlichen Grussen
 [Dein Name]"></textarea>
-      <div class="word-count"><span id="wordCount2">0</span> / 100 Worter</div>
+      <div class="word-count"><span id="wordCount2">0</span> / 100 Wörter</div>
     </div>
 
     <div class="sub-section">
-      <h4>Nutzliche Redemittel fur formelle Nachrichten</h4>
+      <h4>Nutzliche Redemittel für formelle Nachrichten</h4>
       <div class="redemittel-grid">
         <div class="redemittel-item"><span class="de">Anrede:</span> Sehr geehrte Frau/Herr ... / Sehr geehrte Damen und Herren,</div>
         <div class="redemittel-item"><span class="de">Bezug:</span> ich schreibe Ihnen bezuglich ... / in Bezug auf Ihre Anzeige ...</div>
         <div class="redemittel-item"><span class="de">Beschwerde:</span> Leider muss ich Ihnen mitteilen, dass ... / Ich bin mit ... nicht zufrieden.</div>
-        <div class="redemittel-item"><span class="de">Bitte:</span> Ich ware Ihnen dankbar, wenn Sie ... konnten.</div>
-        <div class="redemittel-item"><span class="de">Schluss:</span> Fur Ruckfragen stehe ich Ihnen gerne zur Verfugung. / Ich freue mich auf Ihre Ruckmeldung.</div>
+        <div class="redemittel-item"><span class="de">Bitte:</span> Ichwäre Ihnen dankbar, wenn Sie ... konnten.</div>
+        <div class="redemittel-item"><span class="de">Schluss:</span> Für Ruckfragen stehe ich Ihnen gerne zur Verfugung. / Ich freue mich auf Ihre Ruckmeldung.</div>
       </div>
     </div>
   </div>
@@ -1082,7 +1116,7 @@ Mit freundlichen Grussen
       <div style="margin-top:12px; font-size:0.85rem; text-align:left; opacity:0.9;">
         <p>&#8226; Beschreiben Sie mehrere Arten.</p>
         <p>&#8226; Nennen Sie Vor- und Nachteile und bewerten Sie diese.</p>
-        <p>&#8226; Beschreiben Sie eine Moglichkeit genauer.</p>
+        <p>&#8226; Beschreiben Sie eine Möglichkeit genauer.</p>
       </div>
       <div class="speaking-timer" id="speakingTimer">4:00</div>
       <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">&#9654; Start</button>
@@ -1104,22 +1138,22 @@ Mit freundlichen Grussen
   </div>
 
   <div class="card">
-    <h3>&#128161; Redemittel-Sammlung fur Sprechen</h3>
+    <h3>&#128161; Redemittel-Sammlung für Sprechen</h3>
 
     <div class="sub-section">
       <h4>Einleitung</h4>
       <div class="redemittel-grid">
-        <div class="redemittel-item"><span class="de">"In meinem Vortrag mochte ich das Thema [...] beleuchten."</span></div>
-        <div class="redemittel-item"><span class="de">"Zunachst werde ich [...] erlautern, dann auf [...] eingehen und abschliessend [...]."</span></div>
-        <div class="redemittel-item"><span class="de">"Ich habe mich fur dieses Thema entschieden, weil ..."</span></div>
+        <div class="redemittel-item"><span class="de">"In meinem Vortrag möchte ich das Thema [...] beleuchten."</span></div>
+        <div class="redemittel-item"><span class="de">"Zunachst werde ich [...] erlautern, dann auf [...] eingehen und abschließend [...]."</span></div>
+        <div class="redemittel-item"><span class="de">"Ich habe mich für dieses Thema entschieden, weil ..."</span></div>
       </div>
     </div>
 
     <div class="sub-section">
       <h4>Hauptteil — Argumente</h4>
       <div class="redemittel-grid">
-        <div class="redemittel-item"><span class="de">"Es gibt verschiedene Moglichkeiten / Aspekte ..."</span></div>
-        <div class="redemittel-item"><span class="de">"Ein Vorteil / Nachteil fur ... ist ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Es gibt verschiedene Möglichkeiten / Aspekte ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Ein Vorteil / Nachteil für ... ist ..."</span></div>
         <div class="redemittel-item"><span class="de">"Ich bin der Ansicht / Uberzeugung, dass ..."</span></div>
         <div class="redemittel-item"><span class="de">"Aus meiner Sicht ..." / "Meiner Meinung nach ..."</span></div>
         <div class="redemittel-item"><span class="de">"Ein gutes Beispiel dafur ist ..."</span></div>
@@ -1131,8 +1165,8 @@ Mit freundlichen Grussen
       <h4>Schluss</h4>
       <div class="redemittel-grid">
         <div class="redemittel-item"><span class="de">"Zusammenfassend lasst sich sagen, dass ..."</span></div>
-        <div class="redemittel-item"><span class="de">"Ich wurde [...] empfehlen, weil ..."</span></div>
-        <div class="redemittel-item"><span class="de">"Abschliessend mochte ich betonen, dass ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Ich würde [...] empfehlen, weil ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Abschließend möchte ich betonen, dass ..."</span></div>
       </div>
     </div>
 
@@ -1141,8 +1175,8 @@ Mit freundlichen Grussen
       <div class="redemittel-grid">
         <div class="redemittel-item"><span class="de">"Das sehe ich genauso." / "Dem stimme ich zu."</span></div>
         <div class="redemittel-item"><span class="de">"Da bin ich anderer Meinung, weil ..."</span></div>
-        <div class="redemittel-item"><span class="de">"Grundsatzlich hast du Recht, aber man sollte auch bedenken, dass ..."</span></div>
-        <div class="redemittel-item"><span class="de">"Das sehe ich etwas anders." / "Ein wichtiges Gegenargument ware ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Grundsätzlich hast du Recht, aber man sollte auch bedenken, dass ..."</span></div>
+        <div class="redemittel-item"><span class="de">"Das sehe ich etwas anders." / "Ein wichtiges Gegenargumentwäre ..."</span></div>
         <div class="redemittel-item"><span class="de">"Was denkst du daruber?" / "Hast du selbst Erfahrungen damit gemacht?"</span></div>
         <div class="redemittel-item"><span class="de">"Konnen wir uns darauf einigen, dass ...?"</span></div>
       </div>
@@ -1153,8 +1187,44 @@ Mit freundlichen Grussen
       <div class="redemittel-grid">
         <div class="redemittel-item"><span class="de">"Entschuldigung, konnten Sie das bitte noch einmal wiederholen?"</span></div>
         <div class="redemittel-item"><span class="de">"Ich bin nicht sicher, ob ich Sie richtig verstanden habe."</span></div>
-        <div class="redemittel-item"><span class="de">"Mich wurde interessieren, was du uber [...] denkst."</span></div>
+        <div class="redemittel-item"><span class="de">"Mich würde interessieren, was du uber [...] denkst."</span></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Speaking Flashcards -->
+  <div class="card">
+    <h3>&#128218; Redemittel-Karteikarten <span class="badge" id="spFcProgress">0 / 0</span></h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">Lerne die wichtigsten Phrasen für deinen Vortrag und die Diskussion!</p>
+
+    <div style="text-align:center; margin-bottom:1rem;">
+      <select id="spFcFilter" onchange="loadSprechenFC()" style="padding:8px 16px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        <option value="all">Alle Kategorien</option>
+        <option value="Einleitung">Einleitung</option>
+        <option value="Hauptteil">Hauptteil</option>
+        <option value="Schluss">Schluss</option>
+        <option value="Diskussion">Diskussion</option>
+        <option value="Nachfragen">Nachfragen</option>
+      </select>
+    </div>
+
+    <div class="flashcard-container">
+      <div class="flashcard" id="spFlashcard" onclick="document.getElementById('spFlashcard').classList.toggle('flipped')">
+        <div class="flashcard-face flashcard-front" id="spFcFront" style="background:linear-gradient(135deg, var(--teal), var(--teal-dark));">
+          <div class="article" id="spFcCategory"></div>
+          <div class="word" id="spFcPhrase" style="font-size:1.2rem;"></div>
+          <div class="hint">Klicken zum Umdrehen</div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="translation" id="spFcUsage"></div>
+          <div class="example" id="spFcTip"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard-controls">
+      <button class="fc-btn dont-know" onclick="rateSpFC(false)">Nochmal</button>
+      <button class="fc-btn know" onclick="rateSpFC(true)">Gewusst!</button>
     </div>
   </div>
 
@@ -1163,28 +1233,466 @@ Mit freundlichen Grussen
     <table class="conj-table">
       <tr><th>Kriterium</th><th>Was zahlt</th></tr>
       <tr><td><strong>Aufgabe</strong></td><td>Alle Inhaltspunkte behandelt? Alternativen + Vor-/Nachteile?</td></tr>
-      <tr><td><strong>Flussigkeit</strong></td><td>Naturliches Tempo, kein Ablesen, wenig Pausen</td></tr>
-      <tr><td><strong>Interaktion</strong></td><td>Auf Partner reagieren, Fragen stellen, Gesprach managen</td></tr>
+      <tr><td><strong>Flussigkeit</strong></td><td>Natürliches Tempo, kein Ablesen, wenig Pausen</td></tr>
+      <tr><td><strong>Interaktion</strong></td><td>Auf Partner reagieren, Fragen stellen, Gespräch managen</td></tr>
       <tr><td><strong>Wortschatz</strong></td><td>Abwechslungsreich, B2-Niveau, keine Wiederholungen</td></tr>
       <tr><td><strong>Grammatik</strong></td><td>Konjunktiv II, Passiv, komplexe Satze zeigen B2-Kompetenz</td></tr>
-      <tr><td><strong>Aussprache</strong></td><td>Deutlich und naturlich, Satzmelodie beachten</td></tr>
+      <tr><td><strong>Aussprache</strong></td><td>Deutlich und natürlich, Satzmelodie beachten</td></tr>
     </table>
+  </div>
+</div>
+
+<!-- ======================== VERBEN ======================== -->
+<div class="section" id="sec-verben">
+
+  <div class="card">
+    <h3>&#128300; Verb Trainer <span class="badge" id="verbProgress">0 / 0</span></h3>
+    <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">Konjugiere deutsche Verben in allen wichtigen Zeitformen.</p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1rem;">
+      <select id="verbTenseFilter" onchange="loadVerbExercise()" style="padding:8px 16px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        <option value="all">Alle Zeitformen</option>
+        <option value="praesens">Pr&auml;sens</option>
+        <option value="praeteritum">Pr&auml;teritum</option>
+        <option value="perfekt">Perfekt</option>
+        <option value="konjunktivII">Konjunktiv II</option>
+        <option value="imperativ">Imperativ</option>
+      </select>
+      <select id="verbTypeFilter" onchange="loadVerbExercise()" style="padding:8px 16px; border-radius:8px; border:2px solid #e8ecf0; font-family:inherit; font-size:0.85rem;">
+        <option value="all">Alle Verbtypen</option>
+        <option value="regular">Regelm&auml;&szlig;ige</option>
+        <option value="irregular">Unregelm&auml;&szlig;ige</option>
+        <option value="trennbar">Trennbare Verben</option>
+        <option value="modal">Modalverben</option>
+      </select>
+    </div>
+
+    <!-- Current verb display -->
+    <div id="verbDisplay" style="background:linear-gradient(135deg, var(--teal), var(--teal-dark)); color:white; border-radius:var(--radius); padding:1.5rem; margin-bottom:1rem; text-align:center;">
+      <div style="font-size:0.85rem; opacity:0.8;" id="verbTenseLabel"></div>
+      <div style="font-size:2rem; font-weight:800;" id="verbInfinitive"></div>
+      <div style="font-size:0.9rem; opacity:0.8; margin-top:4px;" id="verbTranslation"></div>
+    </div>
+
+    <!-- Conjugation exercise -->
+    <div id="verbExerciseArea"></div>
+
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:1rem;">
+      <button class="btn btn-primary" onclick="checkVerbAnswers()">Pr&uuml;fen</button>
+      <button class="btn btn-outline" onclick="showVerbSolution()">L&ouml;sung zeigen</button>
+      <button class="fc-btn next" onclick="loadVerbExercise()">N&auml;chstes Verb</button>
+    </div>
+    <div id="verbFeedback" style="margin-top:1rem;"></div>
+  </div>
+
+  <!-- Conjugation Reference Tables -->
+  <div class="card">
+    <h3>&#128209; Pr&auml;sens — Regeln</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">Regelm&auml;&szlig;ige Verben:</span> Stamm + -e, -st, -t, -en, -t, -en<br><span class="en">machen → ich mache, du machst, er macht, wir machen, ihr macht, sie machen</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">Vokalwechsel (e→i/ie, a→&auml;):</span><br><span class="en">sprechen → du sprichst, er spricht | fahren → du f&auml;hrst, er f&auml;hrt</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--purple);"><span class="de">Trennbare Verben:</span> Pr&auml;fix geht ans Satzende<br><span class="en">anfangen → Ich fange um 8 Uhr an. | aufstehen → Er steht fr&uuml;h auf.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128209; Pr&auml;teritum — Regeln</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">Schwache Verben:</span> Stamm + -te, -test, -te, -ten, -tet, -ten<br><span class="en">machen → ich machte, du machtest, er machte</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral);"><span class="de">Starke Verben:</span> Stammvokal &auml;ndert sich, KEINE Endung f&uuml;r ich/er<br><span class="en">gehen → ich ging, sprechen → ich sprach, schreiben → ich schrieb</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128209; Perfekt — Regeln</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">haben + Partizip II</span> (die meisten Verben)<br><span class="en">Ich habe gemacht / gelernt / geschrieben / gesprochen</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">sein + Partizip II</span> (Bewegung/Zustandsänderung + sein/bleiben/werden)<br><span class="en">Ich bin gegangen / gefahren / gekommen / geworden / geblieben</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--purple); margin-bottom:8px;"><span class="de">Partizip II Bildung:</span><br><span class="en">schwach: ge- + Stamm + -t (gemacht) | stark: ge- + Stamm + -en (geschrieben)<br>trennbar: Pr&auml;fix + ge- + Stamm (angefangen, aufgestanden)<br>untrennbar: KEIN ge- (verstanden, erzählt, besucht)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128209; Konjunktiv II — Regeln</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">w&uuml;rde + Infinitiv</span> (Standard f&uuml;r die meisten Verben)<br><span class="en">Ich w&uuml;rde machen / lernen / gehen</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">Spezialformen (IMMER benutzen!):</span><br><span class="en">sein → w&auml;re | haben → h&auml;tte | werden → w&uuml;rde | k&ouml;nnen → k&ouml;nnte | m&uuml;ssen → m&uuml;sste | d&uuml;rfen → d&uuml;rfte | sollen → sollte | wollen → wollte | wissen → w&uuml;sste</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--gold);"><span class="de">Verwendung:</span> irreale W&uuml;nsche, h&ouml;fliche Bitten, hypothetische Situationen<br><span class="en">Wenn ich Zeit h&auml;tte, w&uuml;rde ich reisen. | K&ouml;nnten Sie mir helfen?</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128209; Modalverben — &Uuml;bersicht</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Verb</th><th>Bedeutung</th><th>Pr&auml;sens (ich/er)</th><th>Pr&auml;teritum (ich/er)</th><th>Konj. II</th></tr>
+        <tr><td><strong>k&ouml;nnen</strong></td><td>can, to be able to</td><td>kann</td><td>konnte</td><td>k&ouml;nnte</td></tr>
+        <tr><td><strong>m&uuml;ssen</strong></td><td>must, to have to</td><td>muss</td><td>musste</td><td>m&uuml;sste</td></tr>
+        <tr><td><strong>sollen</strong></td><td>should, to be supposed to</td><td>soll</td><td>sollte</td><td>sollte</td></tr>
+        <tr><td><strong>wollen</strong></td><td>to want to</td><td>will</td><td>wollte</td><td>wollte</td></tr>
+        <tr><td><strong>d&uuml;rfen</strong></td><td>may, to be allowed to</td><td>darf</td><td>durfte</td><td>d&uuml;rfte</td></tr>
+        <tr><td><strong>m&ouml;gen</strong></td><td>to like</td><td>mag</td><td>mochte</td><td>m&ouml;chte</td></tr>
+      </table>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-top:8px;"><span class="de">Achtung:</span> Modalverben haben im Pr&auml;sens KEINE Endung f&uuml;r er/sie/es!<br><span class="en">ich kann, er kann (NICHT: er *kannt) | ich muss, er muss</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128209; Trennbare Verben — Regeln</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">Pr&auml;sens/Pr&auml;teritum:</span> Pr&auml;fix geht ans Satzende<br><span class="en">anfangen → Ich fange morgen an. | aufstehen → Sie stand fr&uuml;h auf.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">Perfekt:</span> ge- steht ZWISCHEN Pr&auml;fix und Verb<br><span class="en">anfangen → angefangen | aufstehen → aufgestanden | einkaufen → eingekauft</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--purple);"><span class="de">Im Nebensatz:</span> Pr&auml;fix bleibt am Verb!<br><span class="en">..., weil ich morgen anfange. | ..., dass sie fr&uuml;h aufsteht.</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>H&auml;ufige trennbare Pr&auml;fixe</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="connector-chip">ab-</span><span class="connector-chip">an-</span><span class="connector-chip">auf-</span><span class="connector-chip">aus-</span><span class="connector-chip">ein-</span><span class="connector-chip">mit-</span><span class="connector-chip">nach-</span><span class="connector-chip">vor-</span><span class="connector-chip">zu-</span><span class="connector-chip">zur&uuml;ck-</span><span class="connector-chip">zusammen-</span><span class="connector-chip">fern-</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== SATZBAU ======================== -->
+<div class="section" id="sec-satzbau">
+
+  <div class="card">
+    <h3>&#128295; Hauptsatz vs. Nebensatz</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">Hauptsatz:</span> Verb auf Position 2<br><span class="en">Ich <strong>lerne</strong> jeden Tag Deutsch. | Heute <strong>lerne</strong> ich Deutsch.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">Nebensatz:</span> Verb am ENDE<br><span class="en">..., weil ich Deutsch <strong>lerne</strong>. | ..., dass er morgen <strong>kommt</strong>.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--purple);"><span class="de">Nebensatz-Trigger:</span><br><span class="en">weil, dass, obwohl, wenn, als, ob, damit, bevor, nachdem, w&auml;hrend, seit/seitdem, bis, sobald, falls</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Hauptsatz oder Nebensatz?</h4>
+      <div id="satzbauQuiz1"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128295; TeKaMoLo — Wortstellung im Mittelfeld</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--gold); margin-bottom:8px;"><span class="de">Te = Temporal (WANN?)</span> → <span class="de">Ka = Kausal (WARUM?)</span> → <span class="de">Mo = Modal (WIE?)</span> → <span class="de">Lo = Lokal (WO/WOHIN?)</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--teal);"><span class="de">Beispiel:</span> Ich fahre <strong>morgen</strong> (Te) <strong>wegen der Arbeit</strong> (Ka) <strong>mit dem Zug</strong> (Mo) <strong>nach Berlin</strong> (Lo).</div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Bringe die Satzteile in die richtige Reihenfolge</h4>
+      <div id="tekamolQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128295; Relativs&auml;tze</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Kasus</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th><th>Plural</th></tr>
+        <tr><td><strong>Nominativ</strong></td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+        <tr><td><strong>Akkusativ</strong></td><td>den</td><td>die</td><td>das</td><td>die</td></tr>
+        <tr><td><strong>Dativ</strong></td><td>dem</td><td>der</td><td>dem</td><td>denen</td></tr>
+        <tr><td><strong>Genitiv</strong></td><td>dessen</td><td>deren</td><td>dessen</td><td>deren</td></tr>
+      </table>
+      <div class="redemittel-item" style="margin-top:8px; border-left-color:var(--teal);"><span class="de">Tipp:</span> Das Relativpronomen richtet sich nach dem Bezugswort (Genus/Numerus) und nach seiner Funktion im Nebensatz (Kasus).<br><span class="en">Der Mann, <strong>der</strong> dort steht... (Nom.) | Der Mann, <strong>den</strong> ich kenne... (Akk.) | Der Mann, <strong>dem</strong> ich helfe... (Dat.)</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Setze das richtige Relativpronomen ein</h4>
+      <div id="relativQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128295; Infinitivs&auml;tze</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">um ... zu + Infinitiv</span> = in order to<br><span class="en">Ich lerne Deutsch, <strong>um</strong> in Deutschland <strong>zu</strong> studieren.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">ohne ... zu + Infinitiv</span> = without (doing)<br><span class="en">Er ging weg, <strong>ohne</strong> etwas <strong>zu</strong> sagen.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--purple); margin-bottom:8px;"><span class="de">anstatt ... zu + Infinitiv</span> = instead of (doing)<br><span class="en"><strong>Anstatt zu</strong> lernen, hat er ferngesehen.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--gold);"><span class="de">Trennbare Verben:</span> zu steht ZWISCHEN Pr&auml;fix und Verb<br><span class="en">Ich habe keine Lust, heute <strong>ein</strong>zu<strong>kaufen</strong>. | Er versucht, fr&uuml;h <strong>auf</strong>zu<strong>stehen</strong>.</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Verbinde die S&auml;tze mit Infinitivkonstruktionen</h4>
+      <div id="infinitivQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128295; Konjunktionen & Wortstellung</h3>
+    <div class="sub-section">
+      <h4>Nebenordnend (Position 0 — keine &Auml;nderung)</h4>
+      <div class="redemittel-item" style="border-left-color:var(--green);"><span class="de">und, aber, oder, denn, sondern</span><br><span class="en">Er lernt Deutsch, <strong>und</strong> sie lernt Franz&ouml;sisch. (S + V + ...)</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>Unterordnend (Verb ans ENDE)</h4>
+      <div class="redemittel-item" style="border-left-color:var(--coral);"><span class="de">weil, dass, obwohl, wenn, als, ob, damit, w&auml;hrend, bevor, nachdem</span><br><span class="en">Er bleibt zu Hause, <strong>weil</strong> er krank <strong>ist</strong>.</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>Adverbiale Konjunktionen (Verb-Inversion: V + S)</h4>
+      <div class="redemittel-item" style="border-left-color:var(--purple);"><span class="de">deshalb, trotzdem, dennoch, au&szlig;erdem, deswegen, folglich, allerdings</span><br><span class="en">Er ist krank. <strong>Deshalb bleibt</strong> er zu Hause. (V + S)</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Welche Wortstellung?</h4>
+      <div id="konjWortstellungQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128295; Position von &quot;nicht&quot;</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">Ganzen Satz verneinen:</span> &quot;nicht&quot; steht m&ouml;glichst weit hinten<br><span class="en">Ich komme heute <strong>nicht</strong>. | Er hat das Buch <strong>nicht</strong> gelesen.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">Bestimmtes Element verneinen:</span> &quot;nicht&quot; steht VOR dem Element<br><span class="en">Ich fahre <strong>nicht</strong> nach Berlin (sondern nach M&uuml;nchen).</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--purple);"><span class="de">Nicht steht VOR:</span> Pr&auml;dikativ, Pr&auml;positionalgruppe, Richtung, Infinitiv, Partizip II<br><span class="en">Das ist <strong>nicht</strong> gut. | Er geht <strong>nicht</strong> ins Kino. | Er hat <strong>nicht</strong> geschlafen.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== ADJEKTIVE ======================== -->
+<div class="section" id="sec-adjektive">
+
+  <div class="card">
+    <h3>&#127912; Adjektivdeklination — nach bestimmtem Artikel</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Kasus</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th><th>Plural</th></tr>
+        <tr><td><strong>Nom.</strong></td><td>der gut<strong>e</strong> Mann</td><td>die gut<strong>e</strong> Frau</td><td>das gut<strong>e</strong> Kind</td><td>die gut<strong>en</strong> Leute</td></tr>
+        <tr><td><strong>Akk.</strong></td><td>den gut<strong>en</strong> Mann</td><td>die gut<strong>e</strong> Frau</td><td>das gut<strong>e</strong> Kind</td><td>die gut<strong>en</strong> Leute</td></tr>
+        <tr><td><strong>Dat.</strong></td><td>dem gut<strong>en</strong> Mann</td><td>der gut<strong>en</strong> Frau</td><td>dem gut<strong>en</strong> Kind</td><td>den gut<strong>en</strong> Leuten</td></tr>
+        <tr><td><strong>Gen.</strong></td><td>des gut<strong>en</strong> Mannes</td><td>der gut<strong>en</strong> Frau</td><td>des gut<strong>en</strong> Kindes</td><td>der gut<strong>en</strong> Leute</td></tr>
+      </table>
+      <div class="redemittel-item" style="margin-top:8px; border-left-color:var(--gold);"><span class="de">Merke:</span> Nach bestimmtem Artikel fast immer <strong>-en</strong>! Nur Nom. (m/f/n) und Akk. (f/n) = <strong>-e</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127912; Adjektivdeklination — nach unbestimmtem Artikel</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Kasus</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th></tr>
+        <tr><td><strong>Nom.</strong></td><td>ein gut<strong>er</strong> Mann</td><td>eine gut<strong>e</strong> Frau</td><td>ein gut<strong>es</strong> Kind</td></tr>
+        <tr><td><strong>Akk.</strong></td><td>einen gut<strong>en</strong> Mann</td><td>eine gut<strong>e</strong> Frau</td><td>ein gut<strong>es</strong> Kind</td></tr>
+        <tr><td><strong>Dat.</strong></td><td>einem gut<strong>en</strong> Mann</td><td>einer gut<strong>en</strong> Frau</td><td>einem gut<strong>en</strong> Kind</td></tr>
+        <tr><td><strong>Gen.</strong></td><td>eines gut<strong>en</strong> Mannes</td><td>einer gut<strong>en</strong> Frau</td><td>eines gut<strong>en</strong> Kindes</td></tr>
+      </table>
+      <div class="redemittel-item" style="margin-top:8px; border-left-color:var(--gold);"><span class="de">Merke:</span> Das Adjektiv &uuml;bernimmt die Signalendung, wenn der Artikel sie nicht zeigt!<br><span class="en">ein gut<strong>er</strong> Mann (der → -er) | ein gut<strong>es</strong> Kind (das → -es)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127912; Adjektivdeklination — ohne Artikel</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Kasus</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th><th>Plural</th></tr>
+        <tr><td><strong>Nom.</strong></td><td>gut<strong>er</strong> Wein</td><td>gut<strong>e</strong> Milch</td><td>gut<strong>es</strong> Brot</td><td>gut<strong>e</strong> Leute</td></tr>
+        <tr><td><strong>Akk.</strong></td><td>gut<strong>en</strong> Wein</td><td>gut<strong>e</strong> Milch</td><td>gut<strong>es</strong> Brot</td><td>gut<strong>e</strong> Leute</td></tr>
+        <tr><td><strong>Dat.</strong></td><td>gut<strong>em</strong> Wein</td><td>gut<strong>er</strong> Milch</td><td>gut<strong>em</strong> Brot</td><td>gut<strong>en</strong> Leuten</td></tr>
+        <tr><td><strong>Gen.</strong></td><td>gut<strong>en</strong> Weins</td><td>gut<strong>er</strong> Milch</td><td>gut<strong>en</strong> Brots</td><td>gut<strong>er</strong> Leute</td></tr>
+      </table>
+      <div class="redemittel-item" style="margin-top:8px; border-left-color:var(--gold);"><span class="de">Merke:</span> Ohne Artikel tr&auml;gt das Adjektiv die volle Signalendung (wie bestimmter Artikel, aber Gen. m/n = -en statt -es)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127919; &Uuml;bung: Adjektivendungen erg&auml;nzen</h3>
+    <div id="adjEndungQuiz"></div>
+  </div>
+
+  <div class="card">
+    <h3>&#127912; Komparativ & Superlativ</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Positiv</th><th>Komparativ</th><th>Superlativ</th></tr>
+        <tr><td>schnell</td><td>schnell<strong>er</strong></td><td>am schnellst<strong>en</strong></td></tr>
+        <tr><td>gut</td><td><strong>besser</strong></td><td>am <strong>besten</strong></td></tr>
+        <tr><td>viel</td><td><strong>mehr</strong></td><td>am <strong>meisten</strong></td></tr>
+        <tr><td>gern</td><td><strong>lieber</strong></td><td>am <strong>liebsten</strong></td></tr>
+        <tr><td>hoch</td><td><strong>h&ouml;her</strong></td><td>am <strong>h&ouml;chsten</strong></td></tr>
+        <tr><td>nah</td><td><strong>n&auml;her</strong></td><td>am <strong>n&auml;chsten</strong></td></tr>
+        <tr><td>gro&szlig;</td><td>gr&ouml;&szlig;<strong>er</strong></td><td>am gr&ouml;&szlig;<strong>ten</strong></td></tr>
+        <tr><td>alt</td><td>&auml;lt<strong>er</strong></td><td>am &auml;lt<strong>esten</strong></td></tr>
+        <tr><td>teuer</td><td>teur<strong>er</strong></td><td>am teurst<strong>en</strong></td></tr>
+      </table>
+      <div class="redemittel-item" style="margin-top:8px; border-left-color:var(--teal);"><span class="de">Vergleiche:</span> so ... wie (gleich) | -er als (ungleich)<br><span class="en">Berlin ist <strong>so gro&szlig; wie</strong> M&uuml;nchen? Nein! Berlin ist <strong>gr&ouml;&szlig;er als</strong> M&uuml;nchen.</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Komparativ & Superlativ</h4>
+      <div id="komparativQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127912; Adjektive mit Pr&auml;positionen</h3>
+    <div class="sub-section">
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">stolz <strong>auf</strong> + Akk.</span><br><span class="en">Ich bin stolz auf meinen Erfolg. (proud of)</span></div>
+        <div class="redemittel-item"><span class="de">zufrieden <strong>mit</strong> + Dat.</span><br><span class="en">Sie ist zufrieden mit ihrer Arbeit. (satisfied with)</span></div>
+        <div class="redemittel-item"><span class="de">interessiert <strong>an</strong> + Dat.</span><br><span class="en">Er ist an Politik interessiert. (interested in)</span></div>
+        <div class="redemittel-item"><span class="de">verantwortlich <strong>f&uuml;r</strong> + Akk.</span><br><span class="en">Wer ist f&uuml;r das Projekt verantwortlich? (responsible for)</span></div>
+        <div class="redemittel-item"><span class="de">abh&auml;ngig <strong>von</strong> + Dat.</span><br><span class="en">Das ist vom Wetter abh&auml;ngig. (dependent on)</span></div>
+        <div class="redemittel-item"><span class="de">bereit <strong>zu</strong> + Dat.</span><br><span class="en">Ich bin bereit zu helfen. (ready to)</span></div>
+        <div class="redemittel-item"><span class="de">&uuml;berzeugt <strong>von</strong> + Dat.</span><br><span class="en">Ich bin von dieser Idee &uuml;berzeugt. (convinced of)</span></div>
+        <div class="redemittel-item"><span class="de">entt&auml;uscht <strong>&uuml;ber</strong> + Akk.</span><br><span class="en">Wir sind &uuml;ber das Ergebnis entt&auml;uscht. (disappointed about)</span></div>
+        <div class="redemittel-item"><span class="de">begeistert <strong>von</strong> + Dat.</span><br><span class="en">Die Kinder sind von dem Film begeistert. (excited about)</span></div>
+        <div class="redemittel-item"><span class="de">gl&uuml;cklich <strong>&uuml;ber</strong> + Akk.</span><br><span class="en">Er ist gl&uuml;cklich &uuml;ber die Nachricht. (happy about)</span></div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Welche Pr&auml;position?</h4>
+      <div id="adjPraepQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#127912; Wichtige B2-Adjektive nach Kategorie</h3>
+    <div class="sub-section">
+      <h4>Meinung &amp; Argumentation</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+        <span class="connector-chip">&uuml;berzeugend</span><span class="connector-chip">fragw&uuml;rdig</span><span class="connector-chip">umstritten</span><span class="connector-chip">offensichtlich</span><span class="connector-chip">angeblich</span><span class="connector-chip">vermeintlich</span><span class="connector-chip">wesentlich</span><span class="connector-chip">grundlegend</span>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>Bewertung</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+        <span class="connector-chip">vorteilhaft</span><span class="connector-chip">nachteilig</span><span class="connector-chip">erheblich</span><span class="connector-chip">geringf&uuml;gig</span><span class="connector-chip">bedeutsam</span><span class="connector-chip">angemessen</span><span class="connector-chip">sinnvoll</span><span class="connector-chip">wirksam</span>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>Gef&uuml;hle &amp; Einstellungen</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+        <span class="connector-chip">begeistert</span><span class="connector-chip">entt&auml;uscht</span><span class="connector-chip">besorgt</span><span class="connector-chip">zuversichtlich</span><span class="connector-chip">frustriert</span><span class="connector-chip">erleichtert</span><span class="connector-chip">verwundert</span><span class="connector-chip">gelassen</span>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>Beschreibung &amp; Vergleich</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="connector-chip">vielf&auml;ltig</span><span class="connector-chip">vergleichbar</span><span class="connector-chip">zust&auml;ndig</span><span class="connector-chip">gew&ouml;hnlich</span><span class="connector-chip">au&szlig;ergew&ouml;hnlich</span><span class="connector-chip">selbstst&auml;ndig</span><span class="connector-chip">anspruchsvoll</span><span class="connector-chip">zug&auml;nglich</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== MEHR ======================== -->
+<div class="section" id="sec-mehr">
+
+  <div class="card">
+    <h3>&#128218; Possessivartikel</h3>
+    <div class="sub-section">
+      <table class="conj-table">
+        <tr><th>Pronomen</th><th>Possessiv</th><th>Maskulin/Neutrum</th><th>Feminin/Plural</th></tr>
+        <tr><td>ich</td><td><strong>mein</strong></td><td>mein/meinen/meinem/meines</td><td>meine/meine/meiner/meiner</td></tr>
+        <tr><td>du</td><td><strong>dein</strong></td><td>dein/deinen/deinem/deines</td><td>deine/deine/deiner/deiner</td></tr>
+        <tr><td>er/es</td><td><strong>sein</strong></td><td>sein/seinen/seinem/seines</td><td>seine/seine/seiner/seiner</td></tr>
+        <tr><td>sie (sg.)</td><td><strong>ihr</strong></td><td>ihr/ihren/ihrem/ihres</td><td>ihre/ihre/ihrer/ihrer</td></tr>
+        <tr><td>wir</td><td><strong>unser</strong></td><td>unser/unseren/unserem/unseres</td><td>unsere/unsere/unserer/unserer</td></tr>
+        <tr><td>ihr</td><td><strong>euer</strong></td><td>euer/euren/eurem/eures</td><td>eure/eure/eurer/eurer</td></tr>
+        <tr><td>sie/Sie</td><td><strong>ihr/Ihr</strong></td><td>ihr/ihren/ihrem/ihres</td><td>ihre/ihre/ihrer/ihrer</td></tr>
+      </table>
+      <div class="redemittel-item" style="margin-top:8px; border-left-color:var(--gold);"><span class="de">Merke:</span> Possessivartikel werden wie &quot;ein&quot; dekliniert!<br><span class="en">Nom.: mein Hund, meine Katze | Akk.: meinen Hund, meine Katze | Dat.: meinem Hund, meiner Katze</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Erg&auml;nze den Possessivartikel</h4>
+      <div id="possessivQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128218; Zeitausd&uuml;cke &amp; Temporale Pr&auml;positionen</h3>
+    <div class="sub-section">
+      <h4>Pr&auml;positionen mit Dativ</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de"><strong>vor</strong> + Dativ</span> = ago / before<br><span class="en"><strong>Vor zwei Jahren</strong> bin ich nach Deutschland gekommen. (NICHT: *vor zwei Jahre!)</span></div>
+        <div class="redemittel-item"><span class="de"><strong>seit</strong> + Dativ</span> = since / for<br><span class="en">Ich lerne <strong>seit einem Jahr</strong> Deutsch. (Pr&auml;sens, nicht Perfekt!)</span></div>
+        <div class="redemittel-item"><span class="de"><strong>nach</strong> + Dativ</span> = after<br><span class="en"><strong>Nach dem Unterricht</strong> gehe ich einkaufen.</span></div>
+        <div class="redemittel-item"><span class="de"><strong>in</strong> + Dativ</span> = in (future time)<br><span class="en"><strong>In zwei Wochen</strong> habe ich die Pr&uuml;fung.</span></div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>Pr&auml;positionen mit Genitiv</h4>
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de"><strong>w&auml;hrend</strong> + Genitiv</span> = during<br><span class="en"><strong>W&auml;hrend des Unterrichts</strong> soll man nicht telefonieren.</span></div>
+        <div class="redemittel-item"><span class="de"><strong>innerhalb</strong> + Genitiv</span> = within<br><span class="en">Bitte antworten Sie <strong>innerhalb einer Woche</strong>.</span></div>
+        <div class="redemittel-item"><span class="de"><strong>au&szlig;erhalb</strong> + Genitiv</span> = outside of<br><span class="en"><strong>Au&szlig;erhalb der Arbeitszeit</strong> bin ich nicht erreichbar.</span></div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>Wichtige Zeitw&ouml;rter</h4>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="connector-chip">gestern</span><span class="connector-chip">vorgestern</span><span class="connector-chip">&uuml;bermorgen</span><span class="connector-chip">neulich</span><span class="connector-chip">k&uuml;rzlich</span><span class="connector-chip">damals</span><span class="connector-chip">heutzutage</span><span class="connector-chip">inzwischen</span><span class="connector-chip">seitdem</span><span class="connector-chip">zun&auml;chst</span><span class="connector-chip">anschlie&szlig;end</span><span class="connector-chip">schlie&szlig;lich</span>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Zeitausd&uuml;cke</h4>
+      <div id="zeitQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128218; Wechselpr&auml;positionen</h3>
+    <div class="sub-section">
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem;">
+        <span class="connector-chip">an</span><span class="connector-chip">auf</span><span class="connector-chip">hinter</span><span class="connector-chip">in</span><span class="connector-chip">neben</span><span class="connector-chip">&uuml;ber</span><span class="connector-chip">unter</span><span class="connector-chip">vor</span><span class="connector-chip">zwischen</span>
+      </div>
+      <div class="redemittel-item" style="border-left-color:var(--teal); margin-bottom:8px;"><span class="de">Wohin? → Akkusativ</span> (Bewegung/Richtung)<br><span class="en">Ich stelle das Buch <strong>auf den Tisch</strong>. | Er geht <strong>in die K&uuml;che</strong>.</span></div>
+      <div class="redemittel-item" style="border-left-color:var(--coral);"><span class="de">Wo? → Dativ</span> (Position/Ort)<br><span class="en">Das Buch liegt <strong>auf dem Tisch</strong>. | Er ist <strong>in der K&uuml;che</strong>.</span></div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: Akkusativ oder Dativ?</h4>
+      <div id="wechselQuiz"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128218; Verben mit Pr&auml;positionen</h3>
+    <div class="sub-section">
+      <div class="redemittel-grid">
+        <div class="redemittel-item"><span class="de">warten <strong>auf</strong> + Akk.</span><br><span class="en">Ich warte auf den Bus. (to wait for)</span></div>
+        <div class="redemittel-item"><span class="de">sich freuen <strong>auf</strong> + Akk.</span><br><span class="en">Ich freue mich auf den Urlaub. (to look forward to)</span></div>
+        <div class="redemittel-item"><span class="de">sich freuen <strong>&uuml;ber</strong> + Akk.</span><br><span class="en">Ich freue mich &uuml;ber das Geschenk. (to be happy about)</span></div>
+        <div class="redemittel-item"><span class="de">sich interessieren <strong>f&uuml;r</strong> + Akk.</span><br><span class="en">Er interessiert sich f&uuml;r Kunst. (to be interested in)</span></div>
+        <div class="redemittel-item"><span class="de">denken <strong>an</strong> + Akk.</span><br><span class="en">Ich denke an dich. (to think of)</span></div>
+        <div class="redemittel-item"><span class="de">sich besch&auml;ftigen <strong>mit</strong> + Dat.</span><br><span class="en">Er besch&auml;ftigt sich mit Physik. (to deal with)</span></div>
+        <div class="redemittel-item"><span class="de">teilnehmen <strong>an</strong> + Dat.</span><br><span class="en">Ich nehme an dem Kurs teil. (to participate in)</span></div>
+        <div class="redemittel-item"><span class="de">sich entscheiden <strong>f&uuml;r</strong> + Akk.</span><br><span class="en">Sie hat sich f&uuml;r das Studium entschieden. (to decide on)</span></div>
+        <div class="redemittel-item"><span class="de">Angst haben <strong>vor</strong> + Dat.</span><br><span class="en">Er hat Angst vor der Pr&uuml;fung. (to be afraid of)</span></div>
+        <div class="redemittel-item"><span class="de">sich gewöhnen <strong>an</strong> + Akk.</span><br><span class="en">Ich gewöhne mich an das Klima. (to get used to)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128218; N-Deklination</h3>
+    <div class="sub-section">
+      <div class="redemittel-item" style="border-left-color:var(--coral); margin-bottom:8px;"><span class="de">Bestimmte maskuline Nomen bekommen -n/-en in ALLEN Kasus au&szlig;er Nominativ Singular!</span></div>
+      <table class="conj-table">
+        <tr><th>Kasus</th><th>Normal</th><th>N-Deklination</th></tr>
+        <tr><td><strong>Nom.</strong></td><td>der Mann</td><td>der <strong>Student</strong></td></tr>
+        <tr><td><strong>Akk.</strong></td><td>den Mann</td><td>den <strong>Studenten</strong></td></tr>
+        <tr><td><strong>Dat.</strong></td><td>dem Mann</td><td>dem <strong>Studenten</strong></td></tr>
+        <tr><td><strong>Gen.</strong></td><td>des Mannes</td><td>des <strong>Studenten</strong></td></tr>
+      </table>
+      <div class="sub-section" style="margin-top:1rem;">
+        <h4>Wichtige N-Deklination-Nomen</h4>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="connector-chip">der Mensch</span><span class="connector-chip">der Student</span><span class="connector-chip">der Kollege</span><span class="connector-chip">der Kunde</span><span class="connector-chip">der Junge</span><span class="connector-chip">der Herr</span><span class="connector-chip">der Name</span><span class="connector-chip">der Gedanke</span><span class="connector-chip">der Nachbar</span><span class="connector-chip">der Experte</span><span class="connector-chip">der Journalist</span><span class="connector-chip">der Polizist</span>
+        </div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h4>&#127919; &Uuml;bung: N-Deklination</h4>
+      <div id="nDeklQuiz"></div>
+    </div>
   </div>
 </div>
 
 <!-- ======================== FILM & MUSIK ======================== -->
 <div class="section" id="sec-media">
   <div class="card">
-    <h3>&#127916; Deutsche Filme fur B2</h3>
+    <h3>&#127916; Deutsche Filme für B2</h3>
     <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
-      Schau auf Deutsch mit deutschen Untertiteln! Notiere neue Worter und Redewendungen.
+      Schau auf Deutsch mit deutschen Untertiteln! Notiere neue Wörter und Redewendungen.
     </p>
 
     <div class="media-card">
       <div class="media-emoji">&#127916;</div>
       <div class="media-info">
         <h4>Das Leben der Anderen (2006)</h4>
-        <p>Ein Stasi-Agent uberwacht einen Schriftsteller in der DDR. Oscar-Gewinner! Perfekt fur Themen wie Uberwachung, Freiheit, Politik.</p>
+        <p>Ein Stasi-Agent uberwacht einen Schriftsteller in der DDR. Oscar-Gewinner! Perfekt für Themen wie Uberwachung, Freiheit, Politik.</p>
         <span class="media-tag">Drama</span> <span class="media-tag">B2+ Wortschatz</span>
       </div>
     </div>
@@ -1229,7 +1737,7 @@ Mit freundlichen Grussen
       <div class="media-emoji">&#128250;</div>
       <div class="media-info">
         <h4>Babylon Berlin (ARD-Serie)</h4>
-        <p>Krimi im Berlin der 1920er Jahre. Reiche Sprache, historischer Kontext. Perfekt fur Horen + Lesen.</p>
+        <p>Krimi im Berlin der 1920er Jahre. Reiche Sprache, historischer Kontext. Perfekt für Horen + Lesen.</p>
         <span class="media-tag">Krimi</span> <span class="media-tag">Serie</span>
       </div>
     </div>
@@ -1245,7 +1753,7 @@ Mit freundlichen Grussen
   </div>
 
   <div class="card">
-    <h3>&#127925; Deutsche Musik fur B2</h3>
+    <h3>&#127925; Deutsche Musik für B2</h3>
     <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">
       Lies die Texte mit! Musik hilft beim Merken von Satzbau und Aussprache.
     </p>
@@ -1308,7 +1816,7 @@ Mit freundlichen Grussen
       <div class="media-emoji">&#127911;</div>
       <div class="media-info">
         <h4>Podcasts: Easy German / Slow German</h4>
-        <p>Kostenlose Podcasts, speziell fur Deutschlerner. Perfekt fur Horen uben im Alltag!</p>
+        <p>Kostenlose Podcasts, speziell für Deutschlerner. Perfekt für Horen üben im Alltag!</p>
         <span class="media-tag">Podcast</span> <span class="media-tag">Horen</span>
       </div>
     </div>
@@ -1320,7 +1828,7 @@ Mit freundlichen Grussen
       <div class="media-emoji">&#128187;</div>
       <div class="media-info">
         <h4>Easy German</h4>
-        <p>Strasseninterviews mit echten Deutschen. Untertitel auf Deutsch und Englisch. Perfekt fur Horen!</p>
+        <p>Straßeninterviews mit echten Deutschen. Untertitel auf Deutsch und Englisch. Perfekt für Horen!</p>
         <span class="media-tag">YouTube</span>
       </div>
     </div>
@@ -1328,8 +1836,8 @@ Mit freundlichen Grussen
       <div class="media-emoji">&#128187;</div>
       <div class="media-info">
         <h4>Deutsch mit Marija</h4>
-        <p>B2/C1 Grammatik-Erklarungen, Prufungstipps, Ubungen. Ideal fur Prufungsvorbereitung!</p>
-        <span class="media-tag">YouTube</span> <span class="media-tag">Prufung</span>
+        <p>B2/C1 Grammatik-Erklarungen, Prüfungstipps, Übungen. Ideal für Prüfungsvorbereitung!</p>
+        <span class="media-tag">YouTube</span> <span class="media-tag">Prüfung</span>
       </div>
     </div>
     <div class="media-card">
@@ -1355,40 +1863,40 @@ const vocabData = {
     {word:"die Auswirkung", article:"die", ex:"Der Klimawandel hat starke Auswirkungen auf die Umwelt.", translation:"impact, effect"},
     {word:"die Auseinandersetzung", article:"die", ex:"Es gab eine heftige Auseinandersetzung uber das neue Gesetz.", translation:"dispute, confrontation"},
     {word:"beeinflussen", article:"", ex:"Soziale Medien beeinflussen unsere Meinung.", translation:"to influence"},
-    {word:"berucksichtigen", article:"", ex:"Man muss alle Faktoren berucksichtigen.", translation:"to consider, take into account"},
-    {word:"die Voraussetzung", article:"die", ex:"Gute Sprachkenntnisse sind eine Voraussetzung fur den Job.", translation:"prerequisite, requirement"},
-    {word:"uberzeugen", article:"", ex:"Seine Argumente haben mich uberzeugt.", translation:"to convince"},
-    {word:"die Herausforderung", article:"die", ex:"Die Digitalisierung ist eine grosse Herausforderung.", translation:"challenge"},
+    {word:"berücksichtigen", article:"", ex:"Man muss alle Faktoren berücksichtigen.", translation:"to consider, take into account"},
+    {word:"die Voraussetzung", article:"die", ex:"Gute Sprachkenntnisse sind eine Voraussetzung für den Job.", translation:"prerequisite, requirement"},
+    {word:"überzeugen", article:"", ex:"Seine Argumente haben mich uberzeugt.", translation:"to convince"},
+    {word:"die Herausforderung", article:"die", ex:"Die Digitalisierung ist eine große Herausforderung.", translation:"challenge"},
     {word:"die Nachhaltigkeit", article:"die", ex:"Nachhaltigkeit ist ein wichtiges Thema unserer Zeit.", translation:"sustainability"},
-    {word:"sich auseinandersetzen mit", article:"", ex:"Wir mussen uns mit dem Problem auseinandersetzen.", translation:"to deal/engage with"},
+    {word:"sich auseinandersetzen mit", article:"", ex:"Wir müssen uns mit dem Problem auseinandersetzen.", translation:"to deal/engage with"},
     {word:"behaupten", article:"", ex:"Er behauptet, er habe Recht.", translation:"to claim, assert"},
     {word:"die Erkenntnis", article:"die", ex:"Die Forschung hat neue Erkenntnisse gebracht.", translation:"insight, finding"},
-    {word:"grundsatzlich", article:"", ex:"Grundsatzlich bin ich dafur, aber es gibt Einschrankungen.", translation:"fundamentally, in principle"},
+    {word:"grundsätzlich", article:"", ex:"Grundsätzlich bin ich dafur, aber es gibt Einschränkungen.", translation:"fundamentally, in principle"},
     {word:"allerdings", article:"", ex:"Das Angebot ist gut, allerdings zu teuer.", translation:"however, though"},
     {word:"die Entwicklung", article:"die", ex:"Die technologische Entwicklung geht immer schneller.", translation:"development"},
-    {word:"beschaftigen", article:"", ex:"Das Thema beschaftigt mich schon lange.", translation:"to occupy, concern"},
-    {word:"vernachlassigen", article:"", ex:"Man darf die Gesundheit nicht vernachlassigen.", translation:"to neglect"},
+    {word:"beschäftigen", article:"", ex:"Das Thema beschaftigt mich schon lange.", translation:"to occupy, concern"},
+    {word:"vernachlässigen", article:"", ex:"Man darf die Gesundheit nicht vernachlässigen.", translation:"to neglect"},
     {word:"die Eigenschaft", article:"die", ex:"Teamfahigkeit ist eine wichtige Eigenschaft.", translation:"quality, characteristic"},
     {word:"beitragen zu", article:"", ex:"Jeder kann zum Umweltschutz beitragen.", translation:"to contribute to"},
     {word:"erheblich", article:"", ex:"Die Kosten sind erheblich gestiegen.", translation:"considerable, significant"},
     {word:"die Maßnahme", article:"die", ex:"Die Regierung hat neue Maßnahmen beschlossen.", translation:"measure, action"},
   ],
   arbeit: [
-    {word:"das Vorstellungsgesprach", article:"das", ex:"Mein Vorstellungsgesprach ist nachste Woche.", translation:"job interview"},
-    {word:"die Fortbildung", article:"die", ex:"Mein Chef unterstutzt meine Fortbildung.", translation:"further training"},
-    {word:"die Kundigungsfrist", article:"die", ex:"Die Kundigungsfrist betragt drei Monate.", translation:"notice period"},
+    {word:"das Vorstellungsgesprach", article:"das", ex:"Mein Vorstellungsgesprach ist nächste Woche.", translation:"job interview"},
+    {word:"die Fortbildung", article:"die", ex:"Mein Chef unterstützt meine Fortbildung.", translation:"further training"},
+    {word:"die Kündigungsfrist", article:"die", ex:"Die Kündigungsfrist betragt drei Monate.", translation:"notice period"},
     {word:"das Betriebsklima", article:"das", ex:"Ein gutes Betriebsklima ist mir wichtiger als das Gehalt.", translation:"work atmosphere"},
-    {word:"die Uberstunden (Pl.)", article:"die", ex:"Ich mache ungern Uberstunden.", translation:"overtime"},
-    {word:"der Fachkraftemangel", article:"der", ex:"In Deutschland gibt es einen starken Fachkraftemangel.", translation:"skilled labor shortage"},
+    {word:"die Überstunden (Pl.)", article:"die", ex:"Ich mache ungern Überstunden.", translation:"overtime"},
+    {word:"der Fachkräftemangel", article:"der", ex:"In Deutschland gibt es einen starken Fachkräftemangel.", translation:"skilled labor shortage"},
     {word:"die Gleitzeit", article:"die", ex:"Bei uns gibt es Gleitzeit — ich kann um 7 oder 9 anfangen.", translation:"flextime"},
     {word:"sich bewerben um", article:"", ex:"Ich bewerbe mich um eine Stelle als Ingenieur.", translation:"to apply for"},
   ],
   bildung: [
     {word:"die Vorlesung", article:"die", ex:"Die Vorlesung beginnt um 9 Uhr.", translation:"lecture"},
-    {word:"das Stipendium", article:"das", ex:"Sie hat ein Stipendium fur ihr Studium bekommen.", translation:"scholarship"},
-    {word:"die Studiengebuhren (Pl.)", article:"die", ex:"In vielen Bundeslandern gibt es keine Studiengebuhren.", translation:"tuition fees"},
+    {word:"das Stipendium", article:"das", ex:"Sie hat ein Stipendium für ihr Studium bekommen.", translation:"scholarship"},
+    {word:"die Studiengebuhren (Pl.)", article:"die", ex:"In vielen Bundesländern gibt es keine Studiengebuhren.", translation:"tuition fees"},
     {word:"die Hausarbeit", article:"die", ex:"Ich muss bis Ende des Semesters eine Hausarbeit schreiben.", translation:"term paper"},
-    {word:"die Klausur", article:"die", ex:"Nachste Woche schreibe ich zwei Klausuren.", translation:"exam, test"},
+    {word:"die Klausur", article:"die", ex:"Nächste Woche schreibe ich zwei Klausuren.", translation:"exam, test"},
     {word:"das Auslandssemester", article:"das", ex:"Mein Auslandssemester in Spanien war toll.", translation:"semester abroad"},
     {word:"die Fachrichtung", article:"die", ex:"Welche Fachrichtung studierst du?", translation:"field of study"},
     {word:"der Abschluss", article:"der", ex:"Nach dem Abschluss suche ich eine Stelle.", translation:"degree, graduation"},
@@ -1397,11 +1905,11 @@ const vocabData = {
     {word:"der Klimawandel", article:"der", ex:"Der Klimawandel bedroht viele Tierarten.", translation:"climate change"},
     {word:"erneuerbare Energien", article:"", ex:"Wir brauchen mehr erneuerbare Energien.", translation:"renewable energy"},
     {word:"die Abgase (Pl.)", article:"die", ex:"Abgase aus Industrie und Verkehr verschmutzen die Luft.", translation:"exhaust fumes"},
-    {word:"der Ausstoß", article:"der", ex:"Wir mussen den CO2-Ausstoß reduzieren.", translation:"emission, output"},
+    {word:"der Ausstoß", article:"der", ex:"Wir müssen den CO2-Ausstoß reduzieren.", translation:"emission, output"},
     {word:"die Mülltrennung", article:"die", ex:"In Deutschland ist Mulltrennung sehr wichtig.", translation:"waste separation"},
     {word:"das Artensterben", article:"das", ex:"Das Artensterben ist eine Folge der Umweltzerstorung.", translation:"species extinction"},
     {word:"nachhaltig", article:"", ex:"Wir sollten nachhaltiger leben.", translation:"sustainable"},
-    {word:"der Verbrauch", article:"der", ex:"Wir mussen unseren Energieverbrauch senken.", translation:"consumption"},
+    {word:"der Verbrauch", article:"der", ex:"Wir müssen unseren Energieverbrauch senken.", translation:"consumption"},
   ],
   gesellschaft: [
     {word:"die Gleichberechtigung", article:"die", ex:"Gleichberechtigung zwischen Mann und Frau ist wichtig.", translation:"equal rights"},
@@ -1414,10 +1922,10 @@ const vocabData = {
     {word:"das Vorurteil", article:"das", ex:"Vorurteile fuhren zu Diskriminierung.", translation:"prejudice"},
   ],
   gesundheit: [
-    {word:"die Ernahrung", article:"die", ex:"Eine gesunde Ernahrung ist wichtig.", translation:"nutrition, diet"},
+    {word:"die Ernährung", article:"die", ex:"Eine gesunde Ernährung ist wichtig.", translation:"nutrition, diet"},
     {word:"die Vorsorge", article:"die", ex:"Regelmassige Vorsorge kann Krankheiten verhindern.", translation:"prevention, check-up"},
     {word:"die Nebenwirkung", article:"die", ex:"Dieses Medikament hat keine Nebenwirkungen.", translation:"side effect"},
-    {word:"der Bewegungsmangel", article:"der", ex:"Bewegungsmangel ist ein grosses Gesundheitsproblem.", translation:"lack of exercise"},
+    {word:"der Bewegungsmangel", article:"der", ex:"Bewegungsmangel ist ein großes Gesundheitsproblem.", translation:"lack of exercise"},
     {word:"die Krankenkasse", article:"die", ex:"In Deutschland muss jeder eine Krankenkasse haben.", translation:"health insurance"},
     {word:"der Stress", article:"der", ex:"Zu viel Stress macht krank.", translation:"stress"},
     {word:"die Therapie", article:"die", ex:"Er macht eine Therapie gegen seine Ruckenschmerzen.", translation:"therapy"},
@@ -1439,24 +1947,24 @@ const vocabData = {
     {word:"infolgedessen", article:"", ex:"Die Preise stiegen. Infolgedessen kauften weniger Leute.", translation:"consequently"},
     {word:"indem", article:"", ex:"Man kann Energie sparen, indem man weniger Auto fahrt.", translation:"by (doing sth)"},
     {word:"wahrend", article:"", ex:"Wahrend ich lerne, hort mein Bruder Musik.", translation:"while / whereas"},
-    {word:"sofern", article:"", ex:"Sofern das Wetter gut ist, gehen wir wandern.", translation:"provided that"},
+    {word:"sofern", article:"", ex:"Sofern das Wetter gut ist, gehen wir wändern.", translation:"provided that"},
     {word:"anstatt ... zu", article:"", ex:"Anstatt zu lernen, hat er ferngesehen.", translation:"instead of"},
     {word:"um ... zu", article:"", ex:"Ich lerne Deutsch, um in Deutschland zu studieren.", translation:"in order to"},
   ]
 };
 
 const konjunktivQuestions = [
-  {q:"Wenn ich mehr Zeit _____ (haben), wurde ich jeden Tag lesen.", a:"hatte", hint:"haben → hatte"},
-  {q:"Es ware schon, wenn du auch _____ (kommen).", a:"kamest", alt:["kommen wurdest","kamst","kämest"], hint:"kommen → kamest/kämest"},
-  {q:"Wenn er reich _____ (sein), wurde er eine Weltreise machen.", a:"ware", alt:["wäre"], hint:"sein → ware/wäre"},
-  {q:"Ich _____ (konnen) mir vorstellen, im Ausland zu leben.", a:"konnte", alt:["könnte"], hint:"konnen → konnte/könnte"},
-  {q:"Wenn wir fruher _____ (anfangen), waren wir jetzt fertig.", a:"angefangen hatten", alt:["angefangen hätten"], hint:"Plusquamperfekt Konj. II"},
+  {q:"Wenn ich mehr Zeit _____ (haben), würde ich jeden Tag lesen.", a:"hatte", hint:"haben → hätte"},
+  {q:"Eswäre schon, wenn du auch _____ (kommen).", a:"kamest", alt:["kommen wurdest","kamst","kämest"], hint:"kommen → kamest/kämest"},
+  {q:"Wenn er reich _____ (sein), würde er eine Weltreise machen.", a:"ware", alt:["wäre"], hint:"sein →wäre/wäre"},
+  {q:"Ich _____ (können) mir vorstellen, im Ausland zu leben.", a:"konnte", alt:["könnte"], hint:"können → konnte/könnte"},
+  {q:"Wenn wir fruher _____ (anfangen),wären wir jetzt fertig.", a:"angefangen hätten", alt:["angefangen hätten"], hint:"Plusquamperfekt Konj. II"},
   {q:"Er tat so, als ob er nichts _____ (wissen).", a:"wusste", alt:["wüsste"], hint:"wissen → wusste/wüsste"},
 ];
 
 const passivQuestions = [
   {q:"Man baut hier ein neues Haus.", a:"Hier wird ein neues Haus gebaut.", hint:"Prasens Passiv: wird + Partizip II"},
-  {q:"Die Firma stellte viele Mitarbeiter ein.", a:"Viele Mitarbeiter wurden von der Firma eingestellt.", hint:"Prateritum Passiv: wurde + Partizip II"},
+  {q:"Die Firma stellte viele Mitarbeiter ein.", a:"Viele Mitarbeiter wurden von der Firma eingestellt.", hint:"Präteritum Passiv: würde + Partizip II"},
   {q:"Man muss das Problem sofort losen.", a:"Das Problem muss sofort gelost werden.", hint:"Modalverb + Passiv: Modalverb + Partizip II + werden"},
 ];
 
@@ -1471,81 +1979,106 @@ const konnektorQuestions = [
 const indirekteRedeQuestions = [
   {q:'Er sagte: "Ich habe keine Zeit."', a:"Er sagte, er habe keine Zeit.", hint:"haben → habe (Konj. I)"},
   {q:'Sie meinte: "Das Wetter wird morgen besser."', a:"Sie meinte, das Wetter werde morgen besser.", hint:"werden → werde (Konj. I)"},
-  {q:'Der Minister sagte: "Wir mussen die Steuern senken."', a:"Der Minister sagte, sie mussten die Steuern senken.", hint:"mussen → mussten (Konj. II, da Konj. I = Indikativ)"},
+  {q:'Der Minister sagte: "Wir müssen die Steuern senken."', a:"Der Minister sagte, sie mussten die Steuern senken.", hint:"mussen → mussten (Konj. II, da Konj. I = Indikativ)"},
 ];
 
 const lesenTeil1Data = {
   topic: "Sport und Fitness",
   question: "Sie lesen in einem Forum, wie Menschen uber Sport denken.",
   persons: [
-    {name:"Caroline", text:"Ich bin Marathonlauferin. Sport sollte Spass machen, nicht uberfordern. Man braucht keinen teuren Coach."},
+    {name:"Caroline", text:"Ich bin Marathonlauferin. Sport sollte Spaß machen, nicht überfordern. Man braucht keinen teuren Coach."},
     {name:"Jan", text:"Als IT-Unternehmer brauche ich Bewegung gegen Stress. Ich trainiere allein im Fitnessstudio, wann es mir passt."},
     {name:"Malte", text:"Fruher war ich ein Sportmuffel. Jetzt habe ich einen Trainer, der mein Programm individuell gestaltet. Ich will ein paar Kilo abnehmen."},
-    {name:"Pia", text:"Teure Sportausrustung ist unnotig. In unserer Firma spielen wir Volleyball. Teamgeist ist das Beste am Sport!"},
+    {name:"Pia", text:"Teure Sportausrustung ist unnötig. In unserer Firma spielen wir Volleyball. Teamgeist ist das Beste am Sport!"},
   ],
   statements: [
     {text:"Wer hat durch Sport sein Alltagsverhalten geandert?", answer:"Malte"},
-    {text:"Fur wen spielt der Spass beim Sport eine Rolle?", answer:"Caroline"},
+    {text:"Fur wen spielt der Spaß beim Sport eine Rolle?", answer:"Caroline"},
     {text:"Fur wen spielt die Ausrustung keine Rolle?", answer:"Pia"},
-    {text:"Wer halt Sport fur einen guten Ausgleich zum Alltag?", answer:"Jan"},
+    {text:"Wer halt Sport für einen guten Ausgleich zum Alltag?", answer:"Jan"},
     {text:"Wer hat ein sportliches Ziel vor Augen?", answer:"Malte"},
   ]
 };
 
+const lesenTeil2Data = {
+  title: "Digitale Medien in der Schule",
+  intro: "Immer mehr Schulen setzen auf Tablets und Laptops im Unterricht. Doch wie sinnvoll ist das wirklich?",
+  // The article with gaps marked as [1] to [6]
+  paragraphs: [
+    "In den letzten Jahren hat die Digitalisierung auch in deutschen Schulen Einzug gehalten. Viele Bundeslander investieren in technische Ausstattung. [1] Trotzdem gibt es immer noch große Unterschiede zwischen den Schulen.",
+    "Die Befurworter argumentieren, dass digitale Medien den Unterricht interessanter machen. [2] Außerdem können Schüler in ihrem eigenen Tempo lernen und bekommen sofort eine Ruckmeldung.",
+    "Kritiker hingegen warnen vor möglichen Nachteilen. [3] Zudem fehle vielen Lehrkräften die nötige Ausbildung, um die Gerate sinnvoll einzusetzen.",
+    "Eine aktuelle Studie der Universitat Munchen zeigt ein differenziertes Bild. [4] Entscheidend sei nicht die Technik selbst, sondern wie sie im Unterricht eingesetzt werde.",
+    "Auch die Eltern sind gespalten. [5] Andere hingegen befurchten, dass ihre Kinder zu viel Zeit vor Bildschirmen verbringen.",
+    "Bildungsexperten sind sich einig: Die Zukunft der Schule wird digital sein. [6] Nur so kann die Digitalisierung im Klassenzimmer wirklich gelingen."
+  ],
+  // 8 options: 6 correct + 2 distractors
+  options: [
+    {id:"a", text:"Demnach verbessern sich die Leistungen nur dann, wenn die Lehrkräfte gut geschult sind.", correct:4},
+    {id:"b", text:"Allein der Bund hat uber funf Milliarden Euro für den Digitalpakt bereitgestellt.", correct:1},
+    {id:"c", text:"Manche begrussen es, dass ihre Kinder fruh den Umgang mit Technologie lernen.", correct:5},
+    {id:"d", text:"Allerdings müssen Lehrkräfte entsprechend fortgebildet und die Lehrpläne angepasst werden.", correct:6},
+    {id:"e", text:"Die meisten Schüler bevorzugen jedoch den klassischen Frontalunterricht.", correct:-1},
+    {id:"f", text:"So können Schüler beispielsweise mit interaktiven Übungen und Videos arbeiten.", correct:2},
+    {id:"g", text:"Sie befurchten, dass die Kinder sich nicht mehr konzentrieren können und zu viel abgelenkt werden.", correct:3},
+    {id:"h", text:"In Finnland werden digitale Medien schon seit uber zwanzig Jahren erfolgreich eingesetzt.", correct:-1}
+  ]
+};
+
 const sprechenTopics = [
-  {topic:"Haustiere", points:["Beschreiben Sie mehrere Arten.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Moglichkeit genauer."]},
+  {topic:"Haustiere", points:["Beschreiben Sie mehrere Arten.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Möglichkeit genauer."]},
   {topic:"Werbung", points:["Beschreiben Sie mehrere Formen.","Beschreiben Sie eine Form genauer.","Nennen Sie Vor- und Nachteile."]},
-  {topic:"Der Weg zum Arbeitsplatz", points:["Beschreiben Sie mehrere Moglichkeiten.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Moglichkeit genauer."]},
+  {topic:"Der Weg zum Arbeitsplatz", points:["Beschreiben Sie mehrere Möglichkeiten.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Möglichkeit genauer."]},
   {topic:"Urlaubsziele", points:["Beschreiben Sie verschiedene Arten.","Nennen Sie Vor- und Nachteile.","Gehen Sie auf eine Art genauer ein."]},
-  {topic:"Fit und gesund am Arbeitsplatz", points:["Beschreiben Sie mehrere Massnahmen.","Bewerten Sie Vor- und Nachteile.","Beschreiben Sie eine genauer."]},
+  {topic:"Fit und gesund am Arbeitsplatz", points:["Beschreiben Sie mehrere Maßnahmen.","Bewerten Sie Vor- und Nachteile.","Beschreiben Sie eine genauer."]},
   {topic:"Fremdsprachen lernen", points:["Beschreiben Sie mehrere Methoden.","Nennen Sie Vor- und Nachteile.","Welche Methode bevorzugen Sie?"]},
   {topic:"Wohnformen", points:["Beschreiben Sie verschiedene Wohnformen.","Nennen Sie Vor- und Nachteile.","Welche Wohnform bevorzugen Sie?"]},
   {topic:"Ehrenamt", points:["Beschreiben Sie verschiedene Formen.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie eine Form genauer."]},
   {topic:"Medienkonsum", points:["Beschreiben Sie verschiedene Medien.","Nennen Sie Vor- und Nachteile.","Welches Medium bevorzugen Sie?"]},
-  {topic:"Ernahrungstrends", points:["Beschreiben Sie verschiedene Trends.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie einen Trend genauer."]},
+  {topic:"Ernährungstrends", points:["Beschreiben Sie verschiedene Trends.","Nennen Sie Vor- und Nachteile.","Beschreiben Sie einen Trend genauer."]},
 ];
 
 const diskussionTopics = [
   "Sollten Universitaten Anwesenheitspflicht einfuhren?",
   "Sollte man Homeoffice zur Pflicht machen?",
-  "Sollten Schuler ihre Lehrer bewerten durfen?",
+  "Sollten Schüler ihre Lehrer bewerten dürfen?",
   "Brauchen wir ein Tempolimit auf Autobahnen?",
-  "Sollte man soziale Medien fur unter 16-Jahrige verbieten?",
+  "Sollte man soziale Medien für unter 16-Jährige verbieten?",
   "Sollte das Wahlalter auf 16 gesenkt werden?",
-  "Ist ein Auslandssemester fur alle Studierenden sinnvoll?",
+  "Ist ein Auslandssemester für alle Studierenden sinnvoll?",
   "Sollte man Plastikverpackungen komplett verbieten?",
   "Brauchen wir eine 4-Tage-Arbeitswoche?",
   "Sollte offentlicher Nahverkehr kostenlos sein?",
 ];
 
 const schreibenPrompts = [
-  "Sollte man soziale Medien fur Jugendliche unter 16 verbieten?",
+  "Sollte man soziale Medien für Jugendliche unter 16 verbieten?",
   "Brauchen wir ein bedingungsloses Grundeinkommen?",
   "Homeoffice: Zukunft der Arbeit oder Isolation?",
   "Sollte Sport in der Schule ein Hauptfach werden?",
-  "Sind Elektroautos wirklich besser fur die Umwelt?",
+  "Sind Elektroautos wirklich besser für die Umwelt?",
   "Sollte man die Studiengebuhren wieder einfuhren?",
-  "Digitalisierung: Chance oder Risiko fur die Gesellschaft?",
+  "Digitalisierung: Chance oder Risiko für die Gesellschaft?",
   "Sollte man das Handyverbot an Schulen einfuhren?",
 ];
 
 const schreibenPrompts2 = [
   "Sie haben einen Online-Kurs gebucht, aber die Qualitat entspricht nicht der Beschreibung. Schreiben Sie eine Beschwerde an den Anbieter.",
   "In Ihrer Abteilung gibt es immer viele Meetings. Schreiben Sie eine E-Mail an Ihre Vorgesetzte, Frau Dr. Martens.",
-  "Sie mochten an einer Fortbildung teilnehmen. Schreiben Sie eine Anfrage an den Veranstalter.",
-  "Ihr Nachbar macht regelmasssig nachts Larm. Schreiben Sie an die Hausverwaltung.",
-  "Sie mochten Ihren Vertrag im Fitnessstudio kundigen. Schreiben Sie an den Betreiber.",
+  "Sie möchten an einer Fortbildung teilnehmen. Schreiben Sie eine Anfrage an den Veranstalter.",
+  "Ihr Nachbar macht regelmäßig nachts Larm. Schreiben Sie an die Hausverwaltung.",
+  "Sie möchten Ihren Vertrag im Fitnessstudio kundigen. Schreiben Sie an den Betreiber.",
 ];
 
 const dailyTips = [
-  "Beim Lesen Teil 1: Gleiche Worter in Aussage und Text = oft FALLE! Suche nach Paraphrasen.",
-  "Konjunktiv II beeindruckt die Prufer! Baue Satze wie 'Es ware sinnvoll, wenn...' in deinen Vortrag ein.",
+  "Beim Lesen Teil 1: Gleiche Wörter in Aussage und Text = oft FALLE! Suche nach Paraphrasen.",
+  "Konjunktiv II beeindruckt die Prufer! Baue Satze wie 'Eswäre sinnvoll, wenn...' in deinen Vortrag ein.",
   "Nimm deinen Vortrag mit dem Handy auf und hor ihn dir selbst an. So merkst du Fehler sofort!",
   "Lerne jeden Tag 5 neue Konnektoren mit Beispielsatzen. Sie machen deine Texte sofort besser!",
   "Beim Schreiben: Verwende NIE 'gut/schlecht'. Sag stattdessen: vorteilhaft, problematisch, bedeutsam, fragwurdig.",
   "Sprechen Teil 2: Stelle deinem Partner Fragen! Interaktion bringt die meisten Punkte.",
-  "Heute ist Film-Tag! Schau einen deutschen Film mit deutschen Untertiteln. Notiere 10 neue Worter.",
-  "Schreibe einen Forumsbeitrag zu einem B2-Thema. Timer: 50 Minuten, mindestens 150 Worter!",
+  "Heute ist Film-Tag! Schau einen deutschen Film mit deutschen Untertiteln. Notiere 10 neue Wörter.",
+  "Schreibe einen Forumsbeitrag zu einem B2-Thema. Timer: 50 Minuten, mindestens 150 Wörter!",
   "Passiv uben: Schreibe 5 Satze im Aktiv und wandle sie ins Passiv um.",
   "Redemittel auswendig lernen! 'Zusammenfassend lasst sich sagen...' klingt sofort B2.",
 ];
@@ -1580,6 +2113,13 @@ function init() {
 
   // Set initial speaking topics
   setRandomTopic();
+
+  // New sections
+  loadVerbExercise();
+  loadSprechenFC();
+  loadSatzbauExercises();
+  loadAdjektivExercises();
+  loadMehrExercises();
 }
 
 function updateCountdown() {
@@ -1587,8 +2127,8 @@ function updateCountdown() {
   const today = new Date();
   const diff = Math.ceil((examDate - today) / (1000*60*60*24));
   document.getElementById('daysLeft').textContent = diff;
-  document.getElementById('countdownBar').textContent = `&#128198; ${diff} Tage bis zur B2-Prufung (30. Mai 2026)`;
-  document.getElementById('countdownBar').innerHTML = `&#128198; ${diff} Tage bis zur B2-Prufung (30. Mai 2026)`;
+  document.getElementById('countdownBar').textContent = `&#128198; ${diff} Tage bis zur B2-Prüfung (30. Mai 2026)`;
+  document.getElementById('countdownBar').innerHTML = `&#128198; ${diff} Tage bis zur B2-Prüfung (30. Mai 2026)`;
 }
 
 function updateStreak() {
@@ -1616,11 +2156,11 @@ function loadDailyTip() {
 
 function loadStudyPlan() {
   const weeks = [
-    {title:"Woche 1-2: Grundlagen", tasks:["Wortschatz: 20 Worter pro Tag aus deiner Wortliste","Grammatik: Konjunktiv II + Passiv wiederholen","Lesen Teil 1 + 2 uben (Ubungsbuch S. 6-24)","Taglich 1 deutsche Podcast-Folge horen"]},
-    {title:"Woche 3: Intensivtraining", tasks:["Wortschatz: Themenworter (Arbeit, Umwelt, Gesellschaft)","Grammatik: Konnektoren + indirekte Rede","Schreiben Teil 1 uben: 2 Forumsbeitrage pro Woche","Lesen Teil 3 + 4 uben"]},
-    {title:"Woche 4: Sprechen-Fokus", tasks:["Taglich 1 Vortrag (4 Min.) aufnehmen und anhoren","Redemittel auswendig lernen und anwenden","Schreiben Teil 2 uben: 2 formelle Nachrichten","Lesen Teil 5 uben, alle Teile wiederholen"]},
-    {title:"Woche 5: Simulation", tasks:["Kompletten Lesetest simulieren (65 Min.)","Kompletten Schreibtest simulieren (75 Min.)","Sprechen mit Partner oder allein vor Spiegel uben","Schwache Bereiche gezielt wiederholen"]},
-    {title:"Woche 6: Feinschliff", tasks:["Alle Redemittel nochmal durchgehen","Letzte Simulation aller Prufungsteile","Keine neuen Worter — nur wiederholen!","Entspannen, fruh schlafen, Prufung schaffen! &#128170;"]},
+    {title:"Woche 1-2: Grundlagen", tasks:["Wortschatz: 20 Wörter pro Tag aus deiner Wortliste","Grammatik: Konjunktiv II + Passiv wiederholen","Lesen Teil 1 + 2 üben (Übungsbuch S. 6-24)","Täglich 1 deutsche Podcast-Folge horen"]},
+    {title:"Woche 3: Intensivtraining", tasks:["Wortschatz: Themenworter (Arbeit, Umwelt, Gesellschaft)","Grammatik: Konnektoren + indirekte Rede","Schreiben Teil 1 uben: 2 Forumsbeitrage pro Woche","Lesen Teil 3 + 4 üben"]},
+    {title:"Woche 4: Sprechen-Fokus", tasks:["Täglich 1 Vortrag (4 Min.) aufnehmen und anhoren","Redemittel auswendig lernen und anwenden","Schreiben Teil 2 uben: 2 formelle Nachrichten","Lesen Teil 5 uben, alle Teile wiederholen"]},
+    {title:"Woche 5: Simulation", tasks:["Kompletten Lesetest simulieren (65 Min.)","Kompletten Schreibtest simulieren (75 Min.)","Sprechen mit Partner oder allein vor Spiegel üben","Schwache Bereiche gezielt wiederholen"]},
+    {title:"Woche 6: Feinschliff", tasks:["Alle Redemittel nochmal durchgehen","Letzte Simulation aller Prüfungsteile","Keine neuen Wörter — nur wiederholen!","Entspannen, fruh schlafen, Prüfung schaffen! &#128170;"]},
   ];
 
   let html = '';
@@ -1643,7 +2183,9 @@ function showSection(name) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('sec-'+name).classList.add('active');
-  document.querySelectorAll('.nav-tab')[['dashboard','vocab','grammar','lesen','schreiben','sprechen','media'].indexOf(name)].classList.add('active');
+  const tabNames = ['dashboard','vocab','grammar','lesen','schreiben','sprechen','verben','satzbau','adjektive','mehr','media'];
+  const idx = tabNames.indexOf(name);
+  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   window.scrollTo(0,0);
 }
 
@@ -1683,12 +2225,12 @@ function updateUnknownUI() {
   }
 
   if (showOnlyUnknown) {
-    filterBtn.innerHTML = '&#9989; Alle Worter zeigen';
+    filterBtn.innerHTML = '&#9989; Alle Wörter zeigen';
     filterBtn.style.background = 'var(--coral)';
     filterBtn.style.color = 'white';
     filterBtn.style.borderColor = 'var(--coral)';
   } else {
-    filterBtn.innerHTML = '&#128308; Nur unbekannte Worter' + (unknownCount > 0 ? ` (${unknownCount})` : '');
+    filterBtn.innerHTML = '&#128308; Nur unbekannte Wörter' + (unknownCount > 0 ? ` (${unknownCount})` : '');
     filterBtn.style.background = 'transparent';
     filterBtn.style.color = 'var(--teal)';
     filterBtn.style.borderColor = 'var(--teal)';
@@ -1710,7 +2252,7 @@ function showFlashcard() {
   if (!activeDeck || activeDeck.length === 0) {
     document.getElementById('fcArticle').textContent = '';
     document.getElementById('fcWord').textContent = showOnlyUnknown ? 'Alles gewusst!' : 'Keine Karten';
-    document.getElementById('fcTranslation').textContent = showOnlyUnknown ? 'Wechsle zuruck zu allen Wortern oder wahle eine andere Kategorie.' : '';
+    document.getElementById('fcTranslation').textContent = showOnlyUnknown ? 'Wechsle zurück zu allen Wörtern oder wahle eine andere Kategorie.' : '';
     document.getElementById('fcExample').textContent = '';
     document.getElementById('fcProgress').textContent = '0 / 0';
     document.getElementById('flashcard').classList.remove('flipped');
@@ -1803,7 +2345,7 @@ function saveUnknown() {
 
 function loadTopicVocab() {
   const topics = {
-    "Meinung ausdrucken": ["Ich bin der Ansicht, dass...","Meiner Meinung nach...","Ich bin uberzeugt davon, dass...","Es ist heutzutage undenkbar, ... zu ...","Fur mich zahlt ... mehr als ...","Ich lege grossen Wert darauf, ... zu ..."],
+    "Meinung ausdrucken": ["Ich bin der Ansicht, dass...","Meiner Meinung nach...","Ich bin uberzeugt davon, dass...","Es ist heutzutage undenkbar, ... zu ...","Fur mich zahlt ... mehr als ...","Ich lege großen Wert darauf, ... zu ..."],
     "Vorteile/Nachteile": ["Ein Vorteil / Nachteil ist...","Dafur / Dagegen spricht...","Es gibt viele Beispiele. So etwa ...","Fur ... spricht ...","Gegen ... spricht ..."],
     "Vergleichen": ["Im Vergleich zu...","Im Gegensatz zu...","Wahrend ... ist ... hingegen...","Anders als ...","Verglichen mit ..."],
   };
@@ -1957,6 +2499,125 @@ function loadLesenExercises() {
   html += `</div>`;
 
   document.getElementById('lesenTeil1').innerHTML = html;
+
+  // Teil 2: Lückentext
+  loadLesenTeil2();
+}
+
+function loadLesenTeil2() {
+  const d = lesenTeil2Data;
+  let html = `<div style="margin-bottom:1rem;"><strong>${d.title}</strong><br>
+    <span style="font-size:0.85rem;color:var(--text-light);">${d.intro}</span></div>`;
+
+  // Render article with gaps
+  html += `<div style="background:#f8f9fb;padding:16px;border-radius:var(--radius-sm);margin-bottom:1rem;line-height:1.8;">`;
+  d.paragraphs.forEach(p => {
+    let rendered = p.replace(/\[(\d)\]/g, (match, num) => {
+      return `<span id="lt2gap${num}" class="lt2-gap" style="display:inline-block;min-width:200px;border-bottom:2px dashed var(--teal);padding:2px 8px;margin:0 4px;color:var(--teal);font-weight:600;cursor:default;">[Lücke ${num}]</span>`;
+    });
+    html += `<p style="margin-bottom:10px;">${rendered}</p>`;
+  });
+  html += `</div>`;
+
+  // Render draggable options as buttons
+  html += `<div style="margin-bottom:0.5rem;font-weight:600;">Wähle für jede Lücke den passenden Satz:</div>`;
+  html += `<div id="lt2options" style="display:flex;flex-direction:column;gap:6px;">`;
+  // Shuffle options
+  const shuffled = [...d.options].sort(() => Math.random() - 0.5);
+  shuffled.forEach(opt => {
+    html += `<button class="quiz-option lt2-opt" style="width:100%;text-align:left;padding:10px 14px;font-size:0.85rem;" data-optid="${opt.id}" onclick="selectLT2Option(this)">${opt.id}) ${opt.text}</button>`;
+  });
+  html += `</div>`;
+
+  // Gap selector
+  html += `<div id="lt2assign" style="margin-top:1rem;display:none;">
+    <p style="font-size:0.85rem;margin-bottom:8px;"><strong>Welche Lücke?</strong></p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+  for (let i = 1; i <= 6; i++) {
+    html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="assignLT2Gap(${i})">${i}</button>`;
+  }
+  html += `</div></div>`;
+
+  html += `<div style="margin-top:1rem;">
+    <button class="timer-btn" onclick="checkLesenTeil2()">Antworten prufen</button>
+    <button class="timer-btn" style="margin-left:8px;" onclick="resetLesenTeil2()">&#128260; Zurücksetzen</button>
+  </div>`;
+  html += `<div id="lt2feedback" style="margin-top:1rem;"></div>`;
+
+  document.getElementById('lesenTeil2').innerHTML = html;
+}
+
+let lt2Selected = null;
+let lt2Answers = {};
+
+function selectLT2Option(btn) {
+  if (btn.classList.contains('used')) return;
+  document.querySelectorAll('.lt2-opt').forEach(b => b.style.outline = '');
+  btn.style.outline = '3px solid var(--teal)';
+  lt2Selected = btn.dataset.optid;
+  document.getElementById('lt2assign').style.display = 'block';
+}
+
+function assignLT2Gap(gapNum) {
+  if (!lt2Selected) return;
+  const opt = lesenTeil2Data.options.find(o => o.id === lt2Selected);
+  if (!opt) return;
+
+  // If this gap already had an answer, free the old option
+  if (lt2Answers[gapNum]) {
+    const oldBtn = document.querySelector(`.lt2-opt[data-optid="${lt2Answers[gapNum]}"]`);
+    if (oldBtn) { oldBtn.classList.remove('used'); oldBtn.style.opacity = '1'; }
+  }
+
+  lt2Answers[gapNum] = lt2Selected;
+  const gap = document.getElementById('lt2gap' + gapNum);
+  if (gap) {
+    gap.textContent = `${opt.id}) ${opt.text}`;
+    gap.style.borderBottom = '2px solid var(--teal)';
+    gap.style.fontSize = '0.82rem';
+  }
+
+  // Mark option as used
+  const btn = document.querySelector(`.lt2-opt[data-optid="${lt2Selected}"]`);
+  if (btn) { btn.classList.add('used'); btn.style.opacity = '0.5'; btn.style.outline = ''; }
+
+  lt2Selected = null;
+  document.getElementById('lt2assign').style.display = 'none';
+}
+
+function checkLesenTeil2() {
+  const d = lesenTeil2Data;
+  let correct = 0;
+  for (let i = 1; i <= 6; i++) {
+    const gap = document.getElementById('lt2gap' + i);
+    const answer = lt2Answers[i];
+    const correctOpt = d.options.find(o => o.correct === i);
+    if (answer && correctOpt && answer === correctOpt.id) {
+      correct++;
+      if (gap) gap.style.background = '#d4edda';
+    } else {
+      if (gap) {
+        gap.style.background = '#f8d7da';
+        gap.title = `Richtig: ${correctOpt.id}) ${correctOpt.text}`;
+      }
+    }
+  }
+  const fb = document.getElementById('lt2feedback');
+  if (correct === 6) {
+    fb.innerHTML = `<div style="padding:12px;background:#d4edda;border-radius:var(--radius-sm);color:#155724;font-weight:600;">Perfekt! Alle 6 richtig! ✓</div>`;
+    stats.lesen += 6;
+  } else {
+    fb.innerHTML = `<div style="padding:12px;background:#fff3cd;border-radius:var(--radius-sm);color:#856404;font-weight:600;">${correct}/6 richtig. Rot markierte Lücken: Bewege die Maus daruber für die richtige Antwort.</div>`;
+    stats.lesen += correct;
+  }
+  saveStats();
+  updateStats();
+}
+
+function resetLesenTeil2() {
+  lt2Selected = null;
+  lt2Answers = {};
+  loadLesenTeil2();
 }
 
 function checkLesen(i, answer, btn) {
@@ -2082,7 +2743,728 @@ function updateStats() {
   document.getElementById('lesenScore').textContent = stats.lesen;
 }
 
+// ============================================================
+//  CUSTOM WORDS
+// ============================================================
+function loadCustomWords() {
+  const stored = JSON.parse(localStorage.getItem('b2customWords') || '[]');
+  vocabData.custom = stored;
+  updateCustomWordCount();
+}
+
+function addCustomWord() {
+  const word = document.getElementById('newWordWord').value.trim();
+  const translation = document.getElementById('newWordTranslation').value.trim();
+  const article = document.getElementById('newWordArticle').value.trim();
+  const example = document.getElementById('newWordExample').value.trim();
+  const fb = document.getElementById('addWordFeedback');
+
+  if (!word || !translation) {
+    fb.style.color = 'var(--coral)';
+    fb.textContent = 'Bitte Wort und Übersetzung eingeben!';
+    return;
+  }
+
+  const newCard = {
+    word: article ? `${article} ${word}` : word,
+    article: article,
+    translation: translation,
+    ex: example || ''
+  };
+
+  const custom = JSON.parse(localStorage.getItem('b2customWords') || '[]');
+  custom.push(newCard);
+  localStorage.setItem('b2customWords', JSON.stringify(custom));
+  vocabData.custom = custom;
+
+  // Clear form
+  document.getElementById('newWordWord').value = '';
+  document.getElementById('newWordTranslation').value = '';
+  document.getElementById('newWordArticle').value = '';
+  document.getElementById('newWordExample').value = '';
+
+  fb.style.color = 'var(--green)';
+  fb.textContent = `"${newCard.word}" hinzugefügt! (${custom.length} eigene Wörter)`;
+  updateCustomWordCount();
+
+  // If currently viewing custom category, reload
+  if (currentCategory === 'custom') {
+    loadVocabCategory();
+  }
+}
+
+function clearCustomWords() {
+  if (!confirm('Alle eigenen Wörter löschen?')) return;
+  localStorage.removeItem('b2customWords');
+  vocabData.custom = [];
+  updateCustomWordCount();
+  document.getElementById('addWordFeedback').textContent = '';
+  if (currentCategory === 'custom') loadVocabCategory();
+}
+
+function updateCustomWordCount() {
+  const count = (vocabData.custom || []).length;
+  const el = document.getElementById('customWordCount');
+  if (el) el.textContent = count > 0 ? `${count} eigene Wörter` : '';
+}
+
+// ============================================================
+//  VERB TRAINER
+// ============================================================
+const verbData = [
+  {inf:"machen", type:"regular", translation:"to do/make",
+    praesens:["mache","machst","macht","machen","macht","machen"],
+    praeteritum:["machte","machtest","machte","machten","machtet","machten"],
+    perfekt:"hat gemacht", konjII:["würde machen","würdest machen","würde machen","würden machen","würdet machen","würden machen"],
+    imperativ:["Mach!","Macht!","Machen Sie!"]},
+  {inf:"lernen", type:"regular", translation:"to learn",
+    praesens:["lerne","lernst","lernt","lernen","lernt","lernen"],
+    praeteritum:["lernte","lerntest","lernte","lernten","lerntet","lernten"],
+    perfekt:"hat gelernt", konjII:["würde lernen","würdest lernen","würde lernen","würden lernen","würdet lernen","würden lernen"],
+    imperativ:["Lern(e)!","Lernt!","Lernen Sie!"]},
+  {inf:"arbeiten", type:"regular", translation:"to work",
+    praesens:["arbeite","arbeitest","arbeitet","arbeiten","arbeitet","arbeiten"],
+    praeteritum:["arbeitete","arbeitetest","arbeitete","arbeiteten","arbeitetet","arbeiteten"],
+    perfekt:"hat gearbeitet", konjII:["würde arbeiten","würdest arbeiten","würde arbeiten","würden arbeiten","würdet arbeiten","würden arbeiten"],
+    imperativ:["Arbeite!","Arbeitet!","Arbeiten Sie!"]},
+  {inf:"sein", type:"irregular", translation:"to be",
+    praesens:["bin","bist","ist","sind","seid","sind"],
+    praeteritum:["war","warst","war","waren","wart","waren"],
+    perfekt:"ist gewesen", konjII:["wäre","wär(e)st","wäre","wären","wär(e)t","wären"],
+    imperativ:["Sei!","Seid!","Seien Sie!"]},
+  {inf:"haben", type:"irregular", translation:"to have",
+    praesens:["habe","hast","hat","haben","habt","haben"],
+    praeteritum:["hatte","hattest","hatte","hatten","hattet","hatten"],
+    perfekt:"hat gehabt", konjII:["hätte","hättest","hätte","hätten","hättet","hätten"],
+    imperativ:["Hab(e)!","Habt!","Haben Sie!"]},
+  {inf:"werden", type:"irregular", translation:"to become",
+    praesens:["werde","wirst","wird","werden","werdet","werden"],
+    praeteritum:["wurde","wurdest","wurde","wurden","wurdet","wurden"],
+    perfekt:"ist geworden", konjII:["würde","würdest","würde","würden","würdet","würden"],
+    imperativ:["Werde!","Werdet!","Werden Sie!"]},
+  {inf:"gehen", type:"irregular", translation:"to go",
+    praesens:["gehe","gehst","geht","gehen","geht","gehen"],
+    praeteritum:["ging","gingst","ging","gingen","gingt","gingen"],
+    perfekt:"ist gegangen", konjII:["würde gehen","würdest gehen","würde gehen","würden gehen","würdet gehen","würden gehen"],
+    imperativ:["Geh!","Geht!","Gehen Sie!"]},
+  {inf:"kommen", type:"irregular", translation:"to come",
+    praesens:["komme","kommst","kommt","kommen","kommt","kommen"],
+    praeteritum:["kam","kamst","kam","kamen","kamt","kamen"],
+    perfekt:"ist gekommen", konjII:["würde kommen","würdest kommen","würde kommen","würden kommen","würdet kommen","würden kommen"],
+    imperativ:["Komm!","Kommt!","Kommen Sie!"]},
+  {inf:"sprechen", type:"irregular", translation:"to speak",
+    praesens:["spreche","sprichst","spricht","sprechen","sprecht","sprechen"],
+    praeteritum:["sprach","sprachst","sprach","sprachen","spracht","sprachen"],
+    perfekt:"hat gesprochen", konjII:["würde sprechen","würdest sprechen","würde sprechen","würden sprechen","würdet sprechen","würden sprechen"],
+    imperativ:["Sprich!","Sprecht!","Sprechen Sie!"]},
+  {inf:"nehmen", type:"irregular", translation:"to take",
+    praesens:["nehme","nimmst","nimmt","nehmen","nehmt","nehmen"],
+    praeteritum:["nahm","nahmst","nahm","nahmen","nahmt","nahmen"],
+    perfekt:"hat genommen", konjII:["würde nehmen","würdest nehmen","würde nehmen","würden nehmen","würdet nehmen","würden nehmen"],
+    imperativ:["Nimm!","Nehmt!","Nehmen Sie!"]},
+  {inf:"geben", type:"irregular", translation:"to give",
+    praesens:["gebe","gibst","gibt","geben","gebt","geben"],
+    praeteritum:["gab","gabst","gab","gaben","gabt","gaben"],
+    perfekt:"hat gegeben", konjII:["würde geben","würdest geben","würde geben","würden geben","würdet geben","würden geben"],
+    imperativ:["Gib!","Gebt!","Geben Sie!"]},
+  {inf:"fahren", type:"irregular", translation:"to drive/go",
+    praesens:["fahre","fährst","fährt","fahren","fahrt","fahren"],
+    praeteritum:["fuhr","fuhrst","fuhr","fuhren","fuhrt","fuhren"],
+    perfekt:"ist gefahren", konjII:["würde fahren","würdest fahren","würde fahren","würden fahren","würdet fahren","würden fahren"],
+    imperativ:["Fahr(e)!","Fahrt!","Fahren Sie!"]},
+  {inf:"lesen", type:"irregular", translation:"to read",
+    praesens:["lese","liest","liest","lesen","lest","lesen"],
+    praeteritum:["las","last","las","lasen","last","lasen"],
+    perfekt:"hat gelesen", konjII:["würde lesen","würdest lesen","würde lesen","würden lesen","würdet lesen","würden lesen"],
+    imperativ:["Lies!","Lest!","Lesen Sie!"]},
+  {inf:"schreiben", type:"irregular", translation:"to write",
+    praesens:["schreibe","schreibst","schreibt","schreiben","schreibt","schreiben"],
+    praeteritum:["schrieb","schriebst","schrieb","schrieben","schriebt","schrieben"],
+    perfekt:"hat geschrieben", konjII:["würde schreiben","würdest schreiben","würde schreiben","würden schreiben","würdet schreiben","würden schreiben"],
+    imperativ:["Schreib!","Schreibt!","Schreiben Sie!"]},
+  {inf:"sehen", type:"irregular", translation:"to see",
+    praesens:["sehe","siehst","sieht","sehen","seht","sehen"],
+    praeteritum:["sah","sahst","sah","sahen","saht","sahen"],
+    perfekt:"hat gesehen", konjII:["würde sehen","würdest sehen","würde sehen","würden sehen","würdet sehen","würden sehen"],
+    imperativ:["Sieh!","Seht!","Sehen Sie!"]},
+  {inf:"wissen", type:"irregular", translation:"to know (fact)",
+    praesens:["weiß","weißt","weiß","wissen","wisst","wissen"],
+    praeteritum:["wusste","wusstest","wusste","wussten","wusstet","wussten"],
+    perfekt:"hat gewusst", konjII:["wüsste","wüsstest","wüsste","wüssten","wüsstet","wüssten"],
+    imperativ:["Wisse!","Wisst!","Wissen Sie!"]},
+  {inf:"denken", type:"irregular", translation:"to think",
+    praesens:["denke","denkst","denkt","denken","denkt","denken"],
+    praeteritum:["dachte","dachtest","dachte","dachten","dachtet","dachten"],
+    perfekt:"hat gedacht", konjII:["würde denken","würdest denken","würde denken","würden denken","würdet denken","würden denken"],
+    imperativ:["Denk(e)!","Denkt!","Denken Sie!"]},
+  {inf:"finden", type:"irregular", translation:"to find",
+    praesens:["finde","findest","findet","finden","findet","finden"],
+    praeteritum:["fand","fandest","fand","fanden","fandet","fanden"],
+    perfekt:"hat gefunden", konjII:["würde finden","würdest finden","würde finden","würden finden","würdet finden","würden finden"],
+    imperativ:["Finde!","Findet!","Finden Sie!"]},
+  // Trennbare Verben
+  {inf:"anfangen", type:"trennbar", translation:"to begin",
+    praesens:["fange an","fängst an","fängt an","fangen an","fangt an","fangen an"],
+    praeteritum:["fing an","fingst an","fing an","fingen an","fingt an","fingen an"],
+    perfekt:"hat angefangen", konjII:["würde anfangen","würdest anfangen","würde anfangen","würden anfangen","würdet anfangen","würden anfangen"],
+    imperativ:["Fang an!","Fangt an!","Fangen Sie an!"]},
+  {inf:"aufstehen", type:"trennbar", translation:"to get up",
+    praesens:["stehe auf","stehst auf","steht auf","stehen auf","steht auf","stehen auf"],
+    praeteritum:["stand auf","standest auf","stand auf","standen auf","standet auf","standen auf"],
+    perfekt:"ist aufgestanden", konjII:["würde aufstehen","würdest aufstehen","würde aufstehen","würden aufstehen","würdet aufstehen","würden aufstehen"],
+    imperativ:["Steh auf!","Steht auf!","Stehen Sie auf!"]},
+  {inf:"einkaufen", type:"trennbar", translation:"to shop",
+    praesens:["kaufe ein","kaufst ein","kauft ein","kaufen ein","kauft ein","kaufen ein"],
+    praeteritum:["kaufte ein","kauftest ein","kaufte ein","kauften ein","kauftet ein","kauften ein"],
+    perfekt:"hat eingekauft", konjII:["würde einkaufen","würdest einkaufen","würde einkaufen","würden einkaufen","würdet einkaufen","würden einkaufen"],
+    imperativ:["Kauf ein!","Kauft ein!","Kaufen Sie ein!"]},
+  {inf:"zurückkommen", type:"trennbar", translation:"to come back",
+    praesens:["komme zurück","kommst zurück","kommt zurück","kommen zurück","kommt zurück","kommen zurück"],
+    praeteritum:["kam zurück","kamst zurück","kam zurück","kamen zurück","kamt zurück","kamen zurück"],
+    perfekt:"ist zurückgekommen", konjII:["würde zurückkommen","würdest zurückkommen","würde zurückkommen","würden zurückkommen","würdet zurückkommen","würden zurückkommen"],
+    imperativ:["Komm zurück!","Kommt zurück!","Kommen Sie zurück!"]},
+  // Modalverben
+  {inf:"können", type:"modal", translation:"can, to be able to",
+    praesens:["kann","kannst","kann","können","könnt","können"],
+    praeteritum:["konnte","konntest","konnte","konnten","konntet","konnten"],
+    perfekt:"hat gekonnt", konjII:["könnte","könntest","könnte","könnten","könntet","könnten"],
+    imperativ:["-","-","-"]},
+  {inf:"müssen", type:"modal", translation:"must, to have to",
+    praesens:["muss","musst","muss","müssen","müsst","müssen"],
+    praeteritum:["musste","musstest","musste","mussten","musstet","mussten"],
+    perfekt:"hat gemusst", konjII:["müsste","müsstest","müsste","müssten","müsstet","müssten"],
+    imperativ:["-","-","-"]},
+  {inf:"sollen", type:"modal", translation:"should, to be supposed to",
+    praesens:["soll","sollst","soll","sollen","sollt","sollen"],
+    praeteritum:["sollte","solltest","sollte","sollten","solltet","sollten"],
+    perfekt:"hat gesollt", konjII:["sollte","solltest","sollte","sollten","solltet","sollten"],
+    imperativ:["-","-","-"]},
+  {inf:"wollen", type:"modal", translation:"to want to",
+    praesens:["will","willst","will","wollen","wollt","wollen"],
+    praeteritum:["wollte","wolltest","wollte","wollten","wolltet","wollten"],
+    perfekt:"hat gewollt", konjII:["wollte","wolltest","wollte","wollten","wolltet","wollten"],
+    imperativ:["-","-","-"]},
+  {inf:"dürfen", type:"modal", translation:"may, to be allowed to",
+    praesens:["darf","darfst","darf","dürfen","dürft","dürfen"],
+    praeteritum:["durfte","durftest","durfte","durften","durftet","durften"],
+    perfekt:"hat gedurft", konjII:["dürfte","dürftest","dürfte","dürften","dürftet","dürften"],
+    imperativ:["-","-","-"]},
+];
+
+const pronouns = ["ich","du","er/sie/es","wir","ihr","sie/Sie"];
+let currentVerb = null;
+let currentVerbTense = null;
+let verbScore = 0;
+let verbTotal = 0;
+
+function loadVerbExercise() {
+  const tenseFilter = document.getElementById('verbTenseFilter').value;
+  const typeFilter = document.getElementById('verbTypeFilter').value;
+
+  let filtered = [...verbData];
+  if (typeFilter !== 'all') filtered = filtered.filter(v => v.type === typeFilter);
+  if (filtered.length === 0) { filtered = [...verbData]; }
+
+  currentVerb = filtered[Math.floor(Math.random() * filtered.length)];
+
+  const tenses = tenseFilter === 'all'
+    ? ['praesens','praeteritum','perfekt','konjunktivII','imperativ']
+    : [tenseFilter === 'konjunktivII' ? 'konjunktivII' : tenseFilter];
+  currentVerbTense = tenses[Math.floor(Math.random() * tenses.length)];
+
+  const tenseLabels = {praesens:'Präsens',praeteritum:'Präteritum',perfekt:'Perfekt',konjunktivII:'Konjunktiv II',imperativ:'Imperativ'};
+  document.getElementById('verbTenseLabel').textContent = tenseLabels[currentVerbTense] + ' — ' + currentVerb.type;
+  document.getElementById('verbInfinitive').textContent = currentVerb.inf;
+  document.getElementById('verbTranslation').textContent = currentVerb.translation;
+  document.getElementById('verbFeedback').innerHTML = '';
+  document.getElementById('verbProgress').textContent = `${verbScore} / ${verbTotal}`;
+
+  let html = '';
+  if (currentVerbTense === 'perfekt') {
+    html = `<div class="quiz-question"><p>Perfekt von <strong>${currentVerb.inf}</strong>:</p>
+      <input class="conj-input" id="verbAns0" style="width:100%;" placeholder="z.B. hat gemacht / ist gegangen">
+    </div>`;
+  } else if (currentVerbTense === 'imperativ') {
+    html = `<div class="quiz-question"><p>Imperativ von <strong>${currentVerb.inf}</strong>:</p>
+      <table class="conj-table"><tr><th>Form</th><th>Deine Antwort</th></tr>
+      <tr><td>du</td><td><input class="conj-input" id="verbAns0" placeholder="..."></td></tr>
+      <tr><td>ihr</td><td><input class="conj-input" id="verbAns1" placeholder="..."></td></tr>
+      <tr><td>Sie</td><td><input class="conj-input" id="verbAns2" placeholder="..."></td></tr>
+      </table></div>`;
+  } else {
+    const key = currentVerbTense === 'konjunktivII' ? 'konjII' : currentVerbTense;
+    html = `<div class="quiz-question"><p>Konjugiere <strong>${currentVerb.inf}</strong> im ${tenseLabels[currentVerbTense]}:</p>
+      <table class="conj-table"><tr><th>Pronomen</th><th>Deine Antwort</th></tr>`;
+    pronouns.forEach((p, i) => {
+      html += `<tr><td>${p}</td><td><input class="conj-input" id="verbAns${i}" placeholder="..."></td></tr>`;
+    });
+    html += `</table></div>`;
+  }
+  document.getElementById('verbExerciseArea').innerHTML = html;
+}
+
+function checkVerbAnswers() {
+  if (!currentVerb) return;
+  let correct = 0, total = 0;
+  const key = currentVerbTense === 'konjunktivII' ? 'konjII' : currentVerbTense;
+
+  if (currentVerbTense === 'perfekt') {
+    total = 1;
+    const ans = document.getElementById('verbAns0').value.trim().toLowerCase();
+    const exp = currentVerb.perfekt.toLowerCase();
+    if (ans === exp) {
+      correct = 1;
+      document.getElementById('verbAns0').classList.add('correct');
+    } else {
+      document.getElementById('verbAns0').classList.add('incorrect');
+    }
+  } else if (currentVerbTense === 'imperativ') {
+    total = 3;
+    currentVerb.imperativ.forEach((form, i) => {
+      const inp = document.getElementById('verbAns'+i);
+      if (!inp) return;
+      const ans = inp.value.trim().toLowerCase().replace(/[!.]/g,'').trim();
+      const exp = form.toLowerCase().replace(/[!.]/g,'').trim();
+      if (ans === exp || (exp.includes('(') && ans === exp.replace(/[()]/g,''))) {
+        correct++;
+        inp.classList.add('correct');
+      } else {
+        inp.classList.add('incorrect');
+      }
+    });
+  } else {
+    total = 6;
+    currentVerb[key].forEach((form, i) => {
+      const inp = document.getElementById('verbAns'+i);
+      if (!inp) return;
+      const ans = inp.value.trim().toLowerCase();
+      const exp = form.toLowerCase();
+      if (ans === exp || (exp.includes('(') && ans === exp.replace(/[()]/g,''))) {
+        correct++;
+        inp.classList.add('correct');
+      } else {
+        inp.classList.add('incorrect');
+      }
+    });
+  }
+
+  verbTotal += total;
+  verbScore += correct;
+  stats.grammar += correct;
+  saveStats(); updateStats();
+  document.getElementById('verbProgress').textContent = `${verbScore} / ${verbTotal}`;
+  document.getElementById('verbFeedback').innerHTML = `<div style="padding:12px;background:${correct===total?'#d4edda':'#fff3cd'};border-radius:var(--radius-sm);font-weight:600;">${correct}/${total} richtig!</div>`;
+}
+
+function showVerbSolution() {
+  if (!currentVerb) return;
+  const key = currentVerbTense === 'konjunktivII' ? 'konjII' : currentVerbTense;
+  let html = '<div style="padding:12px;background:var(--teal-light);border-radius:var(--radius-sm);">';
+  if (currentVerbTense === 'perfekt') {
+    html += `<strong>Lösung:</strong> ${currentVerb.perfekt}`;
+    document.getElementById('verbAns0').value = currentVerb.perfekt;
+  } else if (currentVerbTense === 'imperativ') {
+    html += `<strong>Lösung:</strong> du: ${currentVerb.imperativ[0]} | ihr: ${currentVerb.imperativ[1]} | Sie: ${currentVerb.imperativ[2]}`;
+    currentVerb.imperativ.forEach((f,i) => { const inp = document.getElementById('verbAns'+i); if(inp) inp.value = f; });
+  } else {
+    html += `<strong>Lösung:</strong><br>`;
+    currentVerb[key].forEach((f,i) => {
+      html += `${pronouns[i]}: <strong>${f}</strong><br>`;
+      const inp = document.getElementById('verbAns'+i);
+      if(inp) inp.value = f;
+    });
+  }
+  html += '</div>';
+  document.getElementById('verbFeedback').innerHTML = html;
+}
+
+// ============================================================
+//  SPEAKING FLASHCARDS
+// ============================================================
+const sprechenFlashcards = [
+  {category:"Einleitung", phrase:"In meinem Vortrag möchte ich das Thema [...] beleuchten.", usage:"Ersten Satz des Vortrags beginnen", tip:"Ersetze [...] mit deinem konkreten Thema."},
+  {category:"Einleitung", phrase:"Zunächst werde ich [...] erläutern, dann auf [...] eingehen und abschließend [...].", usage:"Gliederung des Vortrags ankündigen", tip:"Zeigt dem Prüfer: Du hast eine klare Struktur!"},
+  {category:"Einleitung", phrase:"Ich habe mich für dieses Thema entschieden, weil ...", usage:"Persönlichen Bezug herstellen", tip:"Zeigt persönliches Interesse am Thema."},
+  {category:"Hauptteil", phrase:"Es gibt verschiedene Möglichkeiten / Aspekte ...", usage:"Verschiedene Punkte einleiten", tip:"Gut um vom Allgemeinen zum Speziellen zu kommen."},
+  {category:"Hauptteil", phrase:"Ein Vorteil / Nachteil ist ...", usage:"Pro/Kontra nennen", tip:"Immer mit Beispiel untermauern!"},
+  {category:"Hauptteil", phrase:"Ich bin der Ansicht / Überzeugung, dass ...", usage:"Eigene Meinung formulieren (formal)", tip:"Formaler als 'Ich denke, dass...' — perfekt für B2!"},
+  {category:"Hauptteil", phrase:"Aus meiner Sicht ... / Meiner Meinung nach ...", usage:"Persönliche Perspektive einbringen", tip:"Variiere zwischen verschiedenen Ausdrücken!"},
+  {category:"Hauptteil", phrase:"Ein gutes Beispiel dafür ist ...", usage:"Beispiel anführen", tip:"Konkrete Beispiele zeigen B2-Kompetenz."},
+  {category:"Hauptteil", phrase:"Einerseits ... andererseits ...", usage:"Gegensätze darstellen", tip:"Zeigt differenziertes Denken."},
+  {category:"Schluss", phrase:"Zusammenfassend lässt sich sagen, dass ...", usage:"Fazit einleiten", tip:"Der klassische B2-Schluss-Satz!"},
+  {category:"Schluss", phrase:"Ich würde [...] empfehlen, weil ...", usage:"Empfehlung aussprechen", tip:"Konjunktiv II zeigt Kompetenz!"},
+  {category:"Schluss", phrase:"Abschließend möchte ich betonen, dass ...", usage:"Letzten Punkt hervorheben", tip:"Starkes Ende für deinen Vortrag."},
+  {category:"Diskussion", phrase:"Das sehe ich genauso. / Dem stimme ich zu.", usage:"Zustimmung ausdrücken", tip:"Kurz und klar — dann begründen!"},
+  {category:"Diskussion", phrase:"Da bin ich anderer Meinung, weil ...", usage:"Höflich widersprechen", tip:"Immer mit Begründung!"},
+  {category:"Diskussion", phrase:"Grundsätzlich hast du Recht, aber man sollte auch bedenken, dass ...", usage:"Teilweise zustimmen", tip:"Zeigt differenziertes Denken — Prüfer lieben das!"},
+  {category:"Diskussion", phrase:"Was denkst du darüber? / Hast du selbst Erfahrungen damit gemacht?", usage:"Partner einbeziehen", tip:"Interaktion bringt extra Punkte!"},
+  {category:"Diskussion", phrase:"Können wir uns darauf einigen, dass ...?", usage:"Kompromiss vorschlagen", tip:"Perfekt um die Diskussion abzuschließen."},
+  {category:"Nachfragen", phrase:"Entschuldigung, könnten Sie das bitte noch einmal wiederholen?", usage:"Um Wiederholung bitten", tip:"Keine Angst nachzufragen — das ist erlaubt!"},
+  {category:"Nachfragen", phrase:"Ich bin nicht sicher, ob ich Sie richtig verstanden habe.", usage:"Verständnis klären", tip:"Besser nachfragen als falsch antworten."},
+  {category:"Nachfragen", phrase:"Mich würde interessieren, was du über [...] denkst.", usage:"Meinung des Partners erfragen", tip:"Zeigt aktives Zuhören."},
+];
+
+let currentSpFC = 0;
+let spFCDeck = [];
+
+const spCategoryColors = {
+  'Einleitung': 'linear-gradient(135deg, var(--teal), var(--teal-dark))',
+  'Hauptteil': 'linear-gradient(135deg, var(--purple), #6741d9)',
+  'Schluss': 'linear-gradient(135deg, #e6a817, var(--gold))',
+  'Diskussion': 'linear-gradient(135deg, var(--coral), #e03e3e)',
+  'Nachfragen': 'linear-gradient(135deg, var(--navy), var(--navy-light))',
+};
+
+function loadSprechenFC() {
+  const filter = document.getElementById('spFcFilter').value;
+  spFCDeck = filter === 'all' ? [...sprechenFlashcards] : sprechenFlashcards.filter(c => c.category === filter);
+  currentSpFC = 0;
+  showSprechenFC();
+}
+
+function showSprechenFC() {
+  if (spFCDeck.length === 0) {
+    document.getElementById('spFcCategory').textContent = '';
+    document.getElementById('spFcPhrase').textContent = 'Keine Karten';
+    document.getElementById('spFcUsage').textContent = '';
+    document.getElementById('spFcTip').textContent = '';
+    document.getElementById('spFcProgress').textContent = '0 / 0';
+    return;
+  }
+  const card = spFCDeck[currentSpFC % spFCDeck.length];
+  document.getElementById('spFcCategory').textContent = card.category.toUpperCase();
+  document.getElementById('spFcPhrase').textContent = card.phrase;
+  document.getElementById('spFcUsage').textContent = card.usage;
+  document.getElementById('spFcTip').textContent = card.tip;
+  document.getElementById('spFcProgress').textContent = `${currentSpFC + 1} / ${spFCDeck.length}`;
+  document.getElementById('spFlashcard').classList.remove('flipped');
+  document.getElementById('spFcFront').style.background = spCategoryColors[card.category] || spCategoryColors['Einleitung'];
+}
+
+function rateSpFC(known) {
+  if (spFCDeck.length === 0) return;
+  if (known) { stats.speaking++; saveStats(); updateStats(); }
+  currentSpFC++;
+  if (currentSpFC >= spFCDeck.length) { currentSpFC = 0; }
+  showSprechenFC();
+}
+
+// ============================================================
+//  SATZBAU EXERCISES
+// ============================================================
+function loadSatzbauExercises() {
+  // Quiz 1: Hauptsatz vs Nebensatz - word order
+  const satzbauQ1 = [
+    {q:"_____ er krank ist, geht er nicht zur Arbeit.", a:"Weil", options:["Weil","Deshalb","Und","Trotzdem"], hint:"weil → Verb am Ende (Nebensatz)"},
+    {q:"Er ist krank. _____ geht er nicht zur Arbeit.", a:"Deshalb", options:["Weil","Deshalb","Dass","Obwohl"], hint:"deshalb → Verb-Inversion (Position 1)"},
+    {q:"Ich weiß, _____ sie morgen kommt.", a:"dass", options:["dass","weil","denn","deshalb"], hint:"dass leitet einen Nebensatz ein → Verb am Ende"},
+    {q:"_____ ich studiert habe, bin ich nach Deutschland gekommen.", a:"Nachdem", options:["Nachdem","Danach","Dann","Deshalb"], hint:"nachdem → Nebensatz (Verb am Ende)"},
+    {q:"Sie lernt Deutsch, _____ sie in Berlin arbeiten möchte.", a:"weil", options:["weil","deshalb","denn","trotzdem"], hint:"weil → Nebensatz → Verb am Ende"},
+  ];
+  let html = '';
+  satzbauQ1.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('sb1',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="sb1Fb${i}"></div></div>`;
+  });
+  document.getElementById('satzbauQuiz1').innerHTML = html;
+  window._sb1Answers = satzbauQ1;
+
+  // TeKaMoLo quiz
+  const tekamolQ = [
+    {q:"Ich fahre _____ mit dem Zug nach München. (morgen)", a:"morgen", options:["morgen mit dem Zug nach München","nach München morgen mit dem Zug","mit dem Zug nach München morgen","nach München mit dem Zug morgen"], correct:0, hint:"Te(morgen) → Mo(mit dem Zug) → Lo(nach München)"},
+    {q:"Er arbeitet _____ (seit zwei Jahren / in Hamburg / gern)", a:"", options:["seit zwei Jahren gern in Hamburg","gern seit zwei Jahren in Hamburg","in Hamburg seit zwei Jahren gern","seit zwei Jahren in Hamburg gern"], correct:0, hint:"Te(seit zwei Jahren) → Mo(gern) → Lo(in Hamburg)"},
+    {q:"Sie geht _____ (heute / wegen des Regens / schnell / ins Büro)", a:"", options:["heute wegen des Regens schnell ins Büro","schnell heute ins Büro wegen des Regens","ins Büro heute wegen des Regens schnell","heute schnell wegen des Regens ins Büro"], correct:0, hint:"Te(heute) → Ka(wegen des Regens) → Mo(schnell) → Lo(ins Büro)"},
+  ];
+  html = '';
+  tekamolQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-direction:column;gap:6px;">`;
+    q.options.forEach((opt, j) => {
+      html += `<button class="quiz-option" style="text-align:left;" onclick="checkTekamol(${i},${j},this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="tekFb${i}"></div></div>`;
+  });
+  document.getElementById('tekamolQuiz').innerHTML = html;
+  window._tekamolQ = tekamolQ;
+
+  // Relativsätze
+  const relativQ = [
+    {q:"Das ist der Mann, _____ mir geholfen hat.", a:"der", options:["der","den","dem","dessen"], hint:"Nominativ maskulin (wer hat geholfen? → er)"},
+    {q:"Die Frau, _____ ich gestern getroffen habe, ist Ärztin.", a:"die", options:["der","die","dem","deren"], hint:"Akkusativ feminin (wen habe ich getroffen?)"},
+    {q:"Der Student, _____ ich das Buch gegeben habe, heißt Tom.", a:"dem", options:["der","den","dem","dessen"], hint:"Dativ maskulin (wem habe ich gegeben?)"},
+    {q:"Das Kind, _____ Eltern beide arbeiten, geht in den Hort.", a:"dessen", options:["das","dem","dessen","deren"], hint:"Genitiv neutrum (wessen Eltern?)"},
+    {q:"Die Leute, _____ ich gesprochen habe, waren sehr nett.", a:"mit denen", options:["die","denen","mit denen","deren"], hint:"Dativ Plural mit Präposition (mit + Dativ)"},
+  ];
+  html = '';
+  relativQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('rel',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="relFb${i}"></div></div>`;
+  });
+  document.getElementById('relativQuiz').innerHTML = html;
+  window._relAnswers = relativQ;
+
+  // Infinitivsätze
+  const infinitivQ = [
+    {q:"Ich lerne Deutsch. Ich möchte in Deutschland studieren. → Ich lerne Deutsch, _____", a:"um in Deutschland zu studieren.", options:["um in Deutschland zu studieren.","ohne in Deutschland zu studieren.","anstatt in Deutschland zu studieren."], correct:0},
+    {q:"Er ging weg. Er hat nichts gesagt. → Er ging weg, _____", a:"", options:["um nichts zu sagen.","ohne etwas zu sagen.","anstatt etwas zu sagen."], correct:1},
+    {q:"Sie schaut fern. Sie sollte lernen. → _____ lernt sie, schaut sie fern.", a:"", options:["Um zu","Ohne zu","Anstatt zu"], correct:2},
+  ];
+  html = '';
+  infinitivQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-direction:column;gap:6px;">`;
+    q.options.forEach((opt, j) => {
+      html += `<button class="quiz-option" style="text-align:left;" onclick="checkInfinitivQ(${i},${j},this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="infFb${i}"></div></div>`;
+  });
+  document.getElementById('infinitivQuiz').innerHTML = html;
+  window._infinitivQ = infinitivQ;
+
+  // Konjunktionen Wortstellung
+  const konjWQ = [
+    {q:"Er ist müde, _____ er hat schlecht geschlafen. (denn)", a:"keine Änderung", options:["Verb am Ende","Verb-Inversion","keine Änderung"], correct:2, hint:"denn = nebenordnend → keine Änderung"},
+    {q:"Er hat schlecht geschlafen. _____ ist er müde. (deshalb)", a:"Verb-Inversion", options:["Verb am Ende","Verb-Inversion","keine Änderung"], correct:1, hint:"deshalb = adverbial → Verb auf Position 2 (Inversion)"},
+    {q:"Er ist müde, _____ er schlecht geschlafen hat. (weil)", a:"Verb am Ende", options:["Verb am Ende","Verb-Inversion","keine Änderung"], correct:0, hint:"weil = unterordnend → Verb am Ende"},
+    {q:"Sie lernt fleißig, _____ sie die Prüfung besteht. (damit)", a:"Verb am Ende", options:["Verb am Ende","Verb-Inversion","keine Änderung"], correct:0, hint:"damit = unterordnend → Verb am Ende"},
+    {q:"Das Wetter war schlecht. _____ blieben wir zu Hause. (trotzdem)", a:"Verb-Inversion", options:["Verb am Ende","Verb-Inversion","keine Änderung"], correct:1, hint:"trotzdem = adverbial → Verb-Inversion"},
+  ];
+  html = '';
+  konjWQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}<br><em>Welche Wortstellung folgt?</em></p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach((opt, j) => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkKonjW(${i},${j},this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="kwFb${i}"></div></div>`;
+  });
+  document.getElementById('konjWortstellungQuiz').innerHTML = html;
+  window._konjWQ = konjWQ;
+}
+
+function checkGenericQuiz(prefix, i, answer, btn) {
+  const answers = window['_'+prefix+'Answers'];
+  const q = answers[i];
+  const fb = document.getElementById(prefix+'Fb'+i);
+  btn.parentElement.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+  if (answer === q.a) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = 'Richtig! ' + (q.hint||'');
+    stats.grammar++; saveStats(); updateStats();
+  } else {
+    btn.classList.add('incorrect');
+    fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Die Antwort ist: "${q.a}" — ${q.hint||''}`;
+  }
+}
+
+function checkTekamol(i, j, btn) {
+  const q = window._tekamolQ[i];
+  const fb = document.getElementById('tekFb'+i);
+  btn.parentElement.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+  if (j === q.correct) {
+    btn.classList.add('correct'); fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = 'Richtig! ' + q.hint; stats.grammar++; saveStats(); updateStats();
+  } else {
+    btn.classList.add('incorrect'); fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Richtig wäre: "${q.options[q.correct]}" — ${q.hint}`;
+  }
+}
+
+function checkInfinitivQ(i, j, btn) {
+  const q = window._infinitivQ[i];
+  const fb = document.getElementById('infFb'+i);
+  btn.parentElement.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+  if (j === q.correct) {
+    btn.classList.add('correct'); fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = 'Richtig!'; stats.grammar++; saveStats(); updateStats();
+  } else {
+    btn.classList.add('incorrect'); fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Richtig: "${q.options[q.correct]}"`;
+  }
+}
+
+function checkKonjW(i, j, btn) {
+  const q = window._konjWQ[i];
+  const fb = document.getElementById('kwFb'+i);
+  btn.parentElement.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+  if (j === q.correct) {
+    btn.classList.add('correct'); fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = 'Richtig! ' + q.hint; stats.grammar++; saveStats(); updateStats();
+  } else {
+    btn.classList.add('incorrect'); fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Richtig: "${q.options[q.correct]}" — ${q.hint}`;
+  }
+}
+
+// ============================================================
+//  ADJEKTIVE EXERCISES
+// ============================================================
+function loadAdjektivExercises() {
+  // Adjektiv-Endungen
+  const adjEndQ = [
+    {q:"Ich habe einen neu_____ Computer gekauft.", a:"en", options:["en","er","es","e"], hint:"Akk. maskulin nach unbest. Artikel → -en"},
+    {q:"Das ist eine gut_____ Idee.", a:"e", options:["en","er","es","e"], hint:"Nom. feminin nach unbest. Artikel → -e"},
+    {q:"Der klein_____ Junge spielt im Garten.", a:"e", options:["en","er","es","e"], hint:"Nom. maskulin nach best. Artikel → -e"},
+    {q:"Sie trinkt kalt_____ Wasser.", a:"es", options:["en","er","es","e"], hint:"Akk. neutrum ohne Artikel → -es (Signalendung)"},
+    {q:"Ich habe mit dem nett_____ Kollegen gesprochen.", a:"en", options:["en","er","es","e"], hint:"Dat. maskulin nach best. Artikel → -en"},
+    {q:"Trotz des schlecht_____ Wetters gingen wir spazieren.", a:"en", options:["en","er","es","e"], hint:"Gen. neutrum nach best. Artikel → -en"},
+    {q:"Er ist ein sehr freundlich_____ Mensch.", a:"er", options:["en","er","es","e"], hint:"Nom. maskulin nach unbest. Artikel → -er"},
+    {q:"Die alt_____ Häuser stehen unter Denkmalschutz.", a:"en", options:["en","er","es","e"], hint:"Nom. Plural nach best. Artikel → -en"},
+    {q:"Wir brauchen frisch_____ Obst.", a:"es", options:["en","er","es","e"], hint:"Akk. neutrum ohne Artikel → -es"},
+    {q:"Mit groß_____ Freude nehme ich die Einladung an.", a:"er", options:["en","er","es","e"], hint:"Dat. feminin ohne Artikel → -er (Signalendung)"},
+  ];
+  let html = '';
+  adjEndQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;min-width:50px;text-align:center;" onclick="checkGenericQuiz('adjE',${i},'${opt}',this)">-${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="adjEFb${i}"></div></div>`;
+  });
+  document.getElementById('adjEndungQuiz').innerHTML = html;
+  window._adjEAnswers = adjEndQ;
+
+  // Komparativ & Superlativ
+  const kompQ = [
+    {q:"Berlin ist _____ als München. (groß)", a:"größer", hint:"groß → größer (Umlaut + -er)"},
+    {q:"Das ist das _____ Restaurant der Stadt. (gut)", a:"beste", hint:"gut → besser → am besten / das beste"},
+    {q:"Im Winter ist es _____ als im Herbst. (kalt)", a:"kälter", hint:"kalt → kälter (Umlaut)"},
+    {q:"Sie singt am _____ von allen. (schön)", a:"schönsten", hint:"schön → schöner → am schönsten"},
+    {q:"Ich trinke _____ Tee als Kaffee. (gern)", a:"lieber", hint:"gern → lieber → am liebsten (unregelmäßig)"},
+  ];
+  html = '';
+  kompQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p>
+      <input class="conj-input" id="komp${i}" style="width:200px;" placeholder="...">
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:0.8rem;margin-left:8px;" onclick="checkKomp(${i})">Prüfen</button>
+      <div class="quiz-feedback" id="kompFb${i}"></div></div>`;
+  });
+  document.getElementById('komparativQuiz').innerHTML = html;
+  window._kompQ = kompQ;
+
+  // Adjektive mit Präpositionen
+  const adjPQ = [
+    {q:"Sie ist sehr stolz _____ ihren Sohn.", a:"auf", options:["auf","mit","von","über"], hint:"stolz auf + Akk."},
+    {q:"Ich bin _____ dem Ergebnis zufrieden.", a:"mit", options:["auf","mit","von","über"], hint:"zufrieden mit + Dat."},
+    {q:"Er ist _____ Politik interessiert.", a:"an", options:["an","auf","für","von"], hint:"interessiert an + Dat."},
+    {q:"Wer ist _____ dieses Projekt verantwortlich?", a:"für", options:["an","auf","für","von"], hint:"verantwortlich für + Akk."},
+    {q:"Das Ergebnis ist _____ vielen Faktoren abhängig.", a:"von", options:["an","auf","für","von"], hint:"abhängig von + Dat."},
+  ];
+  html = '';
+  adjPQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('adjP',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="adjPFb${i}"></div></div>`;
+  });
+  document.getElementById('adjPraepQuiz').innerHTML = html;
+  window._adjPAnswers = adjPQ;
+}
+
+function checkKomp(i) {
+  const q = window._kompQ[i];
+  const inp = document.getElementById('komp'+i);
+  const fb = document.getElementById('kompFb'+i);
+  const ans = inp.value.trim().toLowerCase();
+  if (ans === q.a.toLowerCase()) {
+    inp.classList.add('correct'); fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = 'Richtig! ' + q.hint; stats.grammar++; saveStats(); updateStats();
+  } else {
+    inp.classList.add('incorrect'); fb.className = 'quiz-feedback show incorrect-fb';
+    fb.textContent = `Die Antwort ist: "${q.a}" — ${q.hint}`;
+  }
+}
+
+// ============================================================
+//  MEHR EXERCISES (Possessiv, Zeit, Wechselpräp, N-Dekl)
+// ============================================================
+function loadMehrExercises() {
+  // Possessivartikel
+  const possQ = [
+    {q:"Ich liebe _____ Hund. (ich, Akk. mask.)", a:"meinen", options:["mein","meinen","meinem","meiner"], hint:"Akk. maskulin → meinen"},
+    {q:"Hast du _____ Schlüssel gesehen? (du, Akk. mask.)", a:"deinen", options:["dein","deinen","deinem","deiner"], hint:"Akk. maskulin → deinen"},
+    {q:"Sie hat _____ Tasche vergessen. (sie sg., Akk. fem.)", a:"ihre", options:["ihr","ihre","ihren","ihrem"], hint:"Akk. feminin → ihre"},
+    {q:"Wir treffen uns mit _____ Freunden. (wir, Dat. Pl.)", a:"unseren", options:["unser","unsere","unseren","unserem"], hint:"Dat. Plural → unseren"},
+    {q:"Er zeigt _____ Mutter das Foto. (er, Dat. fem.)", a:"seiner", options:["sein","seine","seinem","seiner"], hint:"Dat. feminin → seiner"},
+    {q:"Ist das _____ Auto? (ihr Plural, Nom. neut.)", a:"euer", options:["euer","euren","eurem","eure"], hint:"Nom. neutrum → euer"},
+  ];
+  let html = '';
+  possQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('poss',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="possFb${i}"></div></div>`;
+  });
+  document.getElementById('possessivQuiz').innerHTML = html;
+  window._possAnswers = possQ;
+
+  // Zeitausdrücke
+  const zeitQ = [
+    {q:"_____ zwei Jahren bin ich nach Deutschland gekommen.", a:"Vor", options:["Vor","Seit","In","Nach"], hint:"vor + Dativ = ago"},
+    {q:"_____ einem Jahr lerne ich Deutsch.", a:"Seit", options:["Vor","Seit","In","Nach"], hint:"seit + Dativ = since/for (Präsens!)"},
+    {q:"_____ zwei Wochen habe ich die Prüfung.", a:"In", options:["Vor","Seit","In","Nach"], hint:"in + Dativ = in (Zukunft)"},
+    {q:"_____ dem Unterricht gehe ich einkaufen.", a:"Nach", options:["Vor","Seit","In","Nach"], hint:"nach + Dativ = after"},
+    {q:"_____ des Unterrichts soll man nicht telefonieren.", a:"Während", options:["Während","Seit","In","Nach"], hint:"während + Genitiv = during"},
+  ];
+  html = '';
+  zeitQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('zeit',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="zeitFb${i}"></div></div>`;
+  });
+  document.getElementById('zeitQuiz').innerHTML = html;
+  window._zeitAnswers = zeitQ;
+
+  // Wechselpräpositionen
+  const wechselQ = [
+    {q:"Ich stelle die Vase _____ den Tisch. (auf, wohin?)", a:"auf den", options:["auf den","auf dem","auf der","auf das"], hint:"Wohin? → Akkusativ (Bewegung)"},
+    {q:"Die Vase steht _____ Tisch. (auf, wo?)", a:"auf dem", options:["auf den","auf dem","auf der","auf das"], hint:"Wo? → Dativ (Position)"},
+    {q:"Er geht _____ Küche. (in, wohin?)", a:"in die", options:["in die","in der","in dem","in den"], hint:"Wohin? → Akkusativ (Bewegung, die Küche = fem.)"},
+    {q:"Sie ist _____ Küche. (in, wo?)", a:"in der", options:["in die","in der","in dem","in den"], hint:"Wo? → Dativ (Position, die Küche = fem.)"},
+    {q:"Häng das Bild _____ Wand. (an, wohin?)", a:"an die", options:["an die","an der","an dem","an den"], hint:"Wohin? → Akkusativ (die Wand = fem.)"},
+  ];
+  html = '';
+  wechselQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('wech',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="wechFb${i}"></div></div>`;
+  });
+  document.getElementById('wechselQuiz').innerHTML = html;
+  window._wechAnswers = wechselQ;
+
+  // N-Deklination
+  const nDeklQ = [
+    {q:"Ich kenne den _____ nicht. (Student)", a:"Studenten", options:["Student","Studenten","Studentes","Studentem"], hint:"Akk. → den Studenten"},
+    {q:"Ich habe dem _____ geholfen. (Kollege)", a:"Kollegen", options:["Kollege","Kollegen","Kolleges","Kollegem"], hint:"Dat. → dem Kollegen"},
+    {q:"Das ist die Meinung des _____. (Experte)", a:"Experten", options:["Experte","Experten","Expertes","Expertem"], hint:"Gen. → des Experten"},
+    {q:"Der _____ hat mir geholfen. (Nachbar)", a:"Nachbar", options:["Nachbar","Nachbarn","Nachbaren","Nachbars"], hint:"Nom. → der Nachbar (kein -n im Nominativ!)"},
+    {q:"Ich habe mit dem _____ gesprochen. (Herr Müller)", a:"Herrn", options:["Herr","Herrn","Herren","Herrs"], hint:"Dat. → dem Herrn (Herr → Herrn)"},
+  ];
+  html = '';
+  nDeklQ.forEach((q, i) => {
+    html += `<div class="quiz-question"><p><span class="q-num">${i+1}.</span> ${q.q}</p><div style="display:flex;flex-wrap:wrap;gap:6px;">`;
+    q.options.forEach(opt => {
+      html += `<button class="quiz-option" style="width:auto;flex:none;" onclick="checkGenericQuiz('nDek',${i},'${opt}',this)">${opt}</button>`;
+    });
+    html += `</div><div class="quiz-feedback" id="nDekFb${i}"></div></div>`;
+  });
+  document.getElementById('nDeklQuiz').innerHTML = html;
+  window._nDekAnswers = nDeklQ;
+}
+
 // Initialize
+loadCustomWords();
 init();
 </script>
 </body>
